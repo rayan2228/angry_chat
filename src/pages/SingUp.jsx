@@ -4,11 +4,22 @@ import Input from "../components/layouts/Input";
 import Checkbox from "../components/layouts/Checkbox";
 import Button from "../components/layouts/Button";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { ThreeDots } from "react-loader-spinner";
+import { ToastContainer, toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+
 const SingUp = () => {
+  // auth
+  const auth = getAuth();
+  // navigate
+  const navigate = useNavigate();
+  // values state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [eye, setEye] = useState(true);
+  const [loading, setLoading] = useState(false);
   // errors state
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -23,7 +34,6 @@ const SingUp = () => {
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    setEmailError("");
   };
   useEffect(() => {
     if (password) {
@@ -67,9 +77,42 @@ const SingUp = () => {
     if (!password) {
       setPasswordError("password is required");
     }
+    if (name && email && password) {
+      setLoading(true);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          setName("");
+          setEmail("");
+          setPassword("");
+          setLoading(false);
+          toast.success("singing up successfully ", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          setTimeout(() => {
+            navigate("/singin");
+          }, 2000);
+        })
+        .catch((error) => {
+          setLoading(false);
+          const errorCode = error.code;
+          if (errorCode.includes("auth/email-already-in-use")) {
+            setEmailError("email already exits");
+          }
+        });
+    }
   };
   return (
     <>
+      <ToastContainer />
       <Flex className="h-screen">
         <Flex
           className={"w-full lg:w-1/2 flex-col justify-center xl:pl-7 p-7  "}
@@ -126,15 +169,30 @@ const SingUp = () => {
               )}
             </div>
             <Checkbox label="Remember Me" className="flex items-center mt-4" />
-            <Button text="Sign Up" onClick={handleSubmit} />
+            {loading ? (
+              <div className="w-full xl:w-[492px] bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
+                <ThreeDots
+                  height=""
+                  width="80"
+                  radius="9"
+                  color="white"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <Button text={"Sign Up"} onClick={handleSubmit} />
+            )}
             <p className="mt-6 text-base font-normal font-inter">
               Have an account?
-              <a
-                href="#"
+              <Link
+                to="/singin"
                 className="ml-2 text-base font-semibold font-inter text-primary"
               >
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </Flex>
