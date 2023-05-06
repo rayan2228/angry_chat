@@ -129,9 +129,12 @@ const SingIn = () => {
             </div>
             <Flex className="items-center justify-between xl:w-[492px] w-full mt-4">
               <Checkbox label="Remember Me" className="flex items-center" />
-              <a className="text-base font-normal font-inter" href="">
+              <Link
+                className="text-base font-normal font-inter"
+                to="/forgetpassword"
+              >
                 Forgot Password?
-              </a>
+              </Link>
             </Flex>
             {loading ? (
               <div className="w-full xl:w-[492px] bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
