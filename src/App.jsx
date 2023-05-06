@@ -11,6 +11,10 @@ const router = createBrowserRouter([
     path: "singin",
     element: <SingIn />,
   },
+  {
+    path: "forgetpassword",
+    element: <SingIn />,
+  },
 ]);
 function App() {
   return <RouterProvider router={router} />;

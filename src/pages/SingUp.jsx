@@ -4,7 +4,11 @@ import Input from "../components/layouts/Input";
 import Checkbox from "../components/layouts/Checkbox";
 import Button from "../components/layouts/Button";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -83,10 +87,6 @@ const SingUp = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          setName("");
-          setEmail("");
-          setPassword("");
-          setLoading(false);
           toast.success("singing up successfully ", {
             position: "top-right",
             autoClose: 2000,
@@ -97,9 +97,25 @@ const SingUp = () => {
             progress: undefined,
             theme: "dark",
           });
+          sendEmailVerification(auth.currentUser).then(() => {
+            setName("");
+            setEmail("");
+            setPassword("");
+            setLoading(false);
+            toast.info("verify your email,verify mail sended", {
+              position: "top-right",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          });
           setTimeout(() => {
             navigate("/singin");
-          }, 2000);
+          }, 5000);
         })
         .catch((error) => {
           setLoading(false);
