@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SingIn from "./pages/SingIn";
 import SingUp from "./pages/SingUp";
+import ForgetPassword from "./pages/ForgetPassword";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
   },
   {
     path: "forgetpassword",
-    element: <SingIn />,
+    element: <ForgetPassword/>,
   },
 ]);
 function App() {
