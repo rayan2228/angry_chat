@@ -5,7 +5,7 @@ import Button from "../components/layouts/Button";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {
   // auth
@@ -27,14 +27,11 @@ const ForgetPassword = () => {
     }
     if (email) {
       setLoading(true);
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
           setEmail("");
-          setPassword("");
           setLoading(false);
-          toast.success("login successfully ", {
+          toast.success("password reset link sent successfully ", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -44,18 +41,15 @@ const ForgetPassword = () => {
             progress: undefined,
             theme: "dark",
           });
-          setTimeout(() => {
-            navigate("/singin");
-          }, 2000);
         })
         .catch((error) => {
           setLoading(false);
           const errorCode = error.code;
+          if (errorCode.includes("auth/invalid-email")) {
+            setEmailError("invalid email");
+          }
           if (errorCode.includes("auth/user-not-found")) {
             setEmailError("email not matched");
-          }
-          if (errorCode.includes("auth/wrong-password")) {
-            setPasswordError("incorrect password");
           }
         });
     }
@@ -68,11 +62,11 @@ const ForgetPassword = () => {
           className={"w-full lg:w-1/2 flex-col justify-center xl:pl-7 p-7  "}
         >
           <div
-            class="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3 w-full xl:w-[492px]"
+            className="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3 w-full xl:w-[492px]"
             role="alert"
           >
             <svg
-              class="fill-current w-4 h-4 mr-2"
+              className="fill-current w-4 h-4 mr-2"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
@@ -103,8 +97,14 @@ const ForgetPassword = () => {
               />
             </div>
           ) : (
-            <Button text={"send link"} onClick={handleSubmit} />
+            <Button text={"Send Link"} onClick={handleSubmit} />
           )}
+          <Button
+            text={"Back To Home"}
+            onClick={() => {
+              navigate("/singin");
+            }}
+          />
         </Flex>
         <div
           className="hidden w-1/2 h-screen bg-no-repeat bg-cover lg:block"
