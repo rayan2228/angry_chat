@@ -8,8 +8,12 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userLoginInfo } from "../slices/userSlice";
 
 const SingIn = () => {
+  // dispatch
+  const dispatch = useDispatch();
   // auth
   const auth = getAuth();
   // navigate
@@ -51,6 +55,8 @@ const SingIn = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          dispatch(userLoginInfo(user));
+          localStorage.setItem("userLoginInfo", JSON.stringify(user));
           setEmail("");
           setPassword("");
           setLoading(false);
@@ -65,7 +71,7 @@ const SingIn = () => {
             theme: "dark",
           });
           setTimeout(() => {
-            navigate("/singin");
+            navigate("/home");
           }, 2000);
         })
         .catch((error) => {

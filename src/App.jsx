@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SingIn from "./pages/SingIn";
 import SingUp from "./pages/SingUp";
 import ForgetPassword from "./pages/ForgetPassword";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "forgetpassword",
     element: <ForgetPassword/>,
+  },
+  {
+    path: "home",
+    element: <Home/>,
   },
 ]);
 function App() {
