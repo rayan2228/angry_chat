@@ -12,6 +12,7 @@ export default {
       colors: {
         primary: "#32375C",
         border_primary: "#D3D3D3",
+        shadow: "#000000",
       },
     },
   },
