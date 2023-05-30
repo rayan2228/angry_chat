@@ -17,36 +17,43 @@ const Chats = () => {
       </div>
       <div className="h-[250px] overflow-y-auto ">
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Jenny Wilson"
           message="Love You....."
           time="10:30 PM"
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Savannah Nguyen"
           message="Love You....."
           time="Yesterday, 10:00 AM "
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Jenny Wilson"
           message="Love You....."
           time="10:30 PM"
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/chat.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"

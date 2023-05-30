@@ -4,7 +4,7 @@ import ChatLayout from "./layouts/ChatLayout";
 const Groups = () => {
   return (
     <div className="rounded-xl w-1/3 p-4  ">
-      <h2 className="font-inter font-semibold text-2xl text-textColor">Chat</h2>
+      <h2 className="font-inter font-semibold text-2xl text-textColor">Group</h2>
       <div className="relative mt-4 mb-5">
         <input
           type="search"
@@ -17,36 +17,43 @@ const Groups = () => {
       </div>
       <div className="h-[250px] overflow-y-auto ">
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Jenny Wilson"
           message="Love You....."
           time="10:30 PM"
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Savannah Nguyen"
           message="Love You....."
           time="Yesterday, 10:00 AM "
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Jenny Wilson"
           message="Love You....."
           time="10:30 PM"
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
         />
         <ChatLayout
+          src="../../../public/assets/group.png"
           name="Courtney Henry"
           message="Love You....."
           time="Yesterday, 10:00 AM"
