@@ -5,6 +5,7 @@ import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Chats from "../components/Chats";
 import Groups from "../components/Groups";
+import Friends from "../components/Friends";
 const Home = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
@@ -17,10 +18,10 @@ const Home = () => {
   return (
     <Flex className="gap-x-6 justify-between">
       <Sidebar />
-      <Flex className="py-6 w-[80%] flex-wrap justify-between">
+      <Flex className="py-6 w-[90%] flex-wrap justify-between">
         <Chats />
         <Groups />
-        <Chats />
+        <Friends />
         <Chats />
         <Chats />
         <Chats />
