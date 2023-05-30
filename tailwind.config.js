@@ -12,7 +12,9 @@ export default {
       colors: {
         primary: "#32375C",
         border_primary: "#D3D3D3",
-        shadow: "#000000",
+        // shadow: "#000000",
+        textColor: "#222222",
+        secondaryTextColor: "#7A7A7A",
       },
     },
   },

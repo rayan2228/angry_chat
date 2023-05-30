@@ -2,7 +2,7 @@ import React from 'react'
 
 const Img = ({className, src,alt}) => {
   return (
-    <div className={className}>
+    <div className={`rounded-full ${className}`}>
       <picture>
         <img src={src} alt={alt} />
       </picture>
