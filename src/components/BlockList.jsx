@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
-const People = () => {
+const BlockList = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl capitalize">
-      <h2 className="text-2xl font-semibold font-inter text-textColor">
-        People
+    <div className="w-1/3 p-4 rounded-xl ">
+      <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+        Block List
       </h2>
       <div className="relative mt-4 mb-5">
         <input
@@ -22,25 +22,25 @@ const People = () => {
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
           classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
+          classNameHeading="w-[70%]"
         >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
-            Add
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[15%]">
+            Block
           </p>
         </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
           classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
+          classNameHeading="w-[70%]"
         >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
-            Add
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[15%]">
+            Block
           </p>
         </PeopleLayout>
       </div>
     </div>
   );
-};
+}
 
-export default People;
+export default BlockList

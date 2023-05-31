@@ -8,6 +8,7 @@ import Groups from "../components/Groups";
 import Friends from "../components/Friends";
 import People from "../components/People";
 import FriendRequest from "../components/FriendRequest";
+import BlockList from "../components/BlockList";
 const Home = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
@@ -26,7 +27,7 @@ const Home = () => {
         <Friends />
         <People />
         <FriendRequest />
-        <Chats />
+        <BlockList />
 
       </Flex>
     </Flex>
