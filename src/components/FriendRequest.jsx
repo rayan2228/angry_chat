@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
-import Option from "./layouts/option";
+import Flex from "./layouts/Flex";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { RxCross2 } from "react-icons/rx";
+
 const FriendRequest = () => {
+  const [show, setShow] = useState(false);
   return (
-    <div className="w-1/3 p-4 rounded-xl ">
-      <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
-        Friend Requests
-      </h2>
+    <div className="w-1/3 p-4 rounded-xl relative overflow-hidden">
+      {show && (
+        <div className="absolute w-full h-full bg-[#222222bf] z-10 top-0 left-0 ">
+          <RxCross2 className="absolute top-3 right-3 text-white text-xl cursor-pointer" onClick={()=>setShow(false)} />
+          <p className="absolute top-10 right-3 text-black cursor-pointer capitalize font-inter font-normal text-lg py-3 px-6 bg-white rounded-md">
+            View Sent Request
+          </p>
+        </div>
+      )}
+      <Flex className="justify-between items-center">
+        <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+          Friend Requests
+        </h2>
+        <BsThreeDotsVertical
+          className="cursor-pointer"
+          onClick={() => setShow(true)}
+        />
+      </Flex>
       <div className="relative mt-4 mb-5">
         <input
           type="search"
