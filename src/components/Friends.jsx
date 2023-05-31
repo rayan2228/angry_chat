@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { BsSearch, BsThreeDotsVertical } from "react-icons/bs";
+import React, { useRef, useState } from "react";
+import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
 const Friends = () => {
-  const [show, setShow] = useState(false);
   return (
     <div className="w-1/3 p-4 rounded-xl ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -26,12 +25,7 @@ const Friends = () => {
           classNameFlex="gap-x-4"
           classNameHeading="w-[75%]"
         >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
+         <Option/>
         </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
@@ -39,77 +33,7 @@ const Friends = () => {
           classNameFlex="gap-x-4"
           classNameHeading="w-[75%]"
         >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
-            <BsThreeDotsVertical onClick={() => setShow(!show)} />
-            {show && (
-              <Option/>
-            )}
-          </div>
+          <Option/>
         </PeopleLayout>
       </div>
     </div>
