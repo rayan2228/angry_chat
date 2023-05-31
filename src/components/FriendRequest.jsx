@@ -2,11 +2,11 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
-const People = () => {
+const FriendRequest = () => {
   return (
     <div className="w-1/3 p-4 rounded-xl ">
-      <h2 className="text-2xl font-semibold font-inter text-textColor">
-        People
+      <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+        Friend Requests
       </h2>
       <div className="relative mt-4 mb-5">
         <input
@@ -23,25 +23,31 @@ const People = () => {
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
           classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
+          classNameHeading="w-[55%]"
         >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
-            Add
-          </p>
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="bg-primary text-white w-full text-center rounded-md">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
         </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
           classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
+          classNameHeading="w-[55%]"
         >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
-            Add
-          </p>
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="bg-primary text-white w-full text-center rounded-md">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
         </PeopleLayout>
       </div>
     </div>
   );
 };
 
-export default People;
+export default FriendRequest;
