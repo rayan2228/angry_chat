@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Chats from "../components/Chats";
 import Groups from "../components/Groups";
 import Friends from "../components/Friends";
+import People from "../components/People";
 const Home = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
@@ -22,7 +23,7 @@ const Home = () => {
         <Chats />
         <Groups />
         <Friends />
-        <Chats />
+        <People />
         <Chats />
         <Chats />
 

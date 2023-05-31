@@ -2,11 +2,11 @@ import React from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
-const Friends = () => {
+const People = () => {
   return (
     <div className="w-1/3 p-4 rounded-xl ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
-        Friend
+        People
       </h2>
       <div className="relative mt-4 mb-5">
         <input
@@ -25,7 +25,9 @@ const Friends = () => {
           classNameFlex="gap-x-4"
           classNameHeading="w-[75%]"
         >
-         <Option/>
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer">
+            Add
+          </p>
         </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
@@ -33,11 +35,13 @@ const Friends = () => {
           classNameFlex="gap-x-4"
           classNameHeading="w-[75%]"
         >
-          <Option/>
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer">
+            Add
+          </p>
         </PeopleLayout>
       </div>
     </div>
   );
 };
 
-export default Friends;
+export default People;
