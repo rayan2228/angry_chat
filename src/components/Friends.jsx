@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { BsSearch, BsThreeDotsVertical } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
+import Option from "./layouts/option";
 const Friends = () => {
   const [show, setShow] = useState(false);
   return (
-    <div className="rounded-xl w-1/3 p-4 ">
-      <h2 className="font-inter font-semibold text-2xl text-textColor">
+    <div className="w-1/3 p-4 rounded-xl ">
+      <h2 className="text-2xl font-semibold font-inter text-textColor">
         Friend
       </h2>
       <div className="relative mt-4 mb-5">
@@ -28,19 +29,85 @@ const Friends = () => {
           <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
             <BsThreeDotsVertical onClick={() => setShow(!show)} />
             {show && (
-              <div className="absolute top-[18px] right-5 cursor-pointer w-36  text-left capitalize rounded-md">
-                <ul>
-                  <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
-                    message
-                  </li>
-                  <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
-                    unfriend
-                  </li>
-                  <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
-                    block
-                  </li>
-                </ul>
-              </div>
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
+            )}
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative">
+            <BsThreeDotsVertical onClick={() => setShow(!show)} />
+            {show && (
+              <Option/>
             )}
           </div>
         </PeopleLayout>
