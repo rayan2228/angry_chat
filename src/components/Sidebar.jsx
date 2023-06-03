@@ -7,7 +7,11 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaUserFriends } from "react-icons/fa";
 import { BsFilterCircle } from "react-icons/bs";
 import Flex from "../components/layouts/Flex";
+
 const Sidebar = () => {
+  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+
+
   const getUrl = window.location.pathname;
   return (
     <Flex className="flex-col justify-between shadow-sm w-[200px] shadow-shadow  pt-[50px] pl-6  pb-10 ">
@@ -66,9 +70,11 @@ const Sidebar = () => {
         }
       >
         <Flex className="items-center gap-x-2 ">
-          <Img src="../../public/assets/user.png" alt="user" />
-          <div>
-            <h2 className="text-base font-semibold font-inter">Paula Mora</h2>
+          <Img src={currentUser.photoURL} alt="user" className="w-[25%]" />
+          <div className="w-[70%]">
+            <h2 className="text-base font-semibold font-inter ">
+              {currentUser.displayName}
+            </h2>
             <h5 className="text-xs font-normal font-inter">Settings</h5>
           </div>
         </Flex>
