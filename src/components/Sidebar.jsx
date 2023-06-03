@@ -51,9 +51,9 @@ const Sidebar = () => {
         </SidebarButton>
         <SidebarButton
           linkName="pepole"
-          linkSrc="/pepole"
+          linkSrc="/people"
           className={
-            getUrl === "/pepole" ? "text-white bg-primary rounded-l-lg" : ""
+            getUrl === "/people" ? "text-white bg-primary rounded-l-lg" : ""
           }
         >
           <BsFilterCircle className="text-xl" />

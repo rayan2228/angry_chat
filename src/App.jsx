@@ -4,10 +4,11 @@ import SingUp from "./pages/SingUp";
 import ForgetPassword from "./pages/ForgetPassword";
 import Home from "./pages/Home";
 import Chats from "./pages/Chats";
-import Firends from "./pages/Firends";
-import Pepole from "./pages/Pepole";
+import Friends from "./pages/Friends";
+import People from "./pages/People";
 import Groups from "./pages/Groups";
 import Settings from "./pages/Settings";
+import EmailVerified from "./pages/EmailVerified";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "singin",
     element: <SingIn />,
+  },
+  {
+    path: "emailVerified",
+    element: <EmailVerified />,
   },
   {
     path: "forgetpassword",
@@ -32,15 +37,15 @@ const router = createBrowserRouter([
   },
   {
     path: "friends",
-    element: <Firends />,
+    element: <Friends />,
   },
   {
     path: "groups",
     element: <Groups />,
   },
   {
-    path: "pepole",
-    element: <Pepole />,
+    path: "people",
+    element: <People />,
   },
   {
     path: "settings",

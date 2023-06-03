@@ -9,6 +9,7 @@ import Friends from "../components/Friends";
 import People from "../components/People";
 import FriendRequest from "../components/FriendRequest";
 import BlockList from "../components/BlockList";
+
 const Home = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
@@ -19,18 +20,19 @@ const Home = () => {
   }, [data]);
 
   return (
-    <Flex className="gap-x-6 justify-between">
-      <Sidebar />
-      <Flex className="py-6 w-[90%] flex-wrap justify-between">
-        <Chats />
-        <Groups />
-        <Friends />
-        <People />
-        <FriendRequest />
-        <BlockList />
-
+    <>
+      <Flex className="justify-between gap-x-6">
+        <Sidebar />
+        <Flex className="py-6 w-[90%] flex-wrap justify-between">
+          <Chats />
+          <Groups />
+          <Friends />
+          <People />
+          <FriendRequest />
+          <BlockList />
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };
 

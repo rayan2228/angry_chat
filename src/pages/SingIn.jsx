@@ -55,24 +55,30 @@ const SingIn = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          dispatch(userLoginInfo(user));
-          localStorage.setItem("userLoginInfo", JSON.stringify(user));
-          setEmail("");
-          setPassword("");
-          setLoading(false);
-          toast.success("login successfully ", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          setTimeout(() => {
-            navigate("/home");
-          }, 2000);
+          if (user.emailVerified) {
+            dispatch(userLoginInfo(user));
+            localStorage.setItem("userLoginInfo", JSON.stringify(user));
+            setEmail("");
+            setPassword("");
+            setLoading(false);
+            toast.success("login successfully ", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+            setTimeout(() => {
+              navigate("/home");
+            }, 2000);
+          } else {
+            setTimeout(() => {
+              navigate("/emailVerified");
+            }, 2000);
+          }
         })
         .catch((error) => {
           setLoading(false);
