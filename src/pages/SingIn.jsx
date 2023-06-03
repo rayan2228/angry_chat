@@ -4,7 +4,10 @@ import Input from "../components/layouts/Input";
 import Checkbox from "../components/layouts/Checkbox";
 import Button from "../components/layouts/Button";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";

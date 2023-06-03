@@ -8,6 +8,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
@@ -86,36 +87,44 @@ const SingUp = () => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
-          toast.success("singing up successfully ", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          sendEmailVerification(auth.currentUser).then(() => {
-            setName("");
-            setEmail("");
-            setPassword("");
-            setLoading(false);
-            toast.info("verify your email,verify mail sended", {
-              position: "top-right",
-              autoClose: 4000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: "../../public/assets/default.png",
+          })
+            .then(() => {
+              toast.success("singing up successfully ", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              sendEmailVerification(auth.currentUser).then(() => {
+                setName("");
+                setEmail("");
+                setPassword("");
+                setLoading(false);
+                toast.info("verify your email,verify mail sended", {
+                  position: "top-right",
+                  autoClose: 4000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                });
+              });
+              setTimeout(() => {
+                navigate("/singin");
+              }, 5000);
+            })
+            .catch((error) => {
+              console.log(error);
             });
-          });
-          setTimeout(() => {
-            navigate("/singin");
-          }, 5000);
         })
         .catch((error) => {
           setLoading(false);
