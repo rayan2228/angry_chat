@@ -70,7 +70,7 @@ const Sidebar = () => {
         }
       >
         <Flex className="items-center gap-x-2 ">
-          <Img src={currentUser.photoURL} alt="user" className="w-[25%]" />
+          <Img src={currentUser.photoURL} alt="user" className="w-[25%] " />
           <div className="w-[70%]">
             <h2 className="text-base font-semibold font-inter ">
               {currentUser.displayName}
