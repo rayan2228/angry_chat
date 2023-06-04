@@ -2,19 +2,22 @@ import React from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
+import { FiEdit } from "react-icons/fi";
+import { CgProfile } from "react-icons/cg";
+
 const Settings = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   return (
-    <Flex>
+    <Flex className="gap-x-6">
       <Sidebar />
       <Flex className="py-6 w-[90%] flex-col gap-y-16 ">
         <h2 className="text-xl font-semibold font-inter">Settings</h2>
-        <Flex className="justify-between">
-          <div className="w-[48%] shadow-primary_shadow  ">
+        <Flex className="justify-around">
+          <div className="w-[48%] shadow-primary_shadow p-5 ">
             <h2 className="text-lg font-semibold font-inter">
               Profile Setting
             </h2>
-            <Flex className="items-center w-full mt-8 gap-x-2">
+            <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
               <Img
                 src={currentUser.photoURL}
                 alt="user"
@@ -28,9 +31,19 @@ const Settings = () => {
                   Stay Safe Stay Home
                 </h5>
               </div>
-              <p className="w-[20%] border border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C]">
-                logout
+              <p className="w-[22%]  border-[2px] rounded-lg border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C] capitalize">
+                log out
               </p>
+            </Flex>
+            <Flex className="font-inter text-lg font-normal mt-8 flex-col gap-y-7">
+              <Flex className="gap-x-4 items-center cursor-pointer">
+                <FiEdit className="text-2xl" />
+                <p>Edit Profile Info</p>
+              </Flex>
+              <Flex className="gap-x-4 items-center cursor-pointer">
+                <CgProfile className="text-2xl" />
+                <p>Edit Profile Photo</p>
+              </Flex>
             </Flex>
           </div>
           <div className="w-[48%] bg-slate-400 ">asdsa</div>
