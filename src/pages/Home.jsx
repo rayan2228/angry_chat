@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <>
-      <Flex className="justify-between gap-x-6">
+      <Flex className=" gap-x-6">
         <Sidebar />
         <Flex className="py-6 w-[90%] flex-wrap justify-between">
           <Chats />
