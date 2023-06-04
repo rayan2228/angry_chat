@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import ChatLayout from "./layouts/ChatLayout";
 const Chats = () => {
   return (
-    <div className="rounded-xl w-1/3 p-4  ">
+    <div className="rounded-xl w-1/3 p-4 hover:shadow-primary_shadow duration-75 ">
       <h2 className="font-inter font-semibold text-2xl text-textColor">Chat</h2>
       <div className="relative mt-4 mb-5">
         <input

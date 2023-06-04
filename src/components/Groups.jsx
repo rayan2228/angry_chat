@@ -3,8 +3,10 @@ import { BsSearch } from "react-icons/bs";
 import ChatLayout from "./layouts/ChatLayout";
 const Groups = () => {
   return (
-    <div className="rounded-xl w-1/3 p-4  ">
-      <h2 className="font-inter font-semibold text-2xl text-textColor">Group</h2>
+    <div className="rounded-xl w-1/3 p-4 hover:shadow-primary_shadow duration-75">
+      <h2 className="font-inter font-semibold text-2xl text-textColor">
+        Group
+      </h2>
       <div className="relative mt-4 mb-5">
         <input
           type="search"

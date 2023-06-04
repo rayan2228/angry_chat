@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 const BlockList = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl ">
+    <div className="w-1/3 p-4 rounded-xl hover:shadow-primary_shadow duration-75 ">
       <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
         Block List
       </h2>

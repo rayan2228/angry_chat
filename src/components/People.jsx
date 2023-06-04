@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 const People = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl capitalize">
+    <div className="w-1/3 p-4 rounded-xl capitalize hover:shadow-primary_shadow duration-75 ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         People
       </h2>

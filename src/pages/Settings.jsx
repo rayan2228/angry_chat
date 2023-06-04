@@ -10,7 +10,7 @@ const Settings = () => {
       <Flex className="py-6 w-[90%] flex-col gap-y-16 ">
         <h2 className="text-xl font-semibold font-inter">Settings</h2>
         <Flex className="justify-between">
-          <div className="w-[48%]">
+          <div className="w-[48%] shadow-primary_shadow  ">
             <h2 className="text-lg font-semibold font-inter">
               Profile Setting
             </h2>

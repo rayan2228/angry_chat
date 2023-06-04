@@ -8,10 +8,13 @@ import { RxCross2 } from "react-icons/rx";
 const FriendRequest = () => {
   const [show, setShow] = useState(false);
   return (
-    <div className="w-1/3 p-4 rounded-xl relative overflow-hidden">
+    <div className="w-1/3 p-4 rounded-xl relative overflow-hidden hover:shadow-primary_shadow duration-75">
       {show && (
         <div className="absolute w-full h-full bg-[#222222bf] z-10 top-0 left-0 ">
-          <RxCross2 className="absolute top-3 right-3 text-white text-xl cursor-pointer" onClick={()=>setShow(false)} />
+          <RxCross2
+            className="absolute top-3 right-3 text-white text-xl cursor-pointer"
+            onClick={() => setShow(false)}
+          />
           <p className="absolute top-10 right-3 text-black cursor-pointer capitalize font-inter font-normal text-lg py-3 px-6 bg-white rounded-md">
             View Sent Request
           </p>
