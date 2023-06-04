@@ -6,10 +6,13 @@ import { RxChatBubble } from "react-icons/rx";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaUserFriends } from "react-icons/fa";
 import { BsFilterCircle } from "react-icons/bs";
+import { getAuth} from "firebase/auth";
 import Flex from "../components/layouts/Flex";
 
 const Sidebar = () => {
-  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+  // const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
 
 
   const getUrl = window.location.pathname;

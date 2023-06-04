@@ -4,16 +4,44 @@ import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
 import { FiEdit } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
-
+import { ToastContainer, toast } from "react-toastify";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 const Settings = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const auth = getAuth();
+  // navigate
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        toast.success("logout successfully ", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        localStorage.removeItem("userLoginInfo");
+        setTimeout(() => {
+          navigate("/singin");
+        }, 2000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Flex className="gap-x-6">
+      <ToastContainer />
       <Sidebar />
       <Flex className="py-6 w-[90%] flex-col gap-y-16 ">
         <h2 className="text-xl font-semibold font-inter">Settings</h2>
         <Flex className="justify-around">
-          <div className="w-[48%] shadow-primary_shadow p-5 ">
+          <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
             <h2 className="text-lg font-semibold font-inter">
               Profile Setting
             </h2>
@@ -31,7 +59,10 @@ const Settings = () => {
                   Stay Safe Stay Home
                 </h5>
               </div>
-              <p className="w-[22%]  border-[2px] rounded-lg border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C] capitalize">
+              <p
+                className="w-[22%]  border-[2px] rounded-lg border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C] capitalize"
+                onClick={handleLogout}
+              >
                 log out
               </p>
             </Flex>
@@ -46,7 +77,9 @@ const Settings = () => {
               </Flex>
             </Flex>
           </div>
-          <div className="w-[48%] bg-slate-400 ">asdsa</div>
+          <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
+            asdsa
+          </div>
         </Flex>
       </Flex>
     </Flex>
