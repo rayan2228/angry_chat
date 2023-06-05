@@ -3,7 +3,7 @@ import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 const Chats = () => {
   return (
-    <Flex>
+    <Flex className="h-screen gap-x-6">
       <Sidebar />
     </Flex>
   )

@@ -35,54 +35,56 @@ const Settings = () => {
       });
   };
   return (
-    <Flex className="gap-x-6">
+    <>
       <ToastContainer />
-      <Sidebar />
-      <Flex className="py-6 w-[90%] flex-col gap-y-16 ">
-        <h2 className="text-xl font-semibold font-inter">Settings</h2>
-        <Flex className="justify-around">
-          <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
-            <h2 className="text-lg font-semibold font-inter">
-              Profile Setting
-            </h2>
-            <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
-              <Img
-                src={currentUser.photoURL}
-                alt="user"
-                className="w-[48px] "
-              />
-              <div className="w-[60%]">
-                <h2 className="text-base font-semibold font-inter ">
-                  {currentUser.displayName}
-                </h2>
-                <h5 className="text-xs font-normal capitalize font-inter">
-                  Stay Safe Stay Home
-                </h5>
-              </div>
-              <p
-                className="w-[22%]  border-[2px] rounded-lg border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C] capitalize"
-                onClick={handleLogout}
-              >
-                log out
-              </p>
-            </Flex>
-            <Flex className="font-inter text-lg font-normal mt-8 flex-col gap-y-7">
-              <Flex className="gap-x-4 items-center cursor-pointer">
-                <FiEdit className="text-2xl" />
-                <p>Edit Profile Info</p>
+      <Flex className=" gap-x-6">
+        <Sidebar />
+        <Flex className="py-6 w-[90%] flex-col gap-y-16 h-screen">
+          <h2 className="text-xl font-semibold font-inter">Settings</h2>
+          <Flex className="justify-around">
+            <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
+              <h2 className="text-lg font-semibold font-inter">
+                Profile Setting
+              </h2>
+              <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
+                <Img
+                  src={currentUser.photoURL}
+                  alt="user"
+                  className="w-[48px] "
+                />
+                <div className="w-[60%]">
+                  <h2 className="text-base font-semibold font-inter ">
+                    {currentUser.displayName}
+                  </h2>
+                  <h5 className="text-xs font-normal capitalize font-inter">
+                    Stay Safe Stay Home
+                  </h5>
+                </div>
+                <p
+                  className="w-[22%]  border-[2px] rounded-lg border-primary text-center py-3 cursor-pointer font-inter text-lg font-semibold text-[#32375C] capitalize"
+                  onClick={handleLogout}
+                >
+                  log out
+                </p>
               </Flex>
-              <Flex className="gap-x-4 items-center cursor-pointer">
-                <CgProfile className="text-2xl" />
-                <p>Edit Profile Photo</p>
+              <Flex className="flex-col mt-8 text-lg font-normal font-inter gap-y-7">
+                <Flex className="items-center cursor-pointer gap-x-4">
+                  <FiEdit className="text-2xl" />
+                  <p>Edit Profile Info</p>
+                </Flex>
+                <Flex className="items-center cursor-pointer gap-x-4">
+                  <CgProfile className="text-2xl" />
+                  <p>Edit Profile Photo</p>
+                </Flex>
               </Flex>
-            </Flex>
-          </div>
-          <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
-            asdsa
-          </div>
+            </div>
+            <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
+              asdsa
+            </div>
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };
 

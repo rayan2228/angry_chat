@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 const People = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl capitalize hover:shadow-primary_shadow duration-75 ">
+    <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         People
       </h2>
@@ -17,7 +17,47 @@ const People = () => {
         />
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
-      <div className="h-[250px] overflow-y-auto ">
+      <div className="overflow-y-auto ">
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
+            Add
+          </p>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
+            Add
+          </p>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
+            Add
+          </p>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[75%]"
+        >
+          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
+            Add
+          </p>
+        </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"

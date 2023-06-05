@@ -3,10 +3,10 @@ import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 const Friends = () => {
   return (
-    <Flex>
+    <Flex className="h-screen gap-x-6">
       <Sidebar />
     </Flex>
-  )
+  );
 }
 
 export default Friends

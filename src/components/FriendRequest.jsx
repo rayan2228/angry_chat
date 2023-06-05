@@ -8,20 +8,20 @@ import { RxCross2 } from "react-icons/rx";
 const FriendRequest = () => {
   const [show, setShow] = useState(false);
   return (
-    <div className="w-1/3 p-4 rounded-xl relative overflow-hidden hover:shadow-primary_shadow duration-75">
+    <div className="relative w-1/3 p-4 overflow-hidden duration-75 rounded-xl hover:shadow-primary_shadow">
       {show && (
         <div className="absolute w-full h-full bg-[#222222bf] z-10 top-0 left-0 ">
           <RxCross2
-            className="absolute top-3 right-3 text-white text-xl cursor-pointer"
+            className="absolute text-xl text-white cursor-pointer top-3 right-3"
             onClick={() => setShow(false)}
           />
-          <p className="absolute top-10 right-3 text-black cursor-pointer capitalize font-inter font-normal text-lg py-3 px-6 bg-white rounded-md">
+          <p className="absolute px-6 py-3 text-lg font-normal text-black capitalize bg-white rounded-md cursor-pointer top-10 right-3 font-inter">
             View Sent Request
           </p>
         </div>
       )}
-      <Flex className="justify-between items-center">
-        <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+      <Flex className="items-center justify-between">
+        <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
           Friend Requests
         </h2>
         <BsThreeDotsVertical
@@ -47,7 +47,7 @@ const FriendRequest = () => {
           classNameHeading="w-[55%]"
         >
           <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="bg-primary text-white w-full text-center rounded-md">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
               confirm
             </h4>
             <h4>cancel</h4>
@@ -60,7 +60,72 @@ const FriendRequest = () => {
           classNameHeading="w-[55%]"
         >
           <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="bg-primary text-white w-full text-center rounded-md">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[55%]"
+        >
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[55%]"
+        >
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[55%]"
+        >
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[55%]"
+        >
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
+              confirm
+            </h4>
+            <h4>cancel</h4>
+          </div>
+        </PeopleLayout>
+        <PeopleLayout
+          src="../../../public/assets/friend.png"
+          name="Jenny Wilson"
+          classNameFlex="gap-x-4"
+          classNameHeading="w-[55%]"
+        >
+          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+            <h4 className="w-full text-center text-white rounded-md bg-primary">
               confirm
             </h4>
             <h4>cancel</h4>
