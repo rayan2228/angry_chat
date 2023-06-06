@@ -17,7 +17,7 @@ const Groups = () => {
         />
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
-      <div className="h-[250px] overflow-y-auto ">
+      <div className="h-[40vh]  overflow-y-auto ">
         <ChatLayout
           src="../../../public/assets/group.png"
           name="Jenny Wilson"

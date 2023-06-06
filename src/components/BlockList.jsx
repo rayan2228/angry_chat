@@ -3,8 +3,8 @@ import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 const BlockList = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl hover:shadow-primary_shadow duration-75 ">
-      <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+    <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
+      <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
         Block List
       </h2>
       <div className="relative mt-4 mb-5">
@@ -17,7 +17,7 @@ const BlockList = () => {
         />
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
-      <div className="h-[250px] overflow-y-auto ">
+      <div className="h-[40vh]  overflow-y-auto ">
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
