@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
@@ -11,8 +11,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 const Settings = () => {
-  const [photoUploadShow, setPhotoUploadShoe] = useState(false);
-
+  const [photoUploadShow, setPhotoUploadShow] = useState(false);
+  const photoUpload = useRef("")
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const auth = getAuth();
   // navigate
@@ -44,11 +44,22 @@ const Settings = () => {
         console.log(error);
       });
   };
+  const HandlePhotoUploadShow = ()=>{
+    document.body.addEventListener("click",(e)=>{
+      if (photoUpload.current  == e.target) {
+        setPhotoUploadShow(false)
+      }
+    })
+  }
   return (
     <>
       <ToastContainer />
       {photoUploadShow && (
-        <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
+        <div
+          className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center"
+          onClick={HandlePhotoUploadShow}
+          ref={photoUpload}
+        >
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
             <Img
               src={currentUser ? currentUser.photoURL : ""}
@@ -128,7 +139,7 @@ const Settings = () => {
                 </Flex>
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <CgProfile className="text-2xl" />
-                  <p onClick={() => setPhotoUploadShoe(true)}>
+                  <p onClick={() => setPhotoUploadShow(true)}>
                     Edit Profile Photo
                   </p>
                 </Flex>
