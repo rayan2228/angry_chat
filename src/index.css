@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
     scrollbar-width: thin;
 }
+
 *::-webkit-scrollbar {
     width: 0px;
 }
