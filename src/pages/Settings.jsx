@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
 import { FiEdit } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
+import { HiOutlineKey } from "react-icons/hi";
+import { BsSun } from "react-icons/bs";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +15,11 @@ const Settings = () => {
   const auth = getAuth();
   // navigate
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/singin");
+    }
+  }, [currentUser]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -48,13 +56,13 @@ const Settings = () => {
               </h2>
               <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
                 <Img
-                  src={currentUser.photoURL}
+                  src={currentUser ? currentUser.photoURL : ""}
                   alt="user"
                   className="w-[48px] "
                 />
                 <div className="w-[60%]">
                   <h2 className="text-base font-semibold font-inter ">
-                    {currentUser.displayName}
+                    {currentUser ? currentUser.displayName : ""}
                   </h2>
                   <h5 className="text-xs font-normal capitalize font-inter">
                     Stay Safe Stay Home
@@ -79,7 +87,23 @@ const Settings = () => {
               </Flex>
             </div>
             <div className="w-[48%] shadow-primary_shadow p-5 rounded-xl">
-              asdsa
+              <h2 className="text-lg font-semibold font-inter">
+                Account Setting
+              </h2>
+              <Flex className="flex-col mt-8 text-lg font-normal font-inter gap-y-7">
+                <Flex className="items-center cursor-pointer gap-x-4">
+                  <HiOutlineKey className="text-2xl" />
+                  <p>Change Password</p>
+                </Flex>
+                <Flex className="items-center cursor-pointer gap-x-4">
+                  <BsSun className="text-2xl" />
+                  <p>Theme</p>
+                </Flex>
+                <Flex className="items-center cursor-pointer gap-x-4">
+                  <RiDeleteBin6Line className="text-2xl" />
+                  <p>Delete Account</p>
+                </Flex>
+              </Flex>
             </div>
           </Flex>
         </Flex>
