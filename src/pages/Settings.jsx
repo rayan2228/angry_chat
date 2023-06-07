@@ -99,6 +99,8 @@ const Settings = () => {
                 <input id="dropzone-file" type="file" class="hidden" />
               </label>
             </div>
+              <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">upload</button>
+            
           </Flex>
         </div>
       )}
