@@ -10,9 +10,14 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 const Settings = () => {
+  const [image, setImage] = useState();
+  const [cropData, setCropData] = useState("#");
+  // const cropperRef = createRef<ReactCropperElement/>();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
-  const photoUpload = useRef("")
+  const photoUpload = useRef("");
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const auth = getAuth();
   // navigate
@@ -44,13 +49,33 @@ const Settings = () => {
         console.log(error);
       });
   };
-  const HandlePhotoUploadShow = ()=>{
-    document.body.addEventListener("click",(e)=>{
-      if (photoUpload.current  == e.target) {
-        setPhotoUploadShow(false)
+  const HandlePhotoUploadShow = () => {
+    document.body.addEventListener("click", (e) => {
+      if (photoUpload.current == e.target) {
+        setPhotoUploadShow(false);
       }
-    })
-  }
+    });
+  };
+  // image crop
+  const HandleImageUpload = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+    }
+  };
   return (
     <>
       <ToastContainer />
@@ -96,11 +121,37 @@ const Settings = () => {
                     SVG, PNG, JPG or GIF (MAX. 800x400px)
                   </p>
                 </div>
-                <input id="dropzone-file" type="file" class="hidden" />
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  class="hidden"
+                  onChange={HandleImageUpload}
+                />
               </label>
             </div>
-              <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">upload</button>
-            
+            {image && (
+              <div>
+                <Cropper
+                  // ref={cropperRef}
+                  style={{ height: 200, width: "100%" }}
+                  zoomTo={0.5}
+                  initialAspectRatio={1}
+                  preview=".img-preview"
+                  src={image}
+                  viewMode={1}
+                  minCropBoxHeight={10}
+                  minCropBoxWidth={10}
+                  background={false}
+                  responsive={true}
+                  autoCropArea={1}
+                  checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                  guides={true}
+                />
+              </div>
+            )}
+            <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">
+              upload
+            </button>
           </Flex>
         </div>
       )}
