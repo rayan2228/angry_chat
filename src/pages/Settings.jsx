@@ -149,7 +149,7 @@ const Settings = () => {
             <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">
               upload
             </button>
-            <button className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white " onClick={()=> setPhotoUploadShow(false)}>
+            <button className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white " onClick={() => setPhotoUploadShow(false)}>
               cancel
             </button>
           </Flex>
