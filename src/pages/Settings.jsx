@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
@@ -15,9 +15,7 @@ import "cropperjs/dist/cropper.css";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
-  // const cropperRef = createRef<ReactCropperElement/>();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
-  const photoUpload = useRef("");
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const auth = getAuth();
   // navigate
@@ -83,7 +81,6 @@ const Settings = () => {
         <div
           className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center"
           onClick={HandlePhotoUploadShow}
-          ref={photoUpload}
         >
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
             <Img
@@ -151,6 +148,9 @@ const Settings = () => {
             )}
             <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">
               upload
+            </button>
+            <button className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white ">
+              cancel
             </button>
           </Flex>
         </div>
