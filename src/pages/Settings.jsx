@@ -83,12 +83,18 @@ const Settings = () => {
           onClick={HandlePhotoUploadShow}
         >
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-            <Img
+            {/* <Img
               src={currentUser ? currentUser.photoURL : ""}
               alt="user"
               className="w-[100px]"
-            />
-
+            /> */}
+  <div className="box w-[100px]">
+          <h1>Preview</h1>
+          <div
+            className="img-preview"
+            style={{ width: "100px", height: "100px" }}
+          />
+        </div>
             <div class="flex items-center justify-center w-full">
               <label
                 for="dropzone-file"
