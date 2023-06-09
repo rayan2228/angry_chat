@@ -83,16 +83,17 @@ const Settings = () => {
           onClick={HandlePhotoUploadShow}
         >
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-            {/* <Img
-              src={currentUser ? currentUser.photoURL : ""}
-              alt="user"
-              className="w-[100px]"
-            /> */}
-            <div className="rounded-full overflow-hidden w-[100px] h-[100px]">
-            <div
-              className="img-preview rounded-full overflow-hidden w-full h-full"
-            />
-            </div>
+            {image ? (
+              <div className="rounded-full overflow-hidden w-[100px] h-[100px]">
+                <div className="img-preview rounded-full overflow-hidden w-full h-full" />
+              </div>
+            ) : (
+              <Img
+                src={currentUser ? currentUser.photoURL : ""}
+                alt="user"
+                className="w-[100px]"
+              />
+            )}
 
             <div class="flex items-center justify-center w-full">
               <label
