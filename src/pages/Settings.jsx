@@ -47,13 +47,7 @@ const Settings = () => {
         console.log(error);
       });
   };
-  const HandlePhotoUploadShow = () => {
-    document.body.addEventListener("click", (e) => {
-      if (photoUpload.current == e.target) {
-        setPhotoUploadShow(false);
-      }
-    });
-  };
+
   // image crop
   const HandleImageUpload = (e) => {
     e.preventDefault();
@@ -80,7 +74,6 @@ const Settings = () => {
       {photoUploadShow && (
         <div
           className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center"
-          onClick={HandlePhotoUploadShow}
         >
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
             {image ? (
@@ -157,7 +150,7 @@ const Settings = () => {
             </button>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white "
-              onClick={() => setPhotoUploadShow(false)}
+              onClick={() => {setPhotoUploadShow(false), setImage("")}}
             >
               cancel
             </button>
