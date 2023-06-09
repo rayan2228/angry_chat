@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , createRef} from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
 import Img from "../components/layouts/Img";
@@ -12,9 +12,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import { getStorage, ref, uploadString } from "firebase/storage";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
+  const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const auth = getAuth();
@@ -64,9 +66,15 @@ const Settings = () => {
     reader.readAsDataURL(files[0]);
   };
   const getCropData = () => {
+    const storage = getStorage();
+    const storageRef = ref(storage, 'some-child');
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
+    const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
+uploadString(storageRef, message4, 'data_url').then((snapshot) => {
+  console.log('Uploaded a data_url string!');
+});
   };
   return (
     <>
@@ -128,7 +136,7 @@ const Settings = () => {
             {image && (
               <div>
                 <Cropper
-                  // ref={cropperRef}
+                  ref={cropperRef}
                   style={{ height: 200, width: "100%" }}
                   zoomTo={0.5}
                   initialAspectRatio={1}
@@ -145,12 +153,12 @@ const Settings = () => {
                 />
               </div>
             )}
-            <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">
+            <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter " onClick={getCropData}>
               upload
             </button>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white "
-              onClick={() => {setPhotoUploadShow(false), setImage("")}}
+              onClick={() => { setPhotoUploadShow(false), setImage("") }}
             >
               cancel
             </button>

@@ -4,7 +4,7 @@ import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
 const Friends = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl hover:shadow-primary_shadow duration-75 h-[250px]">
+    <div className="w-1/3 p-4 rounded-xl hover:shadow-primary_shadow duration-75">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         Friend
       </h2>
