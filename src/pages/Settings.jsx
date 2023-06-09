@@ -88,13 +88,12 @@ const Settings = () => {
               alt="user"
               className="w-[100px]"
             /> */}
-  <div className="box w-[100px]">
-          <h1>Preview</h1>
-          <div
-            className="img-preview"
-            style={{ width: "100px", height: "100px" }}
-          />
-        </div>
+            <div className="rounded-full overflow-hidden w-[100px] h-[100px]">
+            <div
+              className="img-preview rounded-full overflow-hidden w-full h-full"
+            />
+            </div>
+
             <div class="flex items-center justify-center w-full">
               <label
                 for="dropzone-file"
@@ -155,7 +154,10 @@ const Settings = () => {
             <button className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter ">
               upload
             </button>
-            <button className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white " onClick={() => setPhotoUploadShow(false)}>
+            <button
+              className="w-full py-2 text-lg font-semibold capitalize bg-red-500 rounded-lg font-inter text-white "
+              onClick={() => setPhotoUploadShow(false)}
+            >
               cancel
             </button>
           </Flex>
