@@ -8,20 +8,30 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { json, useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { getStorage, ref, uploadString } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginInfo } from "../slices/userSlice";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
-  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
+  const currentUser = JSON.parse(data);
   const auth = getAuth();
   // navigate
   const navigate = useNavigate();
+  // dispatch
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!currentUser) {
       navigate("/singin");
@@ -70,12 +80,21 @@ const Settings = () => {
     const storageRef = ref(storage, `profilePic/${currentUser.uid}`);
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-      const profilePic = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
+      const profilePic = cropperRef.current?.cropper
+        .getCroppedCanvas()
+        .toDataURL();
       uploadString(storageRef, profilePic, "data_url").then((snapshot) => {
-        console.log("Uploaded a data_url string!");
+        getDownloadURL(storageRef).then((downloadURL) => {
+          updateProfile(auth.currentUser, {
+            photoURL: downloadURL,
+          }).then(() => {
+            dispatch(userLoginInfo(currentUser));
+            setPhotoUploadShow(false);
+            setImage("");
+          });
+        });
       });
     }
-    
   };
   return (
     <>
@@ -117,8 +136,8 @@ const Settings = () => {
                     ></path>
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or drag
-                    and drop
+                    <span className="font-semibold">Click to upload</span> or
+                    drag and drop
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG or GIF (MAX. 800x400px)
