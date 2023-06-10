@@ -1,4 +1,3 @@
-import { split } from "postcss/lib/list";
 import React from "react";
 import { Link } from "react-router-dom";
 
