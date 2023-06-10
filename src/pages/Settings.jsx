@@ -16,7 +16,11 @@ import { getStorage, ref, uploadString } from "firebase/storage";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
+<<<<<<< Updated upstream
   const cropperRef = createRef();
+=======
+   const cropperRef = createRef();
+>>>>>>> Stashed changes
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const auth = getAuth();
