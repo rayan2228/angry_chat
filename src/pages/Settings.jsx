@@ -9,7 +9,7 @@ import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
-import { json, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {
@@ -18,16 +18,15 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
-  const currentUser = JSON.parse(data);
   const auth = getAuth();
+  const currentUser = auth.currentUser;
   // navigate
   const navigate = useNavigate();
   // dispatch
@@ -88,7 +87,8 @@ const Settings = () => {
           updateProfile(auth.currentUser, {
             photoURL: downloadURL,
           }).then(() => {
-            dispatch(userLoginInfo(currentUser));
+            dispatch(userLoginInfo(auth.currentUser))
+            localStorage.setItem("userLoginInfo",JSON.stringify(auth.currentUser))
             setPhotoUploadShow(false);
             setImage("");
           });
