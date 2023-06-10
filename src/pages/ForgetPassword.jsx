@@ -62,7 +62,7 @@ const ForgetPassword = () => {
           className={"w-full lg:w-1/2 flex-col justify-center xl:pl-7 p-7  "}
         >
           <div
-            className="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3 w-full xl:w-[492px]"
+            className="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3 w-full "
             role="alert"
           >
             <svg
