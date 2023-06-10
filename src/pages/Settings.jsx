@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 import Input from "../components/layouts/Input";
 const Settings = () => {
+  const [userName, setuserName] = useState();
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
@@ -99,6 +100,16 @@ const Settings = () => {
       });
     }
   };
+
+  const handleUpdateName = () => {
+    updateProfile(auth.currentUser, {
+      displayName: userName,
+    }).then(() => {
+      dispatch(userLoginInfo(auth.currentUser))
+      localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser))
+      setUpdateUserDataShow(false);
+    });
+  }
   return (
     <>
       <ToastContainer />
@@ -200,13 +211,14 @@ const Settings = () => {
                 label="Edit Your Name"
                 value={currentUser.displayName}
                 inputClass="text-black"
+                onChange={(e) => setuserName(e.target)}
               />
             </div>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
-              onClick={getCropData}
+              onClick={handleUpdateName}
             >
-              upload
+              update name
             </button>
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
