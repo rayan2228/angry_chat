@@ -18,24 +18,26 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
+  const [updateUserDataShow, setUpdateUserDataShow] = useState(false);
   const auth = getAuth();
   const currentUser = auth.currentUser;
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
   // navigate
   const navigate = useNavigate();
   // dispatch
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!currentUser) {
+    if (!data) {
       navigate("/singin");
     }
-  }, [currentUser]);
+  }, [data,currentUser]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -188,6 +190,28 @@ const Settings = () => {
           </Flex>
         </div>
       )}
+      {updateUserDataShow && (
+        <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
+          <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
+
+
+            <button
+              className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
+              onClick={getCropData}
+            >
+              upload
+            </button>
+            <button
+              className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
+              onClick={() => {
+                setUpdateUserDataShow(false);
+              }}
+            >
+              cancel
+            </button>
+          </Flex>
+        </div>
+      )}
       <Flex className=" gap-x-6">
         <Sidebar />
         <Flex className="py-6 w-[90%] flex-col gap-y-16 h-screen">
@@ -221,7 +245,7 @@ const Settings = () => {
               <Flex className="flex-col mt-8 text-lg font-normal font-inter gap-y-7">
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <FiEdit className="text-2xl" />
-                  <p>Edit Profile Info</p>
+                  <p onClick={() => setUpdateUserDataShow(true)}>Edit Profile Info</p>
                 </Flex>
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <CgProfile className="text-2xl" />
