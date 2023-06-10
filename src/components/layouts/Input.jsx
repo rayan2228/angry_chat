@@ -18,7 +18,7 @@ const Input = ({
       <input
         type={type}
         placeholder={placeholder}
-        className={`${inputClass} w-full xl:w-[492px] py-[14px] pl-3 border border-border_primary outline-border_primary placeholder:font-inter placeholder:text-base placeholder:font-normal`}
+        className={`${inputClass} w-full  py-[14px] pl-3 border border-border_primary outline-border_primary placeholder:font-inter placeholder:text-base placeholder:font-normal`}
         name={name}
         value={value}
         onChange={handle}

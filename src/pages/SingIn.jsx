@@ -117,7 +117,7 @@ const SingIn = () => {
             <p className="text-sm font-medium text-red-500 font-inter">
               {emailError ? emailError : ""}
             </p>
-            <div className="relative xl:w-[492px] w-full">
+            <div className="relative  w-full">
               <Input
                 type={eye ? "password" : "text"}
                 placeholder="Password"
@@ -142,7 +142,7 @@ const SingIn = () => {
                 />
               )}
             </div>
-            <Flex className="items-center justify-between xl:w-[492px] w-full mt-4">
+            <Flex className="items-center justify-between  w-full mt-4">
               <Checkbox label="Remember Me" className="flex items-center" />
               <Link
                 className="text-base font-normal font-inter"
@@ -152,7 +152,7 @@ const SingIn = () => {
               </Link>
             </Flex>
             {loading ? (
-              <div className="w-full xl:w-[492px] bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
+              <div className="w-full bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
                 <ThreeDots
                   height=""
                   width="80"

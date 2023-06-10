@@ -168,7 +168,7 @@ const SingUp = () => {
             <p className="text-sm font-medium text-red-500 font-inter">
               {emailError ? emailError : ""}
             </p>
-            <div className="relative xl:w-[492px] w-full">
+            <div className="relative  w-full">
               <Input
                 type={eye ? "password" : "text"}
                 placeholder="Password"
@@ -195,7 +195,7 @@ const SingUp = () => {
             </div>
             <Checkbox label="Remember Me" className="flex items-center mt-4" />
             {loading ? (
-              <div className="w-full xl:w-[492px] bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
+              <div className="w-full  bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
                 <ThreeDots
                   height=""
                   width="80"
