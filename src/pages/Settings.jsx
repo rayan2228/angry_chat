@@ -22,15 +22,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 import Input from "../components/layouts/Input";
 const Settings = () => {
-  const [userName, setuserName] = useState();
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
+  const [userName, setuserName] = useState(currentUser.displayName);
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const [updateUserDataShow, setUpdateUserDataShow] = useState(false);
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
+
   // navigate
   const navigate = useNavigate();
   // dispatch
@@ -100,7 +101,9 @@ const Settings = () => {
       });
     }
   };
-
+const handleName = (e)=>{
+console.log(e.target);
+}
   const handleUpdateName = () => {
     updateProfile(auth.currentUser, {
       displayName: userName,
@@ -209,9 +212,9 @@ const Settings = () => {
               <Input
                 type="text"
                 label="Edit Your Name"
-                value={currentUser.displayName}
+                value={userName}
                 inputClass="text-black"
-                onChange={(e) => setuserName(e.target)}
+                onChange={handleName}
               />
             </div>
             <button
