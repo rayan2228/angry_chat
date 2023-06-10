@@ -9,7 +9,7 @@ import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {
@@ -88,7 +88,7 @@ const Settings = () => {
             photoURL: downloadURL,
           }).then(() => {
             dispatch(userLoginInfo(auth.currentUser))
-            localStorage.setItem("userLoginInfo",JSON.stringify(auth.currentUser))
+            localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser))
             setPhotoUploadShow(false);
             setImage("");
           });
