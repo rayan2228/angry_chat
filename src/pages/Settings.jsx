@@ -20,6 +20,7 @@ import {
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
+import Input from "../components/layouts/Input";
 const Settings = () => {
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
@@ -37,7 +38,7 @@ const Settings = () => {
     if (!data) {
       navigate("/singin");
     }
-  }, [data,currentUser]);
+  }, [data, currentUser]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -193,8 +194,14 @@ const Settings = () => {
       {updateUserDataShow && (
         <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-
-
+            <div className="w-full text-white">
+              <Input
+                type="text"
+                label="Edit Your Name"
+                value={currentUser.displayName}
+                inputClass="text-black"
+              />
+            </div>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
               onClick={getCropData}
