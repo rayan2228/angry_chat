@@ -25,7 +25,7 @@ const Settings = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
-  const [userName, setuserName] = useState(currentUser.displayName);
+  const [userName, setUserName] = useState(currentUser.displayName);
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
@@ -92,8 +92,11 @@ const Settings = () => {
           updateProfile(auth.currentUser, {
             photoURL: downloadURL,
           }).then(() => {
-            dispatch(userLoginInfo(auth.currentUser))
-            localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser))
+            dispatch(userLoginInfo(auth.currentUser));
+            localStorage.setItem(
+              "userLoginInfo",
+              JSON.stringify(auth.currentUser)
+            );
             setPhotoUploadShow(false);
             setImage("");
           });
@@ -101,18 +104,18 @@ const Settings = () => {
       });
     }
   };
-const handleName = (e)=>{
-console.log(e.target);
-}
+  const handleName = (e) => {
+    setUserName(e.target.value)
+  };
   const handleUpdateName = () => {
     updateProfile(auth.currentUser, {
       displayName: userName,
     }).then(() => {
-      dispatch(userLoginInfo(auth.currentUser))
-      localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser))
+      dispatch(userLoginInfo(auth.currentUser));
+      localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
       setUpdateUserDataShow(false);
     });
-  }
+  };
   return (
     <>
       <ToastContainer />
@@ -208,13 +211,13 @@ console.log(e.target);
       {updateUserDataShow && (
         <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-            <div className="w-full text-white">
+            <div className="w-full text-white ">
               <Input
                 type="text"
                 label="Edit Your Name"
                 value={userName}
-                inputClass="text-black"
-                onChange={handleName}
+                inputClass="text-black rounded-md"
+                handle={handleName}
               />
             </div>
             <button
@@ -267,7 +270,9 @@ console.log(e.target);
               <Flex className="flex-col mt-8 text-lg font-normal font-inter gap-y-7">
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <FiEdit className="text-2xl" />
-                  <p onClick={() => setUpdateUserDataShow(true)}>Edit Profile Info</p>
+                  <p onClick={() => setUpdateUserDataShow(true)}>
+                    Edit Profile Info
+                  </p>
                 </Flex>
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <CgProfile className="text-2xl" />
