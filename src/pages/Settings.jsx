@@ -32,6 +32,7 @@ const Settings = () => {
   const cropperRef = createRef();
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const [updateUserDataShow, setUpdateUserDataShow] = useState(false);
+  const [updateUserPasswordShow, setUpdateUserPasswordShow] = useState(false);
 
   // navigate
   const navigate = useNavigate();
@@ -106,6 +107,9 @@ const Settings = () => {
     }
   };
   const handleName = (e) => {
+    setUserName(e.target.value);
+  };
+  const handlePassword = (e) => {
     setUserName(e.target.value);
   };
   const handleUpdateName = () => {
@@ -238,6 +242,34 @@ const Settings = () => {
           </Flex>
         </div>
       )}
+      {updateUserPasswordShow && (
+        <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
+          <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
+            <div className="w-full text-white ">
+              <Input
+                type="text"
+                label="Update Your Password"
+                inputClass="text-black rounded-md"
+                handle={handlePassword}
+              />
+            </div>
+            <button
+              className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
+              onClick={handleUpdateName}
+            >
+              update name
+            </button>
+            <button
+              className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
+              onClick={() => {
+                setUpdateUserDataShow(false);
+              }}
+            >
+              cancel
+            </button>
+          </Flex>
+        </div>
+      )}
       <Flex className=" gap-x-6">
         <Sidebar />
         <Flex className="py-6 w-[90%] flex-col gap-y-16 h-screen">
@@ -290,7 +322,9 @@ const Settings = () => {
               <Flex className="flex-col mt-8 text-lg font-normal font-inter gap-y-7">
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <HiOutlineKey className="text-2xl" />
-                  <p>Change Password</p>
+                  <p onClick={() => setUpdateUserPasswordShow(true)}>
+                    Change Password
+                  </p>
                 </Flex>
                 <Flex className="items-center cursor-pointer gap-x-4">
                   <BsSun className="text-2xl" />
