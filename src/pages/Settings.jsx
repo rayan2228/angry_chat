@@ -25,7 +25,8 @@ const Settings = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
-  const [userName, setUserName] = useState(currentUser.displayName);
+  const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const [userName, setUserName] = useState(dataFromLocal.displayName);
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
@@ -105,7 +106,7 @@ const Settings = () => {
     }
   };
   const handleName = (e) => {
-    setUserName(e.target.value)
+    setUserName(e.target.value);
   };
   const handleUpdateName = () => {
     updateProfile(auth.currentUser, {
@@ -128,7 +129,7 @@ const Settings = () => {
               </div>
             ) : (
               <Img
-                src={currentUser ? currentUser.photoURL : ""}
+                src={dataFromLocal ? dataFromLocal.photoURL : ""}
                 alt="user"
                 className="w-[100px]"
               />
@@ -248,13 +249,13 @@ const Settings = () => {
               </h2>
               <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
                 <Img
-                  src={currentUser ? currentUser.photoURL : ""}
+                  src={dataFromLocal ? dataFromLocal.photoURL : ""}
                   alt="user"
                   className="w-[48px] "
                 />
                 <div className="w-[60%]">
                   <h2 className="text-base font-semibold font-inter ">
-                    {currentUser ? currentUser.displayName : ""}
+                    {dataFromLocal ? dataFromLocal.displayName : ""}
                   </h2>
                   <h5 className="text-xs font-normal capitalize font-inter">
                     Stay Safe Stay Home
