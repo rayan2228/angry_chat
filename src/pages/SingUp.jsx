@@ -82,7 +82,7 @@ const SingUp = () => {
     if (!password) {
       setPasswordError("password is required");
     }
-    if (name && email && password) {
+    if (!nameError && !emailError && !passwordError) {
       setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
