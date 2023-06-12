@@ -8,7 +8,7 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { getAuth, signOut, updateProfile, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -27,6 +27,7 @@ const Settings = () => {
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
   const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userName, setUserName] = useState(dataFromLocal.displayName);
+  const [password, setPassword] = useState("");
   const [image, setImage] = useState();
   const [cropData, setCropData] = useState("#");
   const cropperRef = createRef();
@@ -109,9 +110,6 @@ const Settings = () => {
   const handleName = (e) => {
     setUserName(e.target.value);
   };
-  const handlePassword = (e) => {
-    setUserName(e.target.value);
-  };
   const handleUpdateName = () => {
     updateProfile(auth.currentUser, {
       displayName: userName,
@@ -121,6 +119,18 @@ const Settings = () => {
       setUpdateUserDataShow(false);
     });
   };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleUpdatePassword = ()=>{
+    updatePassword(currentUser, password)
+      .then(() => {
+        setUpdateUserDataShow(false)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <>
       <ToastContainer />
@@ -255,7 +265,7 @@ const Settings = () => {
             </div>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
-              onClick={handleUpdateName}
+              onClick={handleUpdatePassword}
             >
               update name
             </button>
