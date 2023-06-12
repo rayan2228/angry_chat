@@ -21,6 +21,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 import Input from "../components/layouts/Input";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 const Settings = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -34,7 +35,8 @@ const Settings = () => {
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const [updateUserDataShow, setUpdateUserDataShow] = useState(false);
   const [updateUserPasswordShow, setUpdateUserPasswordShow] = useState(false);
-
+  const [passwordError, setPasswordError] = useState("");
+  const [eye, setEye] = useState(true);
   // navigate
   const navigate = useNavigate();
   // dispatch
@@ -122,15 +124,38 @@ const Settings = () => {
   const handlePassword = (e) => {
     setPassword(e.target.value);
   };
-  const handleUpdatePassword = ()=>{
+  useEffect(() => {
+    if (password) {
+      if (!/^(?=.*[a-z])/.test(password)) {
+        setPasswordError("The password must contain at least one lowercase");
+      } else if (!/^(?=.*[A-Z])/.test(password)) {
+        setPasswordError("The password must contain at least one uppercase");
+      } else if (!/^(?=.*[0-9])/.test(password)) {
+        setPasswordError(
+          "The password must contain at least one numeric character"
+        );
+      } else if (!/^(?=.*[!@#$%^&*])/.test(password)) {
+        setPasswordError(
+          "The password must contain at least one special character"
+        );
+      } else if (!/^(?=.{8,})/.test(password)) {
+        setPasswordError("The password must be eight characters or longer");
+      } else {
+        setPasswordError("");
+      }
+    } else {
+      setPasswordError("");
+    }
+  }, [password]);
+  const handleUpdatePassword = () => {
     updatePassword(currentUser, password)
       .then(() => {
-        setUpdateUserDataShow(false)
+        setUpdateUserDataShow(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   return (
     <>
       <ToastContainer />
@@ -255,13 +280,32 @@ const Settings = () => {
       {updateUserPasswordShow && (
         <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-            <div className="w-full text-white ">
+            <div className="relative  w-full ">
               <Input
-                type="text"
-                label="Update Your Password"
-                inputClass="text-black rounded-md"
+                type={eye ? "password" : "text"}
+                placeholder="Password"
+                label="Password"
                 handle={handlePassword}
+                value={password}
+                className="text-white"
+                inputClass="text-black"
               />
+
+              <p className="text-sm font-medium text-red-500 font-inter">
+                {passwordError ? passwordError : ""}
+              </p>
+
+              {eye ? (
+                <FiEyeOff
+                  className="absolute inline-block cursor-pointer right-4 top-[72px]"
+                  onClick={() => setEye(false)}
+                />
+              ) : (
+                <FiEye
+                  className="absolute inline-block cursor-pointer right-4 top-[72px]"
+                  onClick={() => setEye(true)}
+                />
+              )}
             </div>
             <button
               className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
