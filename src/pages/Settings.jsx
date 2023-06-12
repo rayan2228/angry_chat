@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 import Input from "../components/layouts/Input";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Button from "../components/layouts/Button";
+import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -37,6 +39,7 @@ const Settings = () => {
   const [updateUserPasswordShow, setUpdateUserPasswordShow] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [eye, setEye] = useState(true);
+  const [loading, setLoading] = useState(false);
   // navigate
   const navigate = useNavigate();
   // dispatch
@@ -85,6 +88,7 @@ const Settings = () => {
     reader.readAsDataURL(files[0]);
   };
   const getCropData = () => {
+     setLoading(true);
     const storage = getStorage();
     const storageRef = ref(storage, `profilePic/${currentUser.uid}`);
     if (typeof cropperRef.current?.cropper !== "undefined") {
@@ -97,6 +101,7 @@ const Settings = () => {
           updateProfile(auth.currentUser, {
             photoURL: downloadURL,
           }).then(() => {
+           
             dispatch(userLoginInfo(auth.currentUser));
             localStorage.setItem(
               "userLoginInfo",
@@ -104,6 +109,7 @@ const Settings = () => {
             );
             setPhotoUploadShow(false);
             setImage("");
+            setLoading(false);
           });
         });
       });
@@ -231,12 +237,27 @@ const Settings = () => {
                 />
               </div>
             )}
-            <button
-              className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
-              onClick={getCropData}
-            >
-              upload
-            </button>
+            {loading ? (
+              <div className="flex items-center justify-center w-full py-3 mt-6 text-xl font-semibold bg-white rounded-md text-primary font-inter">
+                <ThreeDots
+                  height=""
+                  width="80"
+                  radius="9"
+                  color="#32375C"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <button
+                className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
+                onClick={getCropData}
+              >
+                upload
+              </button>
+            )}
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
@@ -280,7 +301,7 @@ const Settings = () => {
       {updateUserPasswordShow && (
         <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
-            <div className="relative  w-full ">
+            <div className="relative w-full ">
               <Input
                 type={eye ? "password" : "text"}
                 placeholder="Password"
