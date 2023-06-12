@@ -37,7 +37,7 @@ const Settings = () => {
   const [photoUploadShow, setPhotoUploadShow] = useState(false);
   const [updateUserDataShow, setUpdateUserDataShow] = useState(false);
   const [updateUserPasswordShow, setUpdateUserPasswordShow] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
   const [eye, setEye] = useState(true);
   const [loading, setLoading] = useState(false);
   // navigate
@@ -88,44 +88,53 @@ const Settings = () => {
     reader.readAsDataURL(files[0]);
   };
   const getCropData = () => {
-     setLoading(true);
-    const storage = getStorage();
-    const storageRef = ref(storage, `profilePic/${currentUser.uid}`);
-    if (typeof cropperRef.current?.cropper !== "undefined") {
-      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
-      const profilePic = cropperRef.current?.cropper
-        .getCroppedCanvas()
-        .toDataURL();
-      uploadString(storageRef, profilePic, "data_url").then((snapshot) => {
-        getDownloadURL(storageRef).then((downloadURL) => {
-          updateProfile(auth.currentUser, {
-            photoURL: downloadURL,
-          }).then(() => {
-           
-            dispatch(userLoginInfo(auth.currentUser));
-            localStorage.setItem(
-              "userLoginInfo",
-              JSON.stringify(auth.currentUser)
-            );
-            setPhotoUploadShow(false);
-            setImage("");
-            setLoading(false);
+    if (image) {
+      setLoading(true);
+      const storage = getStorage();
+      const storageRef = ref(storage, `profilePic/${currentUser.uid}`);
+      if (typeof cropperRef.current?.cropper !== "undefined") {
+        setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+        const profilePic = cropperRef.current?.cropper
+          .getCroppedCanvas()
+          .toDataURL();
+        uploadString(storageRef, profilePic, "data_url").then((snapshot) => {
+          getDownloadURL(storageRef).then((downloadURL) => {
+            updateProfile(auth.currentUser, {
+              photoURL: downloadURL,
+            }).then(() => {
+              dispatch(userLoginInfo(auth.currentUser));
+              localStorage.setItem(
+                "userLoginInfo",
+                JSON.stringify(auth.currentUser)
+              );
+              setPhotoUploadShow(false);
+              setImage("");
+              setLoading(false);
+            });
           });
         });
-      });
+      }
+    }else{
+      setError("image is required")
     }
   };
   const handleName = (e) => {
     setUserName(e.target.value);
   };
   const handleUpdateName = () => {
-    updateProfile(auth.currentUser, {
-      displayName: userName,
-    }).then(() => {
-      dispatch(userLoginInfo(auth.currentUser));
-      localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
-      setUpdateUserDataShow(false);
-    });
+   if(userName){
+     setLoading(true);
+     updateProfile(auth.currentUser, {
+       displayName: userName,
+     }).then(() => {
+       dispatch(userLoginInfo(auth.currentUser));
+       localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
+       setUpdateUserDataShow(false);
+       setLoading(false);
+     });
+   }else{
+    setError("name is required");
+   }
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -133,24 +142,24 @@ const Settings = () => {
   useEffect(() => {
     if (password) {
       if (!/^(?=.*[a-z])/.test(password)) {
-        setPasswordError("The password must contain at least one lowercase");
+        setError("The password must contain at least one lowercase");
       } else if (!/^(?=.*[A-Z])/.test(password)) {
-        setPasswordError("The password must contain at least one uppercase");
+        setError("The password must contain at least one uppercase");
       } else if (!/^(?=.*[0-9])/.test(password)) {
-        setPasswordError(
+        setError(
           "The password must contain at least one numeric character"
         );
       } else if (!/^(?=.*[!@#$%^&*])/.test(password)) {
-        setPasswordError(
+        setError(
           "The password must contain at least one special character"
         );
       } else if (!/^(?=.{8,})/.test(password)) {
-        setPasswordError("The password must be eight characters or longer");
+        setError("The password must be eight characters or longer");
       } else {
-        setPasswordError("");
+        setError("");
       }
     } else {
-      setPasswordError("");
+      setError("");
     }
   }, [password]);
   const handleUpdatePassword = () => {
@@ -180,7 +189,7 @@ const Settings = () => {
               />
             )}
 
-            <div className="flex items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full">
               <label
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer h-50 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -216,6 +225,9 @@ const Settings = () => {
                   onChange={HandleImageUpload}
                 />
               </label>
+              <p className="text-sm font-medium text-red-500 font-inter">
+                {error ? error : ""}
+              </p>
             </div>
             {image && (
               <div>
@@ -261,7 +273,9 @@ const Settings = () => {
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
-                setPhotoUploadShow(false), setImage("");
+                setPhotoUploadShow(false),
+                  setImage(""),
+                  setError("");
               }}
             >
               cancel
@@ -280,17 +294,37 @@ const Settings = () => {
                 inputClass="text-black rounded-md"
                 handle={handleName}
               />
+              <p className="text-sm font-medium text-red-500 font-inter">
+                {error ? error : ""}
+              </p>
             </div>
-            <button
-              className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
-              onClick={handleUpdateName}
-            >
-              update name
-            </button>
+            {loading ? (
+              <div className="flex items-center justify-center w-full py-3 mt-6 text-xl font-semibold bg-white rounded-md text-primary font-inter">
+                <ThreeDots
+                  height=""
+                  width="80"
+                  radius="9"
+                  color="#32375C"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <button
+                className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
+                onClick={handleUpdateName}
+              >
+                update name
+              </button>
+            )}
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
-                setUpdateUserDataShow(false);
+                setUpdateUserDataShow(false),
+                  setError(""),
+                  setUserName(dataFromLocal.displayName );
               }}
             >
               cancel
@@ -313,7 +347,7 @@ const Settings = () => {
               />
 
               <p className="text-sm font-medium text-red-500 font-inter">
-                {passwordError ? passwordError : ""}
+                {error ? error : ""}
               </p>
 
               {eye ? (
@@ -332,7 +366,7 @@ const Settings = () => {
               className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
               onClick={handleUpdatePassword}
             >
-              update name
+              update password
             </button>
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
