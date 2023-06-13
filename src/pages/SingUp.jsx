@@ -13,6 +13,7 @@ import {
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import { getDatabase, ref, set } from "firebase/database";
 
 const SingUp = () => {
   // auth
@@ -86,6 +87,12 @@ const SingUp = () => {
       setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          const db = getDatabase();
+          set(ref(db, "users/" + userCredential.user.uid), {
+            username: name,
+            email: email,
+            profile_picture: "../../public/assets/default.png",
+          });
           // Signed in
           updateProfile(auth.currentUser, {
             displayName: name,
@@ -168,7 +175,7 @@ const SingUp = () => {
             <p className="text-sm font-medium text-red-500 font-inter">
               {emailError ? emailError : ""}
             </p>
-            <div className="relative  w-full">
+            <div className="relative w-full">
               <Input
                 type={eye ? "password" : "text"}
                 placeholder="Password"
@@ -195,7 +202,7 @@ const SingUp = () => {
             </div>
             <Checkbox label="Remember Me" className="flex items-center mt-4" />
             {loading ? (
-              <div className="w-full  bg-primary py-3 text-white font-inter font-semibold text-xl rounded-md flex justify-center items-center mt-6">
+              <div className="flex items-center justify-center w-full py-3 mt-6 text-xl font-semibold text-white rounded-md bg-primary font-inter">
                 <ThreeDots
                   height=""
                   width="80"
