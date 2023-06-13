@@ -8,7 +8,13 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import { getAuth, signOut, updateProfile, updatePassword } from "firebase/auth";
+import {
+  getAuth,
+  signOut,
+  updateProfile,
+  updatePassword,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -22,7 +28,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 import Input from "../components/layouts/Input";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import Button from "../components/layouts/Button";
 import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
   const auth = getAuth();
@@ -114,27 +119,27 @@ const Settings = () => {
           });
         });
       }
-    }else{
-      setError("image is required")
+    } else {
+      setError("image is required");
     }
   };
   const handleName = (e) => {
     setUserName(e.target.value);
   };
   const handleUpdateName = () => {
-   if(userName){
-     setLoading(true);
-     updateProfile(auth.currentUser, {
-       displayName: userName,
-     }).then(() => {
-       dispatch(userLoginInfo(auth.currentUser));
-       localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
-       setUpdateUserDataShow(false);
-       setLoading(false);
-     });
-   }else{
-    setError("name is required");
-   }
+    if (userName) {
+      setLoading(true);
+      updateProfile(auth.currentUser, {
+        displayName: userName,
+      }).then(() => {
+        dispatch(userLoginInfo(auth.currentUser));
+        localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
+        setUpdateUserDataShow(false);
+        setLoading(false);
+      });
+    } else {
+      setError("name is required");
+    }
   };
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -146,13 +151,9 @@ const Settings = () => {
       } else if (!/^(?=.*[A-Z])/.test(password)) {
         setError("The password must contain at least one uppercase");
       } else if (!/^(?=.*[0-9])/.test(password)) {
-        setError(
-          "The password must contain at least one numeric character"
-        );
+        setError("The password must contain at least one numeric character");
       } else if (!/^(?=.*[!@#$%^&*])/.test(password)) {
-        setError(
-          "The password must contain at least one special character"
-        );
+        setError("The password must contain at least one special character");
       } else if (!/^(?=.{8,})/.test(password)) {
         setError("The password must be eight characters or longer");
       } else {
@@ -163,13 +164,19 @@ const Settings = () => {
     }
   }, [password]);
   const handleUpdatePassword = () => {
-    updatePassword(currentUser, password)
-      .then(() => {
-        setUpdateUserDataShow(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (!error) {
+      setLoading(true);
+      updatePassword(currentUser, password)
+        .then(() => {
+          setUpdateUserDataShow(false);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setError("password is required");
+    }
   };
   return (
     <>
@@ -273,9 +280,7 @@ const Settings = () => {
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
-                setPhotoUploadShow(false),
-                  setImage(""),
-                  setError("");
+                setPhotoUploadShow(false), setImage(""), setError("");
               }}
             >
               cancel
@@ -324,7 +329,7 @@ const Settings = () => {
               onClick={() => {
                 setUpdateUserDataShow(false),
                   setError(""),
-                  setUserName(dataFromLocal.displayName );
+                  setUserName(dataFromLocal.displayName);
               }}
             >
               cancel
@@ -343,7 +348,7 @@ const Settings = () => {
                 handle={handlePassword}
                 value={password}
                 className="text-white"
-                inputClass="text-black"
+                inputClass="text-black rounded-md "
               />
 
               <p className="text-sm font-medium text-red-500 font-inter">
@@ -362,16 +367,32 @@ const Settings = () => {
                 />
               )}
             </div>
-            <button
-              className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
-              onClick={handleUpdatePassword}
-            >
-              update password
-            </button>
+            {loading ? (
+              <div className="flex items-center justify-center w-full py-3 mt-6 text-xl font-semibold bg-white rounded-md text-primary font-inter">
+                <ThreeDots
+                  height=""
+                  width="80"
+                  radius="9"
+                  color="#32375C"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={true}
+                />
+              </div>
+            ) : (
+              <button
+                className="w-full py-2 text-lg font-semibold capitalize bg-white rounded-lg font-inter "
+                onClick={handleUpdatePassword}
+              >
+                update password
+              </button>
+            )}
+
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
-                setUpdateUserDataShow(false);
+                setUpdateUserPasswordShow(false), setPassword("");
               }}
             >
               cancel
