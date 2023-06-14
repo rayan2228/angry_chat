@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { BsFillTrainLightrailFrontFill, BsSearch } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue } from "firebase/database";
 const People = () => {
+  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
@@ -10,7 +11,9 @@ const People = () => {
     onValue(usersRef, (snapshot) => {
       let users = [];
       snapshot.forEach((user) => {
-        users.push(user.val());
+        if (currentUser.uid != user.key) {
+          users.push(user.val());
+        }
       });
       setUserList(users);
     });
