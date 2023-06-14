@@ -8,6 +8,7 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
+import { getDatabase, update,ref as dbRef } from "firebase/database";
 import {
   getAuth,
   signOut,
@@ -30,6 +31,7 @@ import Input from "../components/layouts/Input";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
+  const db = getDatabase();
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
@@ -107,6 +109,10 @@ const Settings = () => {
             updateProfile(auth.currentUser, {
               photoURL: downloadURL,
             }).then(() => {
+              update(dbRef(db, "users/" + auth.currentUser.uid), {
+                profile_picture: downloadURL,
+              });
+              console.log(downloadURL);
               dispatch(userLoginInfo(auth.currentUser));
               localStorage.setItem(
                 "userLoginInfo",
@@ -280,7 +286,10 @@ const Settings = () => {
             <button
               className="w-full py-2 text-lg font-semibold text-white capitalize bg-red-500 rounded-lg font-inter "
               onClick={() => {
-                setPhotoUploadShow(false), setImage(""), setError("");
+                setPhotoUploadShow(false),
+                  setImage(""),
+                  setError(""),
+                  setLoading(false);
               }}
             >
               cancel
