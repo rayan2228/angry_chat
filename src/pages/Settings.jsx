@@ -8,7 +8,7 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import { getDatabase, update,ref as dbRef } from "firebase/database";
+import { getDatabase, update, ref as dbRef } from "firebase/database";
 import {
   getAuth,
   signOut,
@@ -112,7 +112,6 @@ const Settings = () => {
               update(dbRef(db, "users/" + auth.currentUser.uid), {
                 profile_picture: downloadURL,
               });
-              console.log(downloadURL);
               dispatch(userLoginInfo(auth.currentUser));
               localStorage.setItem(
                 "userLoginInfo",
@@ -138,6 +137,9 @@ const Settings = () => {
       updateProfile(auth.currentUser, {
         displayName: userName,
       }).then(() => {
+        update(dbRef(db, "users/" + auth.currentUser.uid), {
+          username: userName,
+        });
         dispatch(userLoginInfo(auth.currentUser));
         localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
         setUpdateUserDataShow(false);
