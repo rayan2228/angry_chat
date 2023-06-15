@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  remove,
+} from "firebase/database";
 const People = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
@@ -34,13 +41,15 @@ const People = () => {
       const requestArrKey = [];
       snapshot.forEach((requests) => {
         requestArr.push(requests.val().senderId + requests.val().receiverId);
-        requestArrKey.push(requests.key)
+        requestArrKey.push(requests.key);
       });
       setRequestArr(requestArr);
       setRequestArrKey(requestArrKey);
     });
   }, []);
-  console.log(requestArrKey);
+  const handleCancel = (id) => {
+    remove(ref(db, "friendRequest/" + id));
+  };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -57,15 +66,7 @@ const People = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh] overflow-y-auto ">
-        {userList.map((user, index) => (
-          <PeopleLayout
-            src={user.profile_picture}
-            name={user.username}
-            classNameFlex="gap-x-4"
-            classNameHeading="w-[60%]"
-            key={user.userId}
-          >
-            {/* {
+        {/* {
               requestArr.map((oneReq)=>{
                 if (
                   oneReq.requestsId === currentUser.uid + user.userId ||
@@ -91,11 +92,19 @@ const People = () => {
                 }
               })
             } */}
+        {userList.map((user, index) => (
+          <PeopleLayout
+            src={user.profile_picture}
+            name={user.username}
+            classNameFlex="gap-x-4"
+            classNameHeading="w-[60%]"
+            key={user.userId}
+          >
             {requestArr.includes(currentUser.uid + user.userId) ||
             requestArr.includes(user.userId + currentUser.uid) ? (
               <p
                 className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                onClick={() => handleAdd(requestArrKey[index])}
+                onClick={() => handleCancel(requestArrKey[index])}
               >
                 cancel
               </p>
