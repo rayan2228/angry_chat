@@ -8,6 +8,8 @@ const People = () => {
   const [requestArr, setRequestArr] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
+  const reqRef = ref(db, "friendRequest/");
+
   useEffect(() => {
     onValue(usersRef, (snapshot) => {
       let users = [];
@@ -19,23 +21,29 @@ const People = () => {
       setUserList(users);
     });
   }, []);
-  const handleAdd = (user) => {
-    set(push(ref(db, "FriendRequest/")), {
+  const handleAdd = (userId) => {
+    set(push(ref(db, "friendRequest/")), {
       senderId: currentUser.uid,
-      receiverId: user.userId,
+      receiverId: userId,
     });
   };
   useEffect(() => {
-    onValue(usersRef, (snapshot) => {
-      let users = [];
-      snapshot.forEach((user) => {
-        if (currentUser.uid != user.key) {
-          users.push({ ...user.val(), userId: user.key });
-        }
+    onValue(reqRef, (snapshot) => {
+      const requestArr = [];
+      snapshot.forEach((requests) => {
+        requestArr.push(
+          {
+            requestsId: requests.val().senderId + requests.val().receiverId,
+          },
+          {
+            requestKey: requests.key,
+          }
+        );
       });
-      setUserList(users);
+      setRequestArr(requestArr[0]);
     });
   }, []);
+  console.log(requestArr);
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -57,15 +65,29 @@ const People = () => {
             src={user.profile_picture}
             name={user.username}
             classNameFlex="gap-x-4"
-            classNameHeading="w-[75%]"
+            classNameHeading="w-[60%]"
             key={user.userId}
           >
-            <p
-              className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]"
-              onClick={() => handleAdd(user)}
-            >
-              Add
-            </p>
+            {(requestArr
+              ? requestArr.requestsId == currentUser.uid + user.userId
+              : "") ||
+            (requestArr
+              ? requestArr.requestsId == user.userId + currentUser.uid
+              : "") ? (
+              <p
+                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                onClick={() => handleAdd(user.userId)}
+              >
+                Add
+              </p>
+            ) : (
+              <p
+                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+                // onClick={() => handleAdd(user)}
+              >
+                cancel
+              </p>
+            )}
           </PeopleLayout>
         ))}
       </div>
