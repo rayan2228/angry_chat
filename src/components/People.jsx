@@ -13,7 +13,7 @@ const People = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
-  const [requestArrKey, setRequestArrKey] = useState([]);
+  const [requestArrKey, setRequestArrKey] = useState(false);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
@@ -38,17 +38,32 @@ const People = () => {
   useEffect(() => {
     onValue(reqRef, (snapshot) => {
       const requestArr = [];
-      const requestArrKey = [];
+      // const requestArrKey = [];
       snapshot.forEach((requests) => {
-        requestArr.push(requests.val().senderId + requests.val().receiverId);
-        requestArrKey.push(requests.key);
+        requestArr.push(
+          requests.val().senderId +
+            requests.val().receiverId +
+            "__" +
+            requests.key
+        );
+        // requestArrKey.push(requests.key);
       });
       setRequestArr(requestArr);
-      setRequestArrKey(requestArrKey);
+      requestArr.length ? setRequestArrKey(true) : setRequestArrKey(false);
+      // setRequestArrKey(requestArrKey);
     });
   }, []);
-  const handleCancel = (id) => {
-    remove(ref(db, "friendRequest/" + id));
+  // console.log(requestArr);
+  const handleCancel = (array, id) => {
+    array.map((value) => {
+      if (
+        value.split("__").includes(currentUser.uid + id) ||
+        value.split("__").includes(currentUser.uid + id)
+      ) {
+        remove(ref(db, "friendRequest/" + value.split("__")[1]));
+      }
+    });
+    // console.log("array", array, "id", id);
   };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
@@ -66,33 +81,7 @@ const People = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh] overflow-y-auto ">
-        {/* {
-              requestArr.map((oneReq)=>{
-                if (
-                  oneReq.requestsId === currentUser.uid + user.userId ||
-                  oneReq.requestsId === user.userId + currentUser.uid
-                ) {
-                   return(
-                    <p
-                     className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                     // onClick={() => handleAdd(user)}
-                   >
-                     cancel
-                   </p>
-                   )
-                } else{
-                  return(
-                     <p
-                     className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                     onClick={() => handleAdd(user.userId)}
-                   >
-                     Add
-                   </p>
-                  )
-                }
-              })
-            } */}
-        {userList.map((user, index) => (
+        {userList.map((user) => (
           <PeopleLayout
             src={user.profile_picture}
             name={user.username}
@@ -100,11 +89,27 @@ const People = () => {
             classNameHeading="w-[60%]"
             key={user.userId}
           >
-            {requestArr.includes(currentUser.uid + user.userId) ||
-            requestArr.includes(user.userId + currentUser.uid) ? (
+            {
+              console.log(requestArr
+              .toString()
+              .split("__")
+              .includes(currentUser.uid + user.userId) ||
+            requestArr
+              .toString()
+              .split("__")
+              .includes(user.userId + currentUser.uid))
+            }
+            {/* {requestArr
+              .toString()
+              .split("__")
+              .includes(currentUser.uid + user.userId) ||
+            requestArr
+              .toString()
+              .split("__")
+              .includes(user.userId + currentUser.uid) ? (
               <p
                 className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                onClick={() => handleCancel(requestArrKey[index])}
+                onClick={() => handleCancel(requestArr, user.userId)}
               >
                 cancel
               </p>
@@ -115,7 +120,27 @@ const People = () => {
               >
                 Add
               </p>
-            )}
+            )} */}
+            {/* {requestArrKey ? (
+              requestArr.map((oneReq) => (
+                <p
+                  className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+                  onClick={() => handleAdd(oneReq.requestKey)}
+                >
+                  {oneReq.requestId.includes(currentUser.uid + user.userId) ||
+                  oneReq.requestId.includes(user.userId + currentUser.uid)
+                    ? "cancel"
+                    : "add"}
+                </p>
+              ))
+            ) : (
+              <p
+                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                onClick={() => handleAdd(user.userId)}
+              >
+                Add
+              </p>
+            )} */}
           </PeopleLayout>
         ))}
       </div>
