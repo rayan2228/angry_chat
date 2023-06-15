@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 const People = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
+  const [requestArr, setRequestArr] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   useEffect(() => {
@@ -12,7 +13,24 @@ const People = () => {
       let users = [];
       snapshot.forEach((user) => {
         if (currentUser.uid != user.key) {
-          users.push(user.val());
+          users.push({ ...user.val(), userId: user.key });
+        }
+      });
+      setUserList(users);
+    });
+  }, []);
+  const handleAdd = (user) => {
+    set(push(ref(db, "FriendRequest/")), {
+      senderId: currentUser.uid,
+      receiverId: user.userId,
+    });
+  };
+  useEffect(() => {
+    onValue(usersRef, (snapshot) => {
+      let users = [];
+      snapshot.forEach((user) => {
+        if (currentUser.uid != user.key) {
+          users.push({ ...user.val(), userId: user.key });
         }
       });
       setUserList(users);
@@ -40,8 +58,12 @@ const People = () => {
             name={user.username}
             classNameFlex="gap-x-4"
             classNameHeading="w-[75%]"
+            key={user.userId}
           >
-            <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]">
+            <p
+              className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[10%]"
+              onClick={() => handleAdd(user)}
+            >
               Add
             </p>
           </PeopleLayout>
