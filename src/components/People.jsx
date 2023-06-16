@@ -41,28 +41,28 @@ const People = () => {
       // const requestArrKey = [];
       snapshot.forEach((requests) => {
         requestArr.push(
-          requests.val().senderId +
-            requests.val().receiverId +
-            "__" +
-            requests.key
+          {
+            requestId: requests.val().receiverId + requests.val().senderId,
+            requestKey: requests.key
+          }
         );
         // requestArrKey.push(requests.key);
       });
       setRequestArr(requestArr);
-      requestArr.length ? setRequestArrKey(true) : setRequestArrKey(false);
+      // requestArr.length ? setRequestArrKey(true) : setRequestArrKey(false);
       // setRequestArrKey(requestArrKey);
     });
   }, []);
-  // console.log(requestArr);
+  console.log(requestArr);
   const handleCancel = (array, id) => {
-    array.map((value) => {
-      if (
-        value.split("__").includes(currentUser.uid + id) ||
-        value.split("__").includes(currentUser.uid + id)
-      ) {
-        remove(ref(db, "friendRequest/" + value.split("__")[1]));
-      }
-    });
+    // array.map((value) => {
+    //   if (
+    //     value.split("__").includes(currentUser.uid + id) ||
+    //     value.split("__").includes(currentUser.uid + id)
+    //   ) {
+    //     remove(ref(db, "friendRequest/" + value.split("__")[1]));
+    //   }
+    // });
     // console.log("array", array, "id", id);
   };
   return (
@@ -89,58 +89,31 @@ const People = () => {
             classNameHeading="w-[60%]"
             key={user.userId}
           >
-            {
-              console.log(requestArr
-              .toString()
-              .split("__")
-              .includes(currentUser.uid + user.userId) ||
-            requestArr
-              .toString()
-              .split("__")
-              .includes(user.userId + currentUser.uid))
-            }
-            {/* {requestArr
-              .toString()
-              .split("__")
-              .includes(currentUser.uid + user.userId) ||
-            requestArr
-              .toString()
-              .split("__")
-              .includes(user.userId + currentUser.uid) ? (
-              <p
-                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                onClick={() => handleCancel(requestArr, user.userId)}
-              >
-                cancel
-              </p>
-            ) : (
-              <p
-                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                onClick={() => handleAdd(user.userId)}
-              >
-                Add
-              </p>
-            )} */}
-            {/* {requestArrKey ? (
-              requestArr.map((oneReq) => (
-                <p
-                  className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                  onClick={() => handleAdd(oneReq.requestKey)}
-                >
-                  {oneReq.requestId.includes(currentUser.uid + user.userId) ||
-                  oneReq.requestId.includes(user.userId + currentUser.uid)
-                    ? "cancel"
-                    : "add"}
-                </p>
-              ))
-            ) : (
-              <p
-                className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                onClick={() => handleAdd(user.userId)}
-              >
-                Add
-              </p>
-            )} */}
+{
+  requestArr.map((value)=>{
+    // console.log(((value.requestId == user.userId + currentUser.uid)||(value.requestId == currentUser.uid +user.userId)) ? "cancle" : "add");
+    if (((value.requestId == user.userId + currentUser.uid)||(value.requestId == currentUser.uid +user.userId))) (
+      <p
+      className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+      onClick={() => handleCancel(requestArr, user.userId)}
+    >
+      cancel
+    </p>
+  )
+  })
+}
+            {/* <p
+              className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+              onClick={() => handleCancel(requestArr, user.userId)}
+            >
+              cancel
+            </p>
+            <p
+              className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+              onClick={() => handleAdd(user.userId)}
+            >
+              Add
+            </p> */}
           </PeopleLayout>
         ))}
       </div>
