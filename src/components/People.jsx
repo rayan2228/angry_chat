@@ -14,6 +14,7 @@ const People = () => {
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [requestArrKey, setRequestArrKey] = useState([]);
+  const [receiverIdArr, setReceiverIdArr] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
@@ -39,14 +40,18 @@ const People = () => {
     onValue(reqRef, (snapshot) => {
       const requestArr = [];
       const requestArrKey = [];
+      const receiverIdArr = [];
       snapshot.forEach((requests) => {
         requestArr.push(requests.val().senderId + requests.val().receiverId);
         requestArrKey.push(requests.key + "__" + requests.val().receiverId);
+        receiverIdArr.push(requests.val().receiverId)
       });
       setRequestArr(requestArr);
       setRequestArrKey(requestArrKey);
+      setReceiverIdArr(receiverIdArr)
     });
   }, []);
+  console.log(receiverIdArr);
   const handleCancel = (id) => {
     id.map((val) => {
       if (val) {
@@ -71,7 +76,8 @@ const People = () => {
       </div>
       <div className="h-[40vh] overflow-y-auto ">
         {userList.map((user) => (
-          <PeopleLayout
+          receiverIdArr.map((receiverIdVal)=>(
+            receiverIdVal !== currentUser.uid ? <PeopleLayout
             src={user.profile_picture}
             name={user.username}
             classNameFlex="gap-x-4"
@@ -102,7 +108,8 @@ const People = () => {
                 Add
               </p>
             )}
-          </PeopleLayout>
+          </PeopleLayout> : ""
+          ))
         ))}
       </div>
     </div>
