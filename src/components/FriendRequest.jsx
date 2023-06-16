@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Flex from "./layouts/Flex";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RxCross2 } from "react-icons/rx";
-
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  remove,
+} from "firebase/database";
 const FriendRequest = () => {
+  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const [requestArr, setRequestArr] = useState([]);
+  const [requestArrKey, setRequestArrKey] = useState([]);
+  const db = getDatabase();
+  const reqRef = ref(db, "friendRequest/");
   const [show, setShow] = useState(false);
+  useEffect(() => {
+    onValue(reqRef, (snapshot) => {
+      const requestArr = [];
+      const requestArrKey = [];
+      snapshot.forEach((requests) => {
+        requestArr.push(requests.val().senderId + requests.val().receiverId);
+        requestArrKey.push(requests.key + "__" + requests.val().receiverId);
+      });
+      setRequestArr(requestArr);
+      setRequestArrKey(requestArrKey);
+    });
+  }, []);
   return (
     <div className="relative w-1/3 p-4 overflow-hidden duration-75 rounded-xl hover:shadow-primary_shadow">
       {show && (
@@ -40,84 +64,6 @@ const FriendRequest = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh]  overflow-y-auto ">
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[55%]"
-        >
-          <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-            <h4 className="w-full text-center text-white rounded-md bg-primary">
-              confirm
-            </h4>
-            <h4>cancel</h4>
-          </div>
-        </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"

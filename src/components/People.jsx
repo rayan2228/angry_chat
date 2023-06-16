@@ -47,23 +47,12 @@ const People = () => {
       setRequestArrKey(requestArrKey);
     });
   }, []);
-  // console.log(requestArrKey);
   const handleCancel = (id) => {
     id.map((val) => {
       if (val) {
         remove(ref(db, "friendRequest/" + val));
-        // console.log(val);
       }
     });
-    // array.map((value) => {
-    //   if (
-    //     value.split("__").includes(currentUser.uid + id) ||
-    //     value.split("__").includes(currentUser.uid + id)
-    //   ) {
-    //     remove(ref(db, "friendRequest/" + value.split("__")[1]));
-    //   }
-    // });
-    // console.log("array", array, "id", id);
   };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
