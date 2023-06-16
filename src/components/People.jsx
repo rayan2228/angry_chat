@@ -44,7 +44,10 @@ const People = () => {
       snapshot.forEach((requests) => {
         requestArr.push(requests.val().senderId + requests.val().receiverId);
         requestArrKey.push(requests.key + "__" + requests.val().receiverId);
-        receiverIdArr.push(requests.val().receiverId)
+        receiverIdArr.push({
+          receiver: requests.val().receiverId,
+          sender: requests.val().senderId,
+        });
       });
       setRequestArr(requestArr);
       setRequestArrKey(requestArrKey);
@@ -76,8 +79,7 @@ const People = () => {
       </div>
       <div className="h-[40vh] overflow-y-auto ">
         {userList.map((user) => (
-          receiverIdArr.map((receiverIdVal)=>(
-            receiverIdVal !== currentUser.uid ? <PeopleLayout
+          <PeopleLayout
             src={user.profile_picture}
             name={user.username}
             classNameFlex="gap-x-4"
@@ -85,7 +87,7 @@ const People = () => {
             key={user.userId}
           >
             {requestArr.includes(currentUser.uid + user.userId) ||
-              requestArr.includes(user.userId + currentUser.uid) ? (
+            requestArr.includes(user.userId + currentUser.uid) ? (
               <p
                 className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
                 onClick={() =>
@@ -108,8 +110,41 @@ const People = () => {
                 Add
               </p>
             )}
-          </PeopleLayout> : ""
-          ))
+          </PeopleLayout>
+          // receiverIdArr.map((value)=>(
+          //   value.receiver !== currentUser.uid && value.sender !== user.userId ? <PeopleLayout
+          //   src={user.profile_picture}
+          //   name={user.username}
+          //   classNameFlex="gap-x-4"
+          //   classNameHeading="w-[60%]"
+          //   key={user.userId}
+          // >
+          //   {requestArr.includes(currentUser.uid + user.userId) ||
+          //     requestArr.includes(user.userId + currentUser.uid) ? (
+          //     <p
+          //       className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+          //       onClick={() =>
+          //         handleCancel(
+          //           requestArrKey.map((value) =>
+          //             value.split("__")[1] === user.userId
+          //               ? value.split("__")[0]
+          //               : ""
+          //           )
+          //         )
+          //       }
+          //     >
+          //       cancel
+          //     </p>
+          //   ) : (
+          //     <p
+          //       className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+          //       onClick={() => handleAdd(user.userId)}
+          //     >
+          //       Add
+          //     </p>
+          //   )}
+          // </PeopleLayout> : ""
+          // ))
         ))}
       </div>
     </div>
