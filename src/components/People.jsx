@@ -90,7 +90,7 @@ const People = () => {
             key={user.userId}
           >
             {requestArr.includes(currentUser.uid + user.userId) ||
-            requestArr.includes(user.userId + currentUser.uid) ? (
+              requestArr.includes(user.userId + currentUser.uid) ? (
               <p
                 className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
                 onClick={() =>
