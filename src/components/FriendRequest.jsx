@@ -35,8 +35,6 @@ const FriendRequest = () => {
       });
       setRequestList(requestList);
     });
-  }, []);
-  useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];
       snapshot.forEach((user) => {

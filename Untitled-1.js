@@ -12,3 +12,6 @@
 >
   cancel
 </p>;
+friends.includes(currentUser.uid + user.userId) ||
+            friends.includes(user.userId + currentUser.uid) && (
+            <h1>helo</h1>
