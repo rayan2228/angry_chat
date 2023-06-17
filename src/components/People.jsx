@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { useSelector } from "react-redux";
 const People = () => {
-  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const currentUser = useSelector((state) => state.userLoginInfo.userLoginInfo);
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
@@ -47,7 +48,6 @@ const People = () => {
       setFriendArr(friendArr);
     });
   }, []);
-  console.log(friendArr);
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">

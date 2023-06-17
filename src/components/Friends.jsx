@@ -4,7 +4,7 @@ import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
 const Friends = () => {
   return (
-    <div className="w-1/3 p-4 rounded-xl hover:shadow-primary_shadow duration-75">
+    <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         Friend
       </h2>
@@ -19,62 +19,6 @@ const Friends = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh]  overflow-y-auto ">
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option />
-        </PeopleLayout>
         <PeopleLayout
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"

@@ -12,10 +12,10 @@ import {
   set,
   push,
 } from "firebase/database";
+import { useSelector } from "react-redux";
 const FriendRequest = () => {
-  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const currentUser = useSelector((state) => state.userLoginInfo.userLoginInfo);
   const [requestList, setRequestList] = useState([]);
-  const [requestArrKey, setRequestArrKey] = useState([]);
   const [users, setUsers] = useState([]);
   const db = getDatabase();
   const reqRef = ref(db, "friendRequest/");
@@ -25,14 +25,12 @@ const FriendRequest = () => {
   useEffect(() => {
     onValue(reqRef, (snapshot) => {
       const requestList = [];
-      // const requestArrKey = [];
       snapshot.forEach((requests) => {
         requestList.push({
           receiver: requests.val().receiverId,
           sender: requests.val().senderId,
           key: requests.key,
         });
-        // requestArrKey.push(requests.key + "__" + requests.val().receiverId);
       });
       setRequestList(requestList);
     });
@@ -112,9 +110,7 @@ const FriendRequest = () => {
                         <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
                           <h4
                             className="w-full text-center text-white rounded-md bg-primary"
-                            onClick={() =>
-                              handleConfirm(reqId.key, val.userId)
-                            }
+                            onClick={() => handleConfirm(reqId.key, val.userId)}
                           >
                             confirm
                           </h4>
