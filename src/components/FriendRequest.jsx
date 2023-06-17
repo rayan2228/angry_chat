@@ -4,7 +4,14 @@ import PeopleLayout from "./layouts/PeopleLayout";
 import Flex from "./layouts/Flex";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RxCross2 } from "react-icons/rx";
-import { getDatabase, ref, onValue, remove } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  remove,
+  set,
+  push,
+} from "firebase/database";
 const FriendRequest = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [requestList, setRequestList] = useState([]);
@@ -41,6 +48,13 @@ const FriendRequest = () => {
   }, []);
   const HandleCancel = (id) => {
     remove(ref(db, "friendRequest/" + id));
+  };
+  const handleConfirm = (key, userId) => {
+    set(push(ref(db, "friends/")), {
+      conformerId: currentUser.uid,
+      requesterId: userId,
+    });
+    remove(ref(db, "friendRequest/" + key));
   };
   return (
     <>
@@ -96,7 +110,12 @@ const FriendRequest = () => {
                         key={val.userId}
                       >
                         <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-                          <h4 className="w-full text-center text-white rounded-md bg-primary">
+                          <h4
+                            className="w-full text-center text-white rounded-md bg-primary"
+                            onClick={() =>
+                              handleConfirm(reqId.key, val.userId)
+                            }
+                          >
                             confirm
                           </h4>
                           <h4 onClick={() => HandleCancel(reqId.key)}>

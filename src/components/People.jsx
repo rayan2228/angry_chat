@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
-import {
-  getDatabase,
-  ref,
-  onValue,
-  set,
-  push,
-} from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 const People = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
+  const [friendArr, setFriendArr] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
+  const friendRef = ref(db, "friends/");
 
   useEffect(() => {
     onValue(usersRef, (snapshot) => {
@@ -42,7 +38,16 @@ const People = () => {
       setRequestArr(requestArr);
     });
   }, []);
-
+  useEffect(() => {
+    onValue(friendRef, (snapshot) => {
+      const friendArr = [];
+      snapshot.forEach((friend) => {
+        friendArr.push(friend.val().conformerId + friend.val().requesterId);
+      });
+      setFriendArr(friendArr);
+    });
+  }, []);
+  console.log(friendArr);
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -61,8 +66,10 @@ const People = () => {
       <div className="h-[40vh] overflow-y-auto ">
         {userList.map(
           (user) =>
-            !(requestArr.includes(currentUser.uid + user.userId) ||
-              requestArr.includes(user.userId + currentUser.uid) )&& (
+            !(
+              (friendArr.includes(currentUser.uid + user.userId) ||
+                friendArr.includes(user.userId + currentUser.uid))
+            ) && (
               <PeopleLayout
                 src={user.profile_picture}
                 name={user.username}
