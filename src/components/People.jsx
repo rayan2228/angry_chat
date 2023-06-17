@@ -67,8 +67,10 @@ const People = () => {
         {userList.map(
           (user) =>
             !(
-              (friendArr.includes(currentUser.uid + user.userId) ||
-                friendArr.includes(user.userId + currentUser.uid))
+              friendArr.includes(currentUser.uid + user.userId) ||
+              friendArr.includes(user.userId + currentUser.uid) ||
+              requestArr.includes(currentUser.uid + user.userId) ||
+              requestArr.includes(user.userId + currentUser.uid)
             ) && (
               <PeopleLayout
                 src={user.profile_picture}
