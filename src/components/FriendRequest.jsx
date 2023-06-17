@@ -54,7 +54,9 @@ const FriendRequest = () => {
               />
               <p
                 className="absolute px-6 py-3 text-lg font-normal text-black capitalize bg-white rounded-md cursor-pointer top-10 right-3 font-inter"
-                onClick={() => setSendReq(true)}
+                onClick={() => {
+                  setSendReq(true), setShow(false);
+                }}
               >
                 View Sent Requests
               </p>
@@ -118,7 +120,9 @@ const FriendRequest = () => {
               />
               <p
                 className="absolute px-6 py-3 text-lg font-normal text-black capitalize bg-white rounded-md cursor-pointer top-10 right-3 font-inter"
-                onClick={() => setSendReq(false)}
+                onClick={() => {
+                  setSendReq(false), setShow(false);
+                }}
               >
                 View Friend Requests
               </p>
@@ -157,14 +161,12 @@ const FriendRequest = () => {
                         classNameHeading="w-[55%]"
                         key={val.userId}
                       >
-                        <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-                          <h4 className="w-full text-center text-white rounded-md bg-primary">
-                            confirm
-                          </h4>
-                          <h4 onClick={() => HandleCancel(reqId.key)}>
-                            cancel
-                          </h4>
-                        </div>
+                        <p
+                          className="text-lg font-normal text-center text-white capitalize bg-red-500 rounded-md cursor-pointer font-inter w-[24%]"
+                          onClick={() => HandleCancel(reqId.key)}
+                        >
+                          cancel
+                        </p>
                       </PeopleLayout>
                     )
                 )

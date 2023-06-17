@@ -7,13 +7,11 @@ import {
   onValue,
   set,
   push,
-  remove,
 } from "firebase/database";
 const People = () => {
   const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
-  // const [requestArrKey, setRequestArrKey] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
@@ -38,23 +36,13 @@ const People = () => {
   useEffect(() => {
     onValue(reqRef, (snapshot) => {
       const requestArr = [];
-      // const requestArrKey = [];
       snapshot.forEach((requests) => {
         requestArr.push(requests.val().senderId + requests.val().receiverId);
-        // requestArrKey.push(requests.key + "__" + requests.val().receiverId);
       });
       setRequestArr(requestArr);
-      // setRequestArrKey(requestArrKey);
     });
   }, []);
 
-  // const handleCancel = (id) => {
-  //   id.map((val) => {
-  //     if (val) {
-  //       remove(ref(db, "friendRequest/" + val));
-  //     }
-  //   });
-  // };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
