@@ -8,7 +8,7 @@ import { HiOutlineKey } from "react-icons/hi";
 import { BsSun } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { ToastContainer, toast } from "react-toastify";
-import { getDatabase, update, ref as dbRef } from "firebase/database";
+import { getDatabase, update, ref as dbRef, get } from "firebase/database";
 import {
   getAuth,
   signOut,
@@ -32,7 +32,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
   const db = getDatabase();
-  const auth = getAuth();
+  let auth = getAuth();
   const currentUser = auth.currentUser;
   const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
   const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
@@ -55,7 +55,7 @@ const Settings = () => {
     if (!data) {
       navigate("/singin");
     }
-  }, [data, currentUser]);
+  }, [data]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -198,7 +198,7 @@ const Settings = () => {
               </div>
             ) : (
               <Img
-                src={dataFromLocal ? dataFromLocal.photoURL : ""}
+                src={currentUser ? currentUser.photoURL : ""}
                 alt="user"
                 className="w-[100px]"
               />
@@ -340,7 +340,7 @@ const Settings = () => {
               onClick={() => {
                 setUpdateUserDataShow(false),
                   setError(""),
-                  setUserName(dataFromLocal.displayName);
+                  setUserName(currentUser.displayName);
               }}
             >
               cancel
@@ -422,13 +422,13 @@ const Settings = () => {
               </h2>
               <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
                 <Img
-                  src={dataFromLocal ? dataFromLocal.photoURL : ""}
+                  src={currentUser ? currentUser.photoURL : ""}
                   alt="user"
                   className="w-[48px] "
                 />
                 <div className="w-[60%]">
                   <h2 className="text-base font-semibold font-inter ">
-                    {dataFromLocal ? dataFromLocal.displayName : ""}
+                    {currentUser ? currentUser.displayName : ""}
                   </h2>
                   <h5 className="text-xs font-normal capitalize font-inter">
                     Stay Safe Stay Home

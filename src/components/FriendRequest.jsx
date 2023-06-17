@@ -12,9 +12,10 @@ import {
   set,
   push,
 } from "firebase/database";
-import { useSelector } from "react-redux";
+import { getAuth } from "firebase/auth";
 const FriendRequest = () => {
-  const currentUser = useSelector((state) => state.userLoginInfo.userLoginInfo);
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
   const [requestList, setRequestList] = useState([]);
   const [users, setUsers] = useState([]);
   const db = getDatabase();
