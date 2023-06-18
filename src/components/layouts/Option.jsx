@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-const Option = () => {
+const Option = ({ handleUnfriend }) => {
   const [show, setShow] = useState(false);
+
   return (
     <div className="w-[10%] font-normal text-xs text-right cursor-pointer relative ">
       <BsThreeDotsVertical onClick={() => setShow(!show)} />
@@ -11,7 +12,10 @@ const Option = () => {
             <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
               message
             </li>
-            <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
+            <li
+              className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]"
+              onClick={handleUnfriend}
+            >
               unfriend
             </li>
             <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">

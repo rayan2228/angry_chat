@@ -17,6 +17,7 @@ const Friends = () => {
   const currentUser = auth.currentUser;
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [friendsKey, setFriendsKey] = useState([]);
   const userRef = ref(db, "users/");
   const friendRef = ref(db, "friends/");
   useEffect(() => {
@@ -29,12 +30,24 @@ const Friends = () => {
     });
     onValue(friendRef, (snapshot) => {
       const friends = [];
+      const friendsKey = [];
       snapshot.forEach((friend) => {
         friends.push(friend.val().conformerId + friend.val().requesterId);
+        friendsKey.push(
+          friend.key +
+            "__" +
+            friend.val().conformerId +
+            "__" +
+            friend.val().requesterId
+        );
       });
       setFriends(friends);
+      setFriendsKey(friendsKey);
     });
   }, []);
+    const handleUnfriend = (unfriendKey) => {
+      console.log(unfriendKey);
+    };
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -52,18 +65,6 @@ const Friends = () => {
       </div>
       <div className="h-[40vh]  overflow-y-auto ">
         {users.map((user) =>
-          // friends.includes(currentUser.uid + user.userId) ||
-          // (friends.includes(user.userId + currentUser.uid) && (
-          //   <PeopleLayout
-          //     src={user.profile_picture}
-          //     name={user.username}
-          //     classNameFlex="gap-x-4"
-          //     classNameHeading="w-[75%]"
-          //     key={user.userId}
-          //   >
-          //     <Option />
-          //   </PeopleLayout>
-          // ))
           friends.includes(currentUser.uid + user.userId) ||
           friends.includes(user.userId + currentUser.uid) ? (
             <PeopleLayout
@@ -73,7 +74,15 @@ const Friends = () => {
               classNameHeading="w-[75%]"
               key={user.userId}
             >
-              <Option />
+              <Option  handleUnfriend={() =>
+                handleUnfriend(
+                  friendsKey.map(
+                    (val) =>
+                      val.split("__").includes(user.userId) &&
+                      val.split("__")[0]
+                  )
+                )
+              }/>
             </PeopleLayout>
           ) : (
             ""
