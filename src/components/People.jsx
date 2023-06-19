@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BsSearch} from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
@@ -25,14 +25,6 @@ const People = () => {
       });
       setUserList(users);
     });
-  }, []);
-  const handleAdd = (userId) => {
-    set(push(ref(db, "friendRequest/")), {
-      senderId: currentUser.uid,
-      receiverId: userId,
-    });
-  };
-  useEffect(() => {
     onValue(reqRef, (snapshot) => {
       const requestArr = [];
       snapshot.forEach((requests) => {
@@ -40,8 +32,6 @@ const People = () => {
       });
       setRequestArr(requestArr);
     });
-  }, []);
-  useEffect(() => {
     onValue(friendRef, (snapshot) => {
       const friendArr = [];
       snapshot.forEach((friend) => {
@@ -50,6 +40,12 @@ const People = () => {
       setFriendArr(friendArr);
     });
   }, []);
+  const handleAdd = (userId) => {
+    set(push(ref(db, "friendRequest/")), {
+      senderId: currentUser.uid,
+      receiverId: userId,
+    });
+  };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">

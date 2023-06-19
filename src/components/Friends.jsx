@@ -45,9 +45,9 @@ const Friends = () => {
       setFriendsKey(friendsKey);
     });
   }, []);
-    const handleUnfriend = (unfriendKey) => {
-      console.log(unfriendKey);
-    };
+  const handleUnfriend = (unfriendKey) => {
+     remove(ref(db, "friends/" + unfriendKey.toString()));
+  };
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -74,15 +74,17 @@ const Friends = () => {
               classNameHeading="w-[75%]"
               key={user.userId}
             >
-              <Option  handleUnfriend={() =>
-                handleUnfriend(
-                  friendsKey.map(
-                    (val) =>
-                      val.split("__").includes(user.userId) &&
-                      val.split("__")[0]
+              <Option
+                handleUnfriend={() =>
+                  handleUnfriend(
+                    friendsKey.map(
+                      (val) =>
+                        val.split("__").includes(user.userId) &&
+                        val.split("__")[0]
+                    )
                   )
-                )
-              }/>
+                }
+              />
             </PeopleLayout>
           ) : (
             ""
