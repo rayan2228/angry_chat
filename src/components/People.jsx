@@ -10,10 +10,12 @@ const People = () => {
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
+  const [blockArr, setBlockArr] = useState([]);
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
   const friendRef = ref(db, "friends/");
+  const blockRef = ref(db, "blocks/");
 
   useEffect(() => {
     onValue(usersRef, (snapshot) => {
@@ -38,6 +40,15 @@ const People = () => {
         friendArr.push(friend.val().conformerId + friend.val().requesterId);
       });
       setFriendArr(friendArr);
+    });
+    onValue(blockRef, (snapshot) => {
+      const blockArr = [];
+      snapshot.forEach((blockedUser) => {
+        blockArr.push(
+          blockedUser.val().currentUserId + blockedUser.val().blockId
+        );
+      });
+      setBlockArr(blockArr);
     });
   }, []);
   const handleAdd = (userId) => {
@@ -68,7 +79,9 @@ const People = () => {
               friendArr.includes(currentUser.uid + user.userId) ||
               friendArr.includes(user.userId + currentUser.uid) ||
               requestArr.includes(currentUser.uid + user.userId) ||
-              requestArr.includes(user.userId + currentUser.uid)
+              requestArr.includes(user.userId + currentUser.uid) ||
+              blockArr.includes(currentUser.uid + user.userId) ||
+              blockArr.includes(user.userId + currentUser.uid)
             ) && (
               <PeopleLayout
                 src={user.profile_picture}

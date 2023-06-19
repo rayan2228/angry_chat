@@ -22,20 +22,13 @@ const BlockList = () => {
           src="../../../public/assets/friend.png"
           name="Jenny Wilson"
           classNameFlex="gap-x-4"
-          classNameHeading="w-[70%]"
+          classNameHeading="w-[60%]"
         >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[15%]">
-            Block
-          </p>
-        </PeopleLayout>
-        <PeopleLayout
-          src="../../../public/assets/friend.png"
-          name="Jenny Wilson"
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[70%]"
-        >
-          <p className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer w-[15%]">
-            Block
+          <p
+            className="text-lg font-normal text-center text-white capitalize bg-red-500 rounded-md cursor-pointer font-inter w-[30%]"
+            // onClick={() => HandleCancel(reqId.key)}
+          >
+            unblock
           </p>
         </PeopleLayout>
       </div>

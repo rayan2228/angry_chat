@@ -20,6 +20,7 @@ const Friends = () => {
   const [friendsKey, setFriendsKey] = useState([]);
   const userRef = ref(db, "users/");
   const friendRef = ref(db, "friends/");
+  const blockRef = ref(db, "blocks/");
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];
@@ -46,7 +47,22 @@ const Friends = () => {
     });
   }, []);
   const handleUnfriend = (unfriendKey) => {
-     remove(ref(db, "friends/" + unfriendKey.toString()));
+    unfriendKey.map((key) => {
+      if (key) {
+        remove(ref(db, "friends/" + key.toString()));
+      }
+    });
+  };
+  const handleBlock = (blockKey, userId) => {
+    blockKey.map((key) => {
+      if (key) {
+        remove(ref(db, "friends/" + key.toString()));
+      }
+    });
+    set(push(blockRef), {
+      currentUserId: currentUser.uid,
+      blockId: userId,
+    });
   };
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow">
@@ -82,6 +98,16 @@ const Friends = () => {
                         val.split("__").includes(user.userId) &&
                         val.split("__")[0]
                     )
+                  )
+                }
+                handleBlock={() =>
+                  handleBlock(
+                    friendsKey.map(
+                      (val) =>
+                        val.split("__").includes(user.userId) &&
+                        val.split("__")[0]
+                    ),
+                    user.userId
                   )
                 }
               />
