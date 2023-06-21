@@ -10,6 +10,7 @@ const People = () => {
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
   const [blockArr, setBlockArr] = useState([]);
+  const [search, setSearch] = useState("sadsd");
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
@@ -56,6 +57,9 @@ const People = () => {
       receiverId: userId,
     });
   };
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+  };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -64,10 +68,10 @@ const People = () => {
       <div className="relative mt-4 mb-5">
         <input
           type="search"
-          name=""
-          id=""
           className="w-full p-2 pl-[53px] rounded-md outline-none placeholder:font-inter placeholder:font-normal placeholder:text-sm placeholder:capitalize placeholder:text-secondaryTextColor border border-[#D3D3D3]"
           placeholder="search"
+          value={search}
+          onChange={handleSearch}
         />
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
