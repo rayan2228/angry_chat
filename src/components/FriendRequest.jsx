@@ -13,11 +13,14 @@ import {
   push,
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import SearchInput from "./layouts/SearchInput";
 const FriendRequest = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const [requestList, setRequestList] = useState([]);
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchUserList, setSearchUserList] = useState([]);
   const db = getDatabase();
   const reqRef = ref(db, "friendRequest/");
   const userRef = ref(db, "users/");
@@ -53,6 +56,22 @@ const FriendRequest = () => {
     });
     remove(ref(db, "friendRequest/" + key));
   };
+  const handleSearch = (e) => {
+    let searchUserList = [];
+    if (e.target.value) {
+      users.filter((value) => {
+        if (
+          value.username.toLowerCase().includes(e.target.value.toLowerCase())
+        ) {
+          searchUserList.push(value);
+        }
+      });
+      setSearchUserList(searchUserList);
+    } else {
+      setSearchUserList([]);
+    }
+    setSearch(e.target.value);
+  };
   return (
     <>
       {!sendReq && (
@@ -82,45 +101,69 @@ const FriendRequest = () => {
               onClick={() => setShow(true)}
             />
           </Flex>
-          <div className="relative mt-4 mb-5">
-            <input
-              type="search"
-              name=""
-              id=""
-              className="w-full p-2 pl-[53px] rounded-md outline-none placeholder:font-inter placeholder:font-normal placeholder:text-sm placeholder:capitalize placeholder:text-secondaryTextColor border border-[#D3D3D3]"
-              placeholder="search"
-            />
-            <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
-          </div>
+          <SearchInput value={search} handle={handleSearch} />
           <div className="h-[40vh]  overflow-y-auto ">
-            {requestList.map(
-              (reqId) =>
-                reqId.receiver === currentUser.uid &&
-                users.map(
-                  (val) =>
-                    val.userId === reqId.sender && (
-                      <PeopleLayout
-                        src={val.profile_picture}
-                        name={val.username}
-                        classNameFlex="gap-x-4"
-                        classNameHeading="w-[55%]"
-                        key={val.userId}
-                      >
-                        <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
-                          <h4
-                            className="w-full text-center text-white rounded-md bg-primary"
-                            onClick={() => handleConfirm(reqId.key, val.userId)}
+            {searchUserList.length
+              ? requestList.map(
+                  (reqId) =>
+                    reqId.receiver === currentUser.uid &&
+                    searchUserList.map(
+                      (val) =>
+                        val.userId === reqId.sender && (
+                          <PeopleLayout
+                            src={val.profile_picture}
+                            name={val.username}
+                            classNameFlex="gap-x-4"
+                            classNameHeading="w-[55%]"
+                            key={val.userId}
                           >
-                            confirm
-                          </h4>
-                          <h4 onClick={() => HandleCancel(reqId.key)}>
-                            cancel
-                          </h4>
-                        </div>
-                      </PeopleLayout>
+                            <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+                              <h4
+                                className="w-full text-center text-white rounded-md bg-primary"
+                                onClick={() =>
+                                  handleConfirm(reqId.key, val.userId)
+                                }
+                              >
+                                confirm
+                              </h4>
+                              <h4 onClick={() => HandleCancel(reqId.key)}>
+                                cancel
+                              </h4>
+                            </div>
+                          </PeopleLayout>
+                        )
                     )
                 )
-            )}
+              : requestList.map(
+                  (reqId) =>
+                    reqId.receiver === currentUser.uid &&
+                    users.map(
+                      (val) =>
+                        val.userId === reqId.sender && (
+                          <PeopleLayout
+                            src={val.profile_picture}
+                            name={val.username}
+                            classNameFlex="gap-x-4"
+                            classNameHeading="w-[55%]"
+                            key={val.userId}
+                          >
+                            <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+                              <h4
+                                className="w-full text-center text-white rounded-md bg-primary"
+                                onClick={() =>
+                                  handleConfirm(reqId.key, val.userId)
+                                }
+                              >
+                                confirm
+                              </h4>
+                              <h4 onClick={() => HandleCancel(reqId.key)}>
+                                cancel
+                              </h4>
+                            </div>
+                          </PeopleLayout>
+                        )
+                    )
+                )}
           </div>
         </div>
       )}
@@ -151,40 +194,55 @@ const FriendRequest = () => {
               onClick={() => setShow(true)}
             />
           </Flex>
-          <div className="relative mt-4 mb-5">
-            <input
-              type="search"
-              name=""
-              id=""
-              className="w-full p-2 pl-[53px] rounded-md outline-none placeholder:font-inter placeholder:font-normal placeholder:text-sm placeholder:capitalize placeholder:text-secondaryTextColor border border-[#D3D3D3]"
-              placeholder="search"
-            />
-            <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
-          </div>
+          <SearchInput value={search} handle={handleSearch} />
           <div className="h-[40vh]  overflow-y-auto ">
-            {requestList.map(
-              (reqId) =>
-                reqId.sender === currentUser.uid &&
-                users.map(
-                  (val) =>
-                    val.userId === reqId.receiver && (
-                      <PeopleLayout
-                        src={val.profile_picture}
-                        name={val.username}
-                        classNameFlex="gap-x-4"
-                        classNameHeading="w-[55%]"
-                        key={val.userId}
-                      >
-                        <p
-                          className="text-lg font-normal text-center text-white capitalize bg-red-500 rounded-md cursor-pointer font-inter w-[24%]"
-                          onClick={() => HandleCancel(reqId.key)}
-                        >
-                          cancel
-                        </p>
-                      </PeopleLayout>
+            {searchUserList.length
+              ? requestList.map(
+                  (reqId) =>
+                    reqId.sender === currentUser.uid &&
+                    searchUserList.map(
+                      (val) =>
+                        val.userId === reqId.receiver && (
+                          <PeopleLayout
+                            src={val.profile_picture}
+                            name={val.username}
+                            classNameFlex="gap-x-4"
+                            classNameHeading="w-[55%]"
+                            key={val.userId}
+                          >
+                            <p
+                              className="text-lg font-normal text-center text-white capitalize bg-red-500 rounded-md cursor-pointer font-inter w-[24%]"
+                              onClick={() => HandleCancel(reqId.key)}
+                            >
+                              cancel
+                            </p>
+                          </PeopleLayout>
+                        )
                     )
                 )
-            )}
+              : requestList.map(
+                  (reqId) =>
+                    reqId.sender === currentUser.uid &&
+                    users.map(
+                      (val) =>
+                        val.userId === reqId.receiver && (
+                          <PeopleLayout
+                            src={val.profile_picture}
+                            name={val.username}
+                            classNameFlex="gap-x-4"
+                            classNameHeading="w-[55%]"
+                            key={val.userId}
+                          >
+                            <p
+                              className="text-lg font-normal text-center text-white capitalize bg-red-500 rounded-md cursor-pointer font-inter w-[24%]"
+                              onClick={() => HandleCancel(reqId.key)}
+                            >
+                              cancel
+                            </p>
+                          </PeopleLayout>
+                        )
+                    )
+                )}
           </div>
         </div>
       )}

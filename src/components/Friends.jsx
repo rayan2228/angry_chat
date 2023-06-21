@@ -69,7 +69,7 @@ const Friends = () => {
   const handleSearch = (e) => {
     let searchUserList = [];
     if (e.target.value) {
-      userList.filter((value) => {
+      users.filter((value) => {
         if (
           value.username.toLowerCase().includes(e.target.value.toLowerCase())
         ) {
