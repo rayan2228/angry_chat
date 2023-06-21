@@ -8,7 +8,7 @@ const People = () => {
   const currentUser = auth.currentUser;
   const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
-  const [searchUserList, setsearchUserList] = useState([]);
+  const [searchUserList, setSearchUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
   const [blockArr, setBlockArr] = useState([]);
@@ -60,12 +60,22 @@ const People = () => {
     });
   };
   const handleSearch = (e) => {
-    userList.filter((value) => {
-      
-      console.log(value.username);
-    })
+    let searchUserList = [];
+    if (e.target.value) {
+      userList.filter((value) => {
+        if (
+          value.username.toLowerCase().includes(e.target.value.toLowerCase())
+        ) {
+          searchUserList.push(value);
+        }
+      });
+      setSearchUserList(searchUserList);
+    } else {
+      setSearchUserList([]);
+    }
     setSearch(e.target.value);
   };
+  console.log(searchUserList);
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -82,7 +92,8 @@ const People = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh] overflow-y-auto ">
-        {userList.map(
+        {searchUserList ? "asds" : ""}
+        {/* {userList.map(
           (user) =>
             !(
               friendArr.includes(currentUser.uid + user.userId) ||
@@ -107,7 +118,7 @@ const People = () => {
                 </p>
               </PeopleLayout>
             )
-        )}
+        )} */}
       </div>
     </div>
   );
