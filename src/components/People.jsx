@@ -6,11 +6,13 @@ import { getAuth } from "firebase/auth";
 const People = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
+  const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
   const [userList, setUserList] = useState([]);
+  const [searchUserList, setsearchUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
   const [blockArr, setBlockArr] = useState([]);
-  const [search, setSearch] = useState("sadsd");
+  const [search, setSearch] = useState("");
   const db = getDatabase();
   const usersRef = ref(db, "users/");
   const reqRef = ref(db, "friendRequest/");
@@ -21,7 +23,7 @@ const People = () => {
     onValue(usersRef, (snapshot) => {
       let users = [];
       snapshot.forEach((user) => {
-        if (currentUser.uid != user.key) {
+        if (dataFromLocal.uid != user.key) {
           users.push({ ...user.val(), userId: user.key });
         }
       });
@@ -58,7 +60,11 @@ const People = () => {
     });
   };
   const handleSearch = (e) => {
-    console.log(e.target.value);
+    userList.filter((value) => {
+      
+      console.log(value.username);
+    })
+    setSearch(e.target.value);
   };
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
