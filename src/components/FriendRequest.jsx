@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Flex from "./layouts/Flex";
 import { BsThreeDotsVertical } from "react-icons/bs";
