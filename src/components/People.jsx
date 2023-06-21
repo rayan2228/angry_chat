@@ -75,7 +75,6 @@ const People = () => {
     }
     setSearch(e.target.value);
   };
-  console.log(searchUserList);
   return (
     <div className="w-1/3 p-4 capitalize duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold font-inter text-textColor">
@@ -92,33 +91,59 @@ const People = () => {
         <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
       </div>
       <div className="h-[40vh] overflow-y-auto ">
-        {searchUserList ? "asds" : ""}
-        {/* {userList.map(
-          (user) =>
-            !(
-              friendArr.includes(currentUser.uid + user.userId) ||
-              friendArr.includes(user.userId + currentUser.uid) ||
-              requestArr.includes(currentUser.uid + user.userId) ||
-              requestArr.includes(user.userId + currentUser.uid) ||
-              blockArr.includes(currentUser.uid + user.userId) ||
-              blockArr.includes(user.userId + currentUser.uid)
-            ) && (
-              <PeopleLayout
-                src={user.profile_picture}
-                name={user.username}
-                classNameFlex="gap-x-4"
-                classNameHeading="w-[60%]"
-                key={user.userId}
-              >
-                <p
-                  className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                  onClick={() => handleAdd(user.userId)}
-                >
-                  Add
-                </p>
-              </PeopleLayout>
+        {searchUserList.length
+          ? searchUserList.map(
+              (user) =>
+                !(
+                  friendArr.includes(currentUser.uid + user.userId) ||
+                  friendArr.includes(user.userId + currentUser.uid) ||
+                  requestArr.includes(currentUser.uid + user.userId) ||
+                  requestArr.includes(user.userId + currentUser.uid) ||
+                  blockArr.includes(currentUser.uid + user.userId) ||
+                  blockArr.includes(user.userId + currentUser.uid)
+                ) && (
+                  <PeopleLayout
+                    src={user.profile_picture}
+                    name={user.username}
+                    classNameFlex="gap-x-4"
+                    classNameHeading="w-[60%]"
+                    key={user.userId}
+                  >
+                    <p
+                      className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                      onClick={() => handleAdd(user.userId)}
+                    >
+                      Add
+                    </p>
+                  </PeopleLayout>
+                )
             )
-        )} */}
+          : userList.map(
+              (user) =>
+                !(
+                  friendArr.includes(currentUser.uid + user.userId) ||
+                  friendArr.includes(user.userId + currentUser.uid) ||
+                  requestArr.includes(currentUser.uid + user.userId) ||
+                  requestArr.includes(user.userId + currentUser.uid) ||
+                  blockArr.includes(currentUser.uid + user.userId) ||
+                  blockArr.includes(user.userId + currentUser.uid)
+                ) && (
+                  <PeopleLayout
+                    src={user.profile_picture}
+                    name={user.username}
+                    classNameFlex="gap-x-4"
+                    classNameHeading="w-[60%]"
+                    key={user.userId}
+                  >
+                    <p
+                      className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                      onClick={() => handleAdd(user.userId)}
+                    >
+                      Add
+                    </p>
+                  </PeopleLayout>
+                )
+            )}
       </div>
     </div>
   );
