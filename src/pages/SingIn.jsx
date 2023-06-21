@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Flex from "../components/layouts/Flex";
 import Input from "../components/layouts/Input";
 import Checkbox from "../components/layouts/Checkbox";
 import Button from "../components/layouts/Button";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ThreeDots } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 
 const SingIn = () => {
+  const data = JSON.parse(localStorage.getItem("userLoginInfo"));
+
   // dispatch
   const dispatch = useDispatch();
   // auth
@@ -29,6 +28,11 @@ const SingIn = () => {
   //  errors state
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  useEffect(() => {
+    if (data) {
+      navigate("/home");
+    }
+  }, [data]);
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setEmailError("");

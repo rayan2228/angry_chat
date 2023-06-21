@@ -15,7 +15,9 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { getDatabase, ref, set } from "firebase/database";
 
+
 const SingUp = () => {
+  const data = JSON.parse(localStorage.getItem("userLoginInfo"));
   // auth
   const auth = getAuth();
   // navigate
@@ -42,28 +44,32 @@ const SingUp = () => {
     setPassword(e.target.value);
   };
   useEffect(() => {
-    if (password) {
-      if (!/^(?=.*[a-z])/.test(password)) {
-        setPasswordError("The password must contain at least one lowercase");
-      } else if (!/^(?=.*[A-Z])/.test(password)) {
-        setPasswordError("The password must contain at least one uppercase");
-      } else if (!/^(?=.*[0-9])/.test(password)) {
-        setPasswordError(
-          "The password must contain at least one numeric character"
-        );
-      } else if (!/^(?=.*[!@#$%^&*])/.test(password)) {
-        setPasswordError(
-          "The password must contain at least one special character"
-        );
-      } else if (!/^(?=.{8,})/.test(password)) {
-        setPasswordError("The password must be eight characters or longer");
+    if (data) {
+      navigate("/home");
+    } else {
+      if (password) {
+        if (!/^(?=.*[a-z])/.test(password)) {
+          setPasswordError("The password must contain at least one lowercase");
+        } else if (!/^(?=.*[A-Z])/.test(password)) {
+          setPasswordError("The password must contain at least one uppercase");
+        } else if (!/^(?=.*[0-9])/.test(password)) {
+          setPasswordError(
+            "The password must contain at least one numeric character"
+          );
+        } else if (!/^(?=.*[!@#$%^&*])/.test(password)) {
+          setPasswordError(
+            "The password must contain at least one special character"
+          );
+        } else if (!/^(?=.{8,})/.test(password)) {
+          setPasswordError("The password must be eight characters or longer");
+        } else {
+          setPasswordError("");
+        }
       } else {
         setPasswordError("");
       }
-    } else {
-      setPasswordError("");
     }
-  }, [password]);
+  }, [password, data]);
 
   const handleSubmit = () => {
     if (!name) {

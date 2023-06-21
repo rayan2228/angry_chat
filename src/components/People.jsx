@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
-import { useSelector } from "react-redux";
+import { getAuth } from "firebase/auth";
 const People = () => {
-  const currentUser = JSON.parse(
-    useSelector((state) => state.userLoginInfo.userLoginInfo)
-  );
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
   const [userList, setUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
