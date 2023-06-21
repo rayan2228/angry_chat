@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import SearchInput from "./layouts/SearchInput";
 const People = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -80,16 +80,7 @@ const People = () => {
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         People
       </h2>
-      <div className="relative mt-4 mb-5">
-        <input
-          type="search"
-          className="w-full p-2 pl-[53px] rounded-md outline-none placeholder:font-inter placeholder:font-normal placeholder:text-sm placeholder:capitalize placeholder:text-secondaryTextColor border border-[#D3D3D3]"
-          placeholder="search"
-          value={search}
-          onChange={handleSearch}
-        />
-        <BsSearch className="absolute top-[53%] left-7 translate-x-[-50%] translate-y-[-50%] text-2xl" />
-      </div>
+      <SearchInput value={search} handle={handleSearch}/>
       <div className="h-[40vh] overflow-y-auto ">
         {searchUserList.length
           ? searchUserList.map(
