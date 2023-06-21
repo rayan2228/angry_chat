@@ -13,6 +13,7 @@ import {
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
+import NoData from "./layouts/NoData";
 const FriendRequest = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -102,8 +103,9 @@ const FriendRequest = () => {
           </Flex>
           <SearchInput value={search} handle={handleSearch} />
           <div className="h-[40vh]  overflow-y-auto ">
-            {searchUserList.length
-              ? requestList.map(
+            {requestList.length ? (
+              searchUserList.length ? (
+                requestList.map(
                   (reqId) =>
                     reqId.receiver === currentUser.uid &&
                     searchUserList.map(
@@ -133,7 +135,8 @@ const FriendRequest = () => {
                         )
                     )
                 )
-              : requestList.map(
+              ) : (
+                requestList.map(
                   (reqId) =>
                     reqId.receiver === currentUser.uid &&
                     users.map(
@@ -162,7 +165,11 @@ const FriendRequest = () => {
                           </PeopleLayout>
                         )
                     )
-                )}
+                )
+              )
+            ) : (
+              <NoData text="no Friend Requests" />
+            )}
           </div>
         </div>
       )}
@@ -195,8 +202,9 @@ const FriendRequest = () => {
           </Flex>
           <SearchInput value={search} handle={handleSearch} />
           <div className="h-[40vh]  overflow-y-auto ">
-            {searchUserList.length
-              ? requestList.map(
+            {requestList.length ? (
+              searchUserList.length ? (
+                requestList.map(
                   (reqId) =>
                     reqId.sender === currentUser.uid &&
                     searchUserList.map(
@@ -219,7 +227,8 @@ const FriendRequest = () => {
                         )
                     )
                 )
-              : requestList.map(
+              ) : (
+                requestList.map(
                   (reqId) =>
                     reqId.sender === currentUser.uid &&
                     users.map(
@@ -241,7 +250,11 @@ const FriendRequest = () => {
                           </PeopleLayout>
                         )
                     )
-                )}
+                )
+              )
+            ) : (
+              <NoData text="No sent Requests" />
+            )}
           </div>
         </div>
       )}

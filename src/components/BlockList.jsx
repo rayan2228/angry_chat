@@ -3,6 +3,8 @@ import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
+import Flex from "./layouts/Flex";
+import NoData from "./layouts/NoData";
 const BlockList = () => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -59,8 +61,9 @@ const BlockList = () => {
       </h2>
       <SearchInput value={search} handle={handleSearch} />
       <div className="h-[40vh]  overflow-y-auto ">
-        {searchUserList.length
-          ? blockList.map(
+        {blockList.length ? (
+          searchUserList.length ? (
+            blockList.map(
               (blocks) =>
                 blocks.currentUserId === currentUser.uid &&
                 searchUserList.map(
@@ -83,7 +86,8 @@ const BlockList = () => {
                     )
                 )
             )
-          : blockList.map(
+          ) : (
+            blockList.map(
               (blocks) =>
                 blocks.currentUserId === currentUser.uid &&
                 users.map(
@@ -105,7 +109,11 @@ const BlockList = () => {
                       </PeopleLayout>
                     )
                 )
-            )}
+            )
+          )
+        ) : (
+          <NoData text="No Block List"/>
+        )}
       </div>
     </div>
   );
