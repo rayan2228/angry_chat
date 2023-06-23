@@ -11,7 +11,6 @@ import {
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
-import NoData from "./layouts/NoData";
 const Friends = () => {
   const db = getDatabase();
   const auth = getAuth();
@@ -90,7 +89,7 @@ const Friends = () => {
       </h2>
       <SearchInput value={search} handle={handleSearch} />
       <div className="h-[40vh]  overflow-y-auto ">
-        {friends.length ? searchUserList.length
+        {searchUserList.length
           ? searchUserList.map((user) =>
               friends.includes(currentUser.uid + user.userId) ||
               friends.includes(user.userId + currentUser.uid) ? (
@@ -162,7 +161,7 @@ const Friends = () => {
               ) : (
                 ""
               )
-            ): <NoData text="No Friends List"/>}
+            )}
       </div>
     </div>
   );
