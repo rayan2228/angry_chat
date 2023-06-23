@@ -34,8 +34,7 @@ const Settings = () => {
   const db = getDatabase();
   let auth = getAuth();
   const currentUser = auth.currentUser;
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
-  const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const dataFromLocal = JSON.parse(useSelector((state) => state.userLoginInfo.userInfo));
   const [userName, setUserName] = useState(dataFromLocal.displayName);
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
@@ -52,10 +51,10 @@ const Settings = () => {
   // dispatch
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!data) {
+    if (!dataFromLocal) {
       navigate("/singin");
     }
-  }, [data]);
+  }, [dataFromLocal]);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -98,7 +97,7 @@ const Settings = () => {
     if (image) {
       setLoading(true);
       const storage = getStorage();
-      const storageRef = ref(storage, `profilePic/${currentUser.uid}`);
+      const storageRef = ref(storage, `profilePic/${dataFromLocal.uid}`);
       if (typeof cropperRef.current?.cropper !== "undefined") {
         setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
         const profilePic = cropperRef.current?.cropper
@@ -174,7 +173,7 @@ const Settings = () => {
   const handleUpdatePassword = () => {
     if (!error) {
       setLoading(true);
-      updatePassword(currentUser, password)
+      updatePassword(dataFromLocal, password)
         .then(() => {
           setUpdateUserDataShow(false);
           setLoading(false);
@@ -198,7 +197,7 @@ const Settings = () => {
               </div>
             ) : (
               <Img
-                src={currentUser ? currentUser.photoURL : ""}
+                src={dataFromLocal ? dataFromLocal.photoURL : ""}
                 alt="user"
                 className="w-[100px]"
               />
@@ -340,7 +339,7 @@ const Settings = () => {
               onClick={() => {
                 setUpdateUserDataShow(false),
                   setError(""),
-                  setUserName(currentUser.displayName);
+                  setUserName(dataFromLocal.displayName);
               }}
             >
               cancel
@@ -422,13 +421,13 @@ const Settings = () => {
               </h2>
               <Flex className="items-center w-full mt-8 gap-x-2 border-b-2 border-[#D3D3D3] pb-8">
                 <Img
-                  src={currentUser ? currentUser.photoURL : ""}
+                  src={dataFromLocal ? dataFromLocal.photoURL : ""}
                   alt="user"
                   className="w-[48px] "
                 />
                 <div className="w-[60%]">
                   <h2 className="text-base font-semibold font-inter ">
-                    {currentUser ? currentUser.displayName : ""}
+                    {dataFromLocal ? dataFromLocal.displayName : ""}
                   </h2>
                   <h5 className="text-xs font-normal capitalize font-inter">
                     Stay Safe Stay Home
