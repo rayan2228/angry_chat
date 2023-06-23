@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
+import { useSelector } from "react-redux";
 const People = () => {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
-  const dataFromLocal = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const dataFromLocal = JSON.parse(useSelector((state) => state.userLoginInfo.userInfo));
   const [userList, setUserList] = useState([]);
   const [searchUserList, setSearchUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);
@@ -18,7 +16,7 @@ const People = () => {
   const reqRef = ref(db, "friendRequest/");
   const friendRef = ref(db, "friends/");
   const blockRef = ref(db, "blocks/");
-
+// console.log(dataFromLocal);
   useEffect(() => {
     onValue(usersRef, (snapshot) => {
       let users = [];
@@ -55,7 +53,7 @@ const People = () => {
   }, []);
   const handleAdd = (userId) => {
     set(push(ref(db, "friendRequest/")), {
-      senderId: currentUser.uid,
+      senderId: dataFromLocal.uid,
       receiverId: userId,
     });
   };
@@ -80,18 +78,18 @@ const People = () => {
       <h2 className="text-2xl font-semibold font-inter text-textColor">
         People
       </h2>
-      <SearchInput value={search} handle={handleSearch}/>
+      <SearchInput value={search} handle={handleSearch} />
       <div className="h-[40vh] overflow-y-auto ">
         {searchUserList.length
           ? searchUserList.map(
               (user) =>
                 !(
-                  friendArr.includes(currentUser.uid + user.userId) ||
-                  friendArr.includes(user.userId + currentUser.uid) ||
-                  requestArr.includes(currentUser.uid + user.userId) ||
-                  requestArr.includes(user.userId + currentUser.uid) ||
-                  blockArr.includes(currentUser.uid + user.userId) ||
-                  blockArr.includes(user.userId + currentUser.uid)
+                  friendArr.includes(dataFromLocal.uid + user.userId) ||
+                  friendArr.includes(user.userId + dataFromLocal.uid) ||
+                  requestArr.includes(dataFromLocal.uid + user.userId) ||
+                  requestArr.includes(user.userId + dataFromLocal.uid) ||
+                  blockArr.includes(dataFromLocal.uid + user.userId) ||
+                  blockArr.includes(user.userId + dataFromLocal.uid)
                 ) && (
                   <PeopleLayout
                     src={user.profile_picture}
@@ -112,12 +110,12 @@ const People = () => {
           : userList.map(
               (user) =>
                 !(
-                  friendArr.includes(currentUser.uid + user.userId) ||
-                  friendArr.includes(user.userId + currentUser.uid) ||
-                  requestArr.includes(currentUser.uid + user.userId) ||
-                  requestArr.includes(user.userId + currentUser.uid) ||
-                  blockArr.includes(currentUser.uid + user.userId) ||
-                  blockArr.includes(user.userId + currentUser.uid)
+                  friendArr.includes(dataFromLocal.uid + user.userId) ||
+                  friendArr.includes(user.userId + dataFromLocal.uid) ||
+                  requestArr.includes(dataFromLocal.uid + user.userId) ||
+                  requestArr.includes(user.userId + dataFromLocal.uid) ||
+                  blockArr.includes(dataFromLocal.uid + user.userId) ||
+                  blockArr.includes(user.userId + dataFromLocal.uid)
                 ) && (
                   <PeopleLayout
                     src={user.profile_picture}
