@@ -4,7 +4,7 @@ import Img from "./Img";
 
 const ChatLayout = ({ name, message, time ,src}) => {
   return (
-    <Flex className=" justify-between font-inter my-4 ">
+    <Flex className=" justify-between font-inter my-4 cursor-pointer ">
       <Img src={src} className="w-[14%]" alt="chat" />
       <Flex className="flex-col w-[48%]">
         <h3 className="font-semibold text-lg">{name}</h3>
