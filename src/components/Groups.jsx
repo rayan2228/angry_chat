@@ -1,11 +1,11 @@
 import React from "react";
 import { BsSearch } from "react-icons/bs";
 import ChatLayout from "./layouts/ChatLayout";
-const Groups = () => {
+const Groups = ({ heading }) => {
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
-      <h2 className="text-2xl font-semibold font-inter text-textColor">
-        Group
+      <h2 className="text-2xl font-semibold font-inter text-textColor capitalize">
+        {heading}
       </h2>
       <div className="relative mt-4 mb-5">
         <input
