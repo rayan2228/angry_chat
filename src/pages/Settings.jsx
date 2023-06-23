@@ -33,7 +33,6 @@ import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
   const db = getDatabase();
   let auth = getAuth();
-  const currentUser = auth.currentUser;
   const dataFromLocal = JSON.parse(useSelector((state) => state.userLoginInfo.userInfo));
   const [userName, setUserName] = useState(dataFromLocal.displayName);
   const [password, setPassword] = useState("");
@@ -68,7 +67,7 @@ const Settings = () => {
           progress: undefined,
           theme: "dark",
         });
-        localStorage.removeItem("userLoginInfo");
+        localStorage.removeItem("userInfo");
         setTimeout(() => {
           navigate("/singin");
         }, 2000);

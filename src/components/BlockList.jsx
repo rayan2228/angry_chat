@@ -3,11 +3,8 @@ import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
 import SearchInput from "./layouts/SearchInput";
 import NoData from "./layouts/NoData";
-import { useSelector } from "react-redux";
 const BlockList = () => {
-  const currentUser = JSON.parse(
-    useSelector((state) => state.userLoginInfo.userInfo)
-  );
+  const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const [blockList, setBlockList] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchUserList, setSearchUserList] = useState([]);

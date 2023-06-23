@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import SearchInput from "./layouts/SearchInput";
-import { useSelector } from "react-redux";
 const People = () => {
-  const dataFromLocal = JSON.parse(useSelector((state) => state.userLoginInfo.userInfo));
+  const dataFromLocal = JSON.parse(localStorage.getItem("userInfo"));
+  
   const [userList, setUserList] = useState([]);
   const [searchUserList, setSearchUserList] = useState([]);
   const [requestArr, setRequestArr] = useState([]);

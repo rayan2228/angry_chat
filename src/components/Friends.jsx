@@ -10,12 +10,9 @@ import {
   push,
 } from "firebase/database";
 import SearchInput from "./layouts/SearchInput";
-import { useSelector } from "react-redux";
 const Friends = () => {
   const db = getDatabase();
-  const currentUser = JSON.parse(
-    useSelector((state) => state.userLoginInfo.userInfo)
-  );
+  const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendsKey, setFriendsKey] = useState([]);
