@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { userLoginInfo } from "../slices/userSlice";
 
 const SingIn = () => {
-  const data = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const data = JSON.parse(localStorage.getItem("userInfo"));
 
   // dispatch
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const SingIn = () => {
           const user = userCredential.user;
           if (user.emailVerified) {
             dispatch(userLoginInfo(user));
-            localStorage.setItem("userLoginInfo", JSON.stringify(user));
+            localStorage.setItem("userInfo", JSON.stringify(user));
             setEmail("");
             setPassword("");
             setLoading(false);

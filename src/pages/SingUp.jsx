@@ -15,9 +15,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { getDatabase, ref, set } from "firebase/database";
 
-
 const SingUp = () => {
-  const data = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const data = JSON.parse(localStorage.getItem("userInfo"));
   // auth
   const auth = getAuth();
   // navigate

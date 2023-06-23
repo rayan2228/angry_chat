@@ -9,12 +9,13 @@ import {
   set,
   push,
 } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
+import { useSelector } from "react-redux";
 const Friends = () => {
   const db = getDatabase();
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
+  const currentUser = JSON.parse(
+    useSelector((state) => state.userLoginInfo.userInfo)
+  );
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendsKey, setFriendsKey] = useState([]);
@@ -23,6 +24,8 @@ const Friends = () => {
   const userRef = ref(db, "users/");
   const friendRef = ref(db, "friends/");
   const blockRef = ref(db, "blocks/");
+
+  
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];

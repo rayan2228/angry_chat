@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PeopleLayout from "./layouts/PeopleLayout";
 import { getDatabase, ref, onValue, remove } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
-import Flex from "./layouts/Flex";
 import NoData from "./layouts/NoData";
+import { useSelector } from "react-redux";
 const BlockList = () => {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
+  const currentUser = JSON.parse(
+    useSelector((state) => state.userLoginInfo.userInfo)
+  );
   const [blockList, setBlockList] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchUserList, setSearchUserList] = useState([]);

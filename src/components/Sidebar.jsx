@@ -9,7 +9,7 @@ import { BsFilterCircle } from "react-icons/bs";
 import Flex from "../components/layouts/Flex";
 
 const Sidebar = () => {
-  const currentUser = JSON.parse(localStorage.getItem("userLoginInfo"));
+  const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const getUrl = window.location.pathname;
   return (
     <Flex className="flex-col justify-between  w-[200px]  pt-[50px] pl-6  pb-10 shadow-sidebar_shadow">

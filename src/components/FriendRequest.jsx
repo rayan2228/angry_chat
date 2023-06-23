@@ -11,12 +11,13 @@ import {
   set,
   push,
 } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import SearchInput from "./layouts/SearchInput";
 import NoData from "./layouts/NoData";
+import { useSelector } from "react-redux";
 const FriendRequest = () => {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
+  const currentUser = JSON.parse(
+    useSelector((state) => state.userLoginInfo.userInfo)
+  );
   const [requestList, setRequestList] = useState([]);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");

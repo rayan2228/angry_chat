@@ -12,7 +12,7 @@ import BlockList from "../components/BlockList";
 
 const Home = () => {
   const navigate = useNavigate();
-  const data = useSelector((state) => state.userLoginInfo.userLoginInfo);
+  const data = useSelector((state) => state.userLoginInfo.userInfo);
   useEffect(() => {
     if (!data) {
       navigate("/singin");
