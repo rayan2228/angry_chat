@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-const Option = ({ handleUnfriend, handleBlock }) => {
+const Option = ({ handleSecond, handleThird, first,second,third }) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -10,19 +10,19 @@ const Option = ({ handleUnfriend, handleBlock }) => {
         <div className="absolute top-[18px] right-5 cursor-pointer w-36  text-left capitalize rounded-md z-10 bg-slate-100">
           <ul>
             <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
-              message
+              {first}
             </li>
             <li
               className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]"
-              onClick={handleUnfriend}
+              onClick={handleSecond}
             >
-              unfriend
+              {second}
             </li>
             <li
               className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]"
-              onClick={handleBlock}
+              onClick={handleThird}
             >
-              block
+              {third}
             </li>
           </ul>
         </div>

@@ -21,6 +21,7 @@ const UserSidebar = () => {
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
     groupTag: "",
+    groupImage:"",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

@@ -23,7 +23,6 @@ const Friends = () => {
   const friendRef = ref(db, "friends/");
   const blockRef = ref(db, "blocks/");
 
-  
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];
@@ -90,8 +89,9 @@ const Friends = () => {
       </h2>
       <SearchInput value={search} handle={handleSearch} />
       <div className="h-[40vh]  overflow-y-auto ">
-        {friends.length ? searchUserList.length
-          ? searchUserList.map((user) =>
+        {friends.length ? (
+          searchUserList.length ? (
+            searchUserList.map((user) =>
               friends.includes(currentUser.uid + user.userId) ||
               friends.includes(user.userId + currentUser.uid) ? (
                 <PeopleLayout
@@ -102,6 +102,9 @@ const Friends = () => {
                   key={user.userId}
                 >
                   <Option
+                    first="message"
+                    second="unfriend"
+                    third="block"
                     handleUnfriend={() =>
                       handleUnfriend(
                         friendsKey.map(
@@ -127,7 +130,8 @@ const Friends = () => {
                 ""
               )
             )
-          : users.map((user) =>
+          ) : (
+            users.map((user) =>
               friends.includes(currentUser.uid + user.userId) ||
               friends.includes(user.userId + currentUser.uid) ? (
                 <PeopleLayout
@@ -138,7 +142,10 @@ const Friends = () => {
                   key={user.userId}
                 >
                   <Option
-                    handleUnfriend={() =>
+                    first="message"
+                    second="unfriend"
+                    third="block"
+                    handleSecond={() =>
                       handleUnfriend(
                         friendsKey.map(
                           (val) =>
@@ -147,7 +154,7 @@ const Friends = () => {
                         )
                       )
                     }
-                    handleBlock={() =>
+                    handleThird={() =>
                       handleBlock(
                         friendsKey.map(
                           (val) =>
@@ -162,7 +169,11 @@ const Friends = () => {
               ) : (
                 ""
               )
-            ): <NoData text="No Friends List"/>}
+            )
+          )
+        ) : (
+          <NoData text="No Friends List" />
+        )}
       </div>
     </div>
   );
