@@ -23,6 +23,7 @@ const Friends = () => {
   const friendRef = ref(db, "friends/");
   const blockRef = ref(db, "blocks/");
 
+
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];

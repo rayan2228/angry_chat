@@ -10,7 +10,7 @@ const Option = ({ handleSecond, handleThird, first,second,third }) => {
         <div className="absolute top-[18px] right-5 cursor-pointer w-36  text-left capitalize rounded-md z-10 bg-slate-100">
           <ul>
             <li className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]">
-              {first}
+              message
             </li>
             <li
               className="font-normal text-base p-2 duration-75 hover:bg-[#EBEBEF]"
