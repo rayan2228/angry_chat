@@ -43,6 +43,10 @@ const UserSidebar = () => {
       }).then(() => {
         setCreateGroupShow(false);
         setLoading(false);
+        setCreateGroup({
+          groupName: "",
+          groupTag: "",
+        });
       });
     }
   };
@@ -116,7 +120,7 @@ const UserSidebar = () => {
         </div>
       )}
       <Flex className="h-screen flex-col py-[50px]  w-[430px] pr-4  border-r-2 border-[#D3D3D3]">
-        <Flex className="justify-between mb-6">
+        <Flex className="items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
             Group
           </h2>
