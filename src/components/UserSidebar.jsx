@@ -8,7 +8,6 @@ import {
   getDatabase,
   ref,
   onValue,
-  remove,
   set,
   push,
 } from "firebase/database";
