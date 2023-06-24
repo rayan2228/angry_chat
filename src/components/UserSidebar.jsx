@@ -12,6 +12,12 @@ import {
   set,
   push,
 } from "firebase/database";
+import {
+  getStorage,
+  ref as storeRef,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
 import { ThreeDots } from "react-loader-spinner";
 const UserSidebar = () => {
   const db = getDatabase();
@@ -21,8 +27,8 @@ const UserSidebar = () => {
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
     groupTag: "",
-    groupImage:"",
   });
+  const [groupImg, setGroupImg] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSetGroup = (e) => {
@@ -32,21 +38,44 @@ const UserSidebar = () => {
     };
     setCreateGroup(updateValue);
   };
+  const handleSetGroupImg = (e) => {
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setGroupImg(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
   const handleCreateGroup = () => {
-    if (!createGroup.groupName || !createGroup.groupTag) {
+    if (!createGroup.groupName || !createGroup.groupTag || !groupImg) {
+      console.log(groupImg);
       setError("all field are required");
     } else {
       setLoading(true);
-      set(push(groupRef), {
-        groupName: createGroup.groupName,
-        groupTag: createGroup.groupTag,
-        adminId: currentUser.uid,
-      }).then(() => {
-        setCreateGroupShow(false);
-        setLoading(false);
-        setCreateGroup({
-          groupName: "",
-          groupTag: "",
+      const storage = getStorage();
+      const storageRef = storeRef(storage, `groupProfile/${currentUser.uid}`);
+      uploadString(storageRef, groupImg, "data_url").then((snapshot) => {
+        getDownloadURL(storageRef).then((downloadURL) => {
+          set(push(groupRef), {
+            groupName: createGroup.groupName,
+            groupTag: createGroup.groupTag,
+            adminId: currentUser.uid,
+            groupImg: downloadURL,
+          }).then(() => {
+            setCreateGroupShow(false);
+            setLoading(false);
+            setCreateGroup({
+              groupName: "",
+              groupTag: "",
+            });
+          });
         });
       });
     }
@@ -80,6 +109,43 @@ const UserSidebar = () => {
                 name="groupTag"
                 handle={handleSetGroup}
               />
+              <div className="flex flex-col items-center justify-center w-full mt-5">
+                <label
+                  htmlFor="dropzone-file"
+                  className="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer h-50 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      aria-hidden="true"
+                      className="w-10 h-10 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleSetGroupImg}
+                  />
+                </label>
+              </div>
             </div>
             {loading ? (
               <div className="flex items-center justify-center w-full py-3 mt-6 text-xl font-semibold bg-white rounded-md text-primary font-inter">
