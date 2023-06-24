@@ -106,7 +106,7 @@ const Friends = () => {
                     first="message"
                     second="unfriend"
                     third="block"
-                    handleUnfriend={() =>
+                    handleSecond={() =>
                       handleUnfriend(
                         friendsKey.map(
                           (val) =>
@@ -115,7 +115,7 @@ const Friends = () => {
                         )
                       )
                     }
-                    handleBlock={() =>
+                    handleThird={() =>
                       handleBlock(
                         friendsKey.map(
                           (val) =>
