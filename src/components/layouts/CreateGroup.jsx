@@ -11,11 +11,11 @@ import { ToastContainer, toast } from "react-toastify";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import Flex from "./Flex";
 
-const CreateGroup = () => {
+const CreateGroup = ({show}) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const groupRef = ref(db, "groups/");
-  const [createGroupShow, setCreateGroupShow] = useState(false);
+  const [createGroupShow, setCreateGroupShow] = useState(show);
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
     groupTag: "",
@@ -177,17 +177,7 @@ const CreateGroup = () => {
           </Flex>
         </div>
       )}
-      <Flex className="items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
-          Group
-        </h2>
-        <button
-          className="text-primary font-inter font-semibold text-lg border-[2px] border-primary py-[10px] px-6 rounded-md"
-          onClick={() => setCreateGroupShow(true)}
-        >
-          Create Group
-        </button>
-      </Flex>
+
     </>
   );
 };
