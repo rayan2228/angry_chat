@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getStorage,
   ref as storeRef,
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import { ThreeDots } from "react-loader-spinner";
-import Input from "./Input.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import Flex from "./Flex";
-
-const CreateGroup = ({show}) => {
+import { ThreeDots } from "react-loader-spinner";
+import Input from "./Input";
+const CreateGroup = ({ show }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const groupRef = ref(db, "groups/");
-  const [createGroupShow, setCreateGroupShow] = useState(show);
+  const [createGroupShow, setCreateGroupShow] = useState(true);
+
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
     groupTag: "",
@@ -72,10 +72,11 @@ const CreateGroup = ({show}) => {
       });
     }
   };
+
   return (
     <>
       <ToastContainer />
-      {createGroupShow && (
+      {createGroupShow && show && (
         <div className="w-screen h-screen  fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center z-10">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
             <div className="w-full text-white ">
