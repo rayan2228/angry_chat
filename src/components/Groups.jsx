@@ -14,6 +14,24 @@ const Groups = ({ heading }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const groupRef = ref(db, "groups/");
+   useEffect(() => {
+     onValue(groupRef, (snapshot) => {
+       const friends = [];
+       const friendsKey = [];
+       snapshot.forEach((friend) => {
+         friends.push(friend.val().conformerId + friend.val().requesterId);
+         friendsKey.push(
+           friend.key +
+             "__" +
+             friend.val().conformerId +
+             "__" +
+             friend.val().requesterId
+         );
+       });
+       setFriends(friends);
+       setFriendsKey(friendsKey);
+     });
+   }, []);
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
