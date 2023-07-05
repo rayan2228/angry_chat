@@ -82,6 +82,7 @@ const UserSidebar = () => {
   return (
     <>
       <ToastContainer />
+      
       {createGroupShow && (
         <div className="w-screen h-screen fixed bg-[rgba(50,55,92,0.35)] flex justify-center items-center z-10">
           <Flex className="w-[500px] bg-primary rounded-lg p-7 shadow-primary_shadow flex-col items-center gap-y-4">
