@@ -2,11 +2,31 @@ import React, { useState } from "react";
 import Flex from "./layouts/Flex";
 import SearchInput from "./layouts/SearchInput";
 import ChatLayout from "./layouts/ChatLayout";
+<<<<<<< HEAD
 
 import { getDatabase} from "firebase/database";
 
 
 import CreateGroup from "./layouts/CreateGroup";
+=======
+import Input from "../components/layouts/Input";
+import { ToastContainer, toast } from "react-toastify";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  remove,
+  set,
+  push,
+} from "firebase/database";
+import {
+  getStorage,
+  ref as storeRef,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
+import { ThreeDots } from "react-loader-spinner";
+>>>>>>> parent of 447789e (dynamic  option li show)
 const UserSidebar = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));

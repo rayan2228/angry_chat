@@ -9,7 +9,6 @@ import {
   push,
 } from "firebase/database";
 import PeopleLayout from "./layouts/PeopleLayout";
-import Option from "./layouts/option";
 const Groups = ({ heading }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -21,17 +20,9 @@ const Groups = ({ heading }) => {
       </h2>
       <SearchInput />
       <div className="h-[40vh]  overflow-y-auto ">
-        <PeopleLayout
-          // src={user.profile_picture}
-          // name={user.username}
-          classNameFlex="gap-x-4"
-          classNameHeading="w-[75%]"
-        >
-          <Option
-            first="requests"
-            second="delete"
-          />
-        </PeopleLayout>
+       <PeopleLayout
+        
+       />
       </div>
     </div>
   );
