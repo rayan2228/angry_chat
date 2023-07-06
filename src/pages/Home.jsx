@@ -9,6 +9,7 @@ import Friends from "../components/Friends";
 import People from "../components/People";
 import FriendRequest from "../components/FriendRequest";
 import BlockList from "../components/BlockList";
+import MyGroups from "../components/MyGroups";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,8 +25,8 @@ const Home = () => {
       <Flex className=" gap-x-6">
         <Sidebar />
         <Flex className="py-6 w-[90%] flex-wrap justify-between">
-          <Groups heading="my groups" />
-          <Groups heading=" groups" />
+          <MyGroups/>
+          <Groups/>
           <Friends />
           <People />
           <FriendRequest />

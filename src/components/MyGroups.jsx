@@ -11,7 +11,7 @@ import {
 import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
 import NoData from "./layouts/NoData";
-const Groups = ({ heading }) => {
+const MyGroups = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const userRef = ref(db, "users/");
@@ -38,12 +38,12 @@ const Groups = ({ heading }) => {
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
-         groups
+        my groups
       </h2>
       <SearchInput />
       <div className="h-[40vh]  overflow-y-auto ">
         {groups.map((group) =>
-          group.adminId != currentUser.uid ? (
+          group.adminId === currentUser.uid ? (
             <PeopleLayout
               src={group.groupImg}
               name={group.groupName}
@@ -62,4 +62,4 @@ const Groups = ({ heading }) => {
   );
 };
 
-export default Groups;
+export default MyGroups;
