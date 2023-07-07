@@ -16,6 +16,7 @@ const Groups = ({ heading }) => {
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const userRef = ref(db, "users/");
   const groupRef = ref(db, "groups/");
+  const groupRequestRef = ref(db, "groupRequests/");
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
   useEffect(() => {
@@ -34,7 +35,18 @@ const Groups = ({ heading }) => {
       setGroups(groups);
     });
   }, []);
-  // console.log("groups", groups);
+  const handleJoin = (group) => {
+    set(push(groupRequestRef), {
+      groupKey: group.groupKey,
+      adminId: group.adminId,
+      groupName: group.groupName,
+      groupTag: group.groupTag,
+      groupImg: group.groupImg,
+      requestId: currentUser.uid,
+      requestImg: currentUser.photoURL,
+      requestName: currentUser.displayName,
+    });
+  };
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
@@ -55,7 +67,7 @@ const Groups = ({ heading }) => {
                 >
                   <p
                     className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                    onClick={() => handleAdd(user.userId)}
+                    onClick={() => handleJoin(group)}
                   >
                     join
                   </p>
