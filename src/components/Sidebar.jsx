@@ -14,7 +14,10 @@ const Sidebar = () => {
   return (
     <Flex className="flex-col justify-between  w-[200px]  pt-[50px] pl-6  pb-10 shadow-sidebar_shadow">
       <div className="capitalize">
-        <Img src="../../public/assets/logo.webp" alt="logo" />
+        {/* <Img src="../../public/assets/logo.webp" alt="logo" /> */}
+        <picture>
+          <img src="../../public/assets/logo.webp" alt="logo" />
+        </picture>
         <SidebarButton
           linkName="home"
           linkSrc="/home"

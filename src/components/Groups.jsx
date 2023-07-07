@@ -19,6 +19,7 @@ const Groups = ({ heading }) => {
   const groupRequestRef = ref(db, "groupRequests/");
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [groupRequests, setGroupRequests] = useState([]);
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];
@@ -34,10 +35,17 @@ const Groups = ({ heading }) => {
       });
       setGroups(groups);
     });
+    onValue(groupRequestRef, (snapshot) => {
+      const groupRequests = [];
+      snapshot.forEach((groupRequest) => {
+        groupRequests.push({ ...groupRequest.val(), key: groupRequest.key });
+      });
+      setGroupRequests(groupRequests);
+    });
   }, []);
   const handleJoin = (group) => {
     set(push(groupRequestRef), {
-      groupKey: group.groupKey,
+      groupKey: group.key,
       adminId: group.adminId,
       groupName: group.groupName,
       groupTag: group.groupTag,
@@ -47,6 +55,9 @@ const Groups = ({ heading }) => {
       requestName: currentUser.displayName,
     });
   };
+  const handleCancel = (id) => {
+    remove(ref(db, "groupRequests/" + id));
+  }
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
@@ -58,21 +69,38 @@ const Groups = ({ heading }) => {
           groups.map(
             (group) =>
               group.adminId != currentUser.uid && (
-                <PeopleLayout
-                  src={group.groupImg}
-                  name={group.groupName}
-                  classNameFlex="gap-x-4"
-                  classNameHeading="w-[75%]"
-                  key={group.key}
-                >
-                  <p
-                    className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                    onClick={() => handleJoin(group)}
+                groupRequests.length ? groupRequests.map((groupRequest) => (
+                  groupRequest.requestId === currentUser.uid &&
+                    <PeopleLayout
+                      src={group.groupImg}
+                      name={group.groupName}
+                      classNameFlex="gap-x-4"
+                      classNameHeading="w-[75%]"
+                      key={group.key}
+                    >
+                      <p
+                        className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
+                        onClick={() => handleCancel(groupRequest.key)}
+                      >
+                        cancel
+                      </p>
+                      {/* <Option first="requests" second="delete" /> */}
+                    </PeopleLayout> 
+                )) :
+                  <PeopleLayout
+                    src={group.groupImg}
+                    name={group.groupName}
+                    classNameFlex="gap-x-4"
+                    classNameHeading="w-[75%]"
+                    key={group.key}
                   >
-                    join
-                  </p>
-                  {/* <Option first="requests" second="delete" /> */}
-                </PeopleLayout>
+                    <p
+                      className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                      onClick={() => handleJoin(group)}
+                    >
+                      join
+                    </p>
+                  </PeopleLayout>
               )
           )
         ) : (
