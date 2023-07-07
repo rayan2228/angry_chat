@@ -38,7 +38,7 @@ const Groups = ({ heading }) => {
     onValue(groupRequestRef, (snapshot) => {
       const groupRequests = [];
       snapshot.forEach((groupRequest) => {
-        groupRequests.push({ ...groupRequest.val(), key: groupRequest.key });
+        groupRequests.push(groupRequest.val().groupKey + currentUser.uid);
       });
       setGroupRequests(groupRequests);
     });
@@ -57,7 +57,7 @@ const Groups = ({ heading }) => {
   };
   const handleCancel = (id) => {
     remove(ref(db, "groupRequests/" + id));
-  }
+  };
   return (
     <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
       <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
@@ -68,39 +68,25 @@ const Groups = ({ heading }) => {
         {groups.length ? (
           groups.map(
             (group) =>
-              group.adminId != currentUser.uid && (
-                groupRequests.length ? groupRequests.map((groupRequest) => (
-                  groupRequest.requestId === currentUser.uid &&
-                    <PeopleLayout
-                      src={group.groupImg}
-                      name={group.groupName}
-                      classNameFlex="gap-x-4"
-                      classNameHeading="w-[75%]"
-                      key={group.key}
-                    >
-                      <p
-                        className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                        onClick={() => handleCancel(groupRequest.key)}
-                      >
-                        cancel
-                      </p>
-                      {/* <Option first="requests" second="delete" /> */}
-                    </PeopleLayout> 
-                )) :
-                  <PeopleLayout
-                    src={group.groupImg}
-                    name={group.groupName}
-                    classNameFlex="gap-x-4"
-                    classNameHeading="w-[75%]"
-                    key={group.key}
+              group.adminId != currentUser.uid &&
+              !(
+                groupRequests.includes(group.key + currentUser.uid) ||
+                groupRequests.includes(currentUser.uid + group.key)
+              ) && (
+                <PeopleLayout
+                  src={group.groupImg}
+                  name={group.groupName}
+                  classNameFlex="gap-x-4"
+                  classNameHeading="w-[75%]"
+                  key={group.key}
+                >
+                  <p
+                    className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                    onClick={() => handleJoin(group)}
                   >
-                    <p
-                      className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                      onClick={() => handleJoin(group)}
-                    >
-                      join
-                    </p>
-                  </PeopleLayout>
+                    join
+                  </p>
+                </PeopleLayout>
               )
           )
         ) : (
