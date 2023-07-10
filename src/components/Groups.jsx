@@ -14,7 +14,7 @@ import NoData from "./layouts/NoData";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RxCross2 } from "react-icons/rx";
 import Flex from "./layouts/Flex";
-const Groups = ({ heading }) => {
+const Groups = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const userRef = ref(db, "users/");
@@ -23,6 +23,7 @@ const Groups = ({ heading }) => {
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [groupRequests, setGroupRequests] = useState([]);
+  const [groupRequestsCancel, setGroupRequestsCancel] = useState([]);
   const [sendGroupReq, setSendGroupReq] = useState(false);
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -42,12 +43,19 @@ const Groups = ({ heading }) => {
     });
     onValue(groupRequestRef, (snapshot) => {
       const groupRequests = [];
+      const groupRequestsCancel = [];
       snapshot.forEach((groupRequest) => {
         groupRequests.push(groupRequest.val().groupKey + currentUser.uid);
+        groupRequestsCancel.push({
+          ...groupRequest.val(),
+          groupRequestKey: groupRequest.key,
+        });
       });
       setGroupRequests(groupRequests);
+      setGroupRequestsCancel(groupRequestsCancel);
     });
   }, []);
+  console.log(groupRequestsCancel);
   const handleJoin = (group) => {
     set(push(groupRequestRef), {
       groupKey: group.key,
@@ -99,8 +107,10 @@ const Groups = ({ heading }) => {
               groups.map(
                 (group) =>
                   group.adminId != currentUser.uid &&
-                  !(groupRequests.includes(group.key + currentUser.uid) ||
-                    groupRequests.includes(currentUser.uid + group.key)) && (
+                  !(
+                    groupRequests.includes(group.key + currentUser.uid) ||
+                    groupRequests.includes(currentUser.uid + group.key)
+                  ) && (
                     <PeopleLayout
                       src={group.groupImg}
                       name={group.groupName}
@@ -152,14 +162,10 @@ const Groups = ({ heading }) => {
           </Flex>
           <SearchInput />
           <div className="h-[40vh]  overflow-y-auto ">
-            {groups.length ? (
-              groups.map(
+            {groupRequestsCancel.length ? (
+              groupRequestsCancel.map(
                 (group) =>
-                  group.adminId != currentUser.uid &&
-                  (
-                    groupRequests.includes(group.key + currentUser.uid) ||
-                    groupRequests.includes(currentUser.uid + group.key)
-                  ) && (
+                  group.requestId === currentUser.uid && (
                     <PeopleLayout
                       src={group.groupImg}
                       name={group.groupName}
@@ -169,7 +175,7 @@ const Groups = ({ heading }) => {
                     >
                       <p
                         className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-red-500 text-center rounded-md"
-                        onClick={() => handleCancel(group.key)}
+                        onClick={() => handleCancel(group.groupRequestKey)}
                       >
                         cancel
                       </p>
