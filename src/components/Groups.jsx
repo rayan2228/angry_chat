@@ -17,23 +17,14 @@ import Flex from "./layouts/Flex";
 const Groups = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
-  const userRef = ref(db, "users/");
   const groupRef = ref(db, "groups/");
   const groupRequestRef = ref(db, "groupRequests/");
-  const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [groupRequests, setGroupRequests] = useState([]);
   const [groupRequestsCancel, setGroupRequestsCancel] = useState([]);
   const [sendGroupReq, setSendGroupReq] = useState(false);
   const [show, setShow] = useState(false);
   useEffect(() => {
-    onValue(userRef, (snapshot) => {
-      const users = [];
-      snapshot.forEach((user) => {
-        users.push({ ...user.val(), userId: user.key });
-      });
-      setUsers(users);
-    });
     onValue(groupRef, (snapshot) => {
       const groups = [];
       snapshot.forEach((group) => {
@@ -55,7 +46,6 @@ const Groups = () => {
       setGroupRequestsCancel(groupRequestsCancel);
     });
   }, []);
-  console.log(groupRequestsCancel);
   const handleJoin = (group) => {
     set(push(groupRequestRef), {
       groupKey: group.key,
@@ -70,7 +60,7 @@ const Groups = () => {
   };
   const handleCancel = (id) => {
     remove(ref(db, "groupRequests/" + id));
-    console.log(id);
+
   };
   return (
     <>
