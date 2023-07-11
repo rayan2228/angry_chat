@@ -49,15 +49,17 @@ const MyGroups = () => {
     onValue(groupRequestRef, (snapshot) => {
       const memberRequests = [];
       snapshot.forEach((memberRequest) => {
-          memberRequests.push({
-            ...memberRequest.val(),
-            memberRequestKey: memberRequest.key,
-          });
+        memberRequests.push({
+          ...memberRequest.val(),
+          memberRequestKey: memberRequest.key,
+        });
       });
       setMemberRequests(memberRequests);
     });
   };
-  console.log(memberRequests);
+  const HandleCancel = (id) => {
+    remove(ref(db, "groupRequests/" + id));
+  };
   return (
     <>
       {show && (
@@ -86,12 +88,26 @@ const MyGroups = () => {
                       classNameHeading="w-[75%]"
                       key={memberRequest.memberRequestKey}
                     >
-                      {/* <Option first="requests" second="delete"  /> */}
+                      <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
+                        <h4
+                          className="w-full text-center text-white rounded-md bg-primary"
+                          onClick={() => handleConfirm(reqId.key, val.userId)}
+                        >
+                          approve
+                        </h4>
+                        <h4
+                          onClick={() =>
+                            HandleCancel(memberRequest.memberRequestKey)
+                          }
+                        >
+                          cancel
+                        </h4>
+                      </div>
                     </PeopleLayout>
                   )
               )
             ) : (
-              <NoData text="create a new group" />
+              <NoData text="no member requests" />
             )}
           </div>
         </div>
