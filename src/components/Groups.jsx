@@ -19,9 +19,11 @@ const Groups = () => {
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const groupRef = ref(db, "groups/");
   const groupRequestRef = ref(db, "groupRequests/");
+  const groupMemberRef = ref(db, "groupMembers/");
   const [groups, setGroups] = useState([]);
   const [groupRequests, setGroupRequests] = useState([]);
   const [groupRequestsCancel, setGroupRequestsCancel] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
   const [sendGroupReq, setSendGroupReq] = useState(false);
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -45,6 +47,13 @@ const Groups = () => {
       setGroupRequests(groupRequests);
       setGroupRequestsCancel(groupRequestsCancel);
     });
+    onValue(groupMemberRef, (snapshot) => {
+      const groupMembers = [];
+      snapshot.forEach((groupMember) => {
+        groupMembers.push(groupMember.val().groupKey + currentUser.uid);
+      });
+      setGroupMembers(groupMembers);
+    });
   }, []);
   const handleJoin = (group) => {
     set(push(groupRequestRef), {
@@ -60,7 +69,6 @@ const Groups = () => {
   };
   const handleCancel = (id) => {
     remove(ref(db, "groupRequests/" + id));
-
   };
   return (
     <>
@@ -99,7 +107,9 @@ const Groups = () => {
                   group.adminId != currentUser.uid &&
                   !(
                     groupRequests.includes(group.key + currentUser.uid) ||
-                    groupRequests.includes(currentUser.uid + group.key)
+                    groupRequests.includes(currentUser.uid + group.key) ||
+                    groupMembers.includes(group.key + currentUser.uid) ||
+                    groupMembers.includes(currentUser.uid + group.key)
                   ) && (
                     <PeopleLayout
                       src={group.groupImg}
