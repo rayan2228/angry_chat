@@ -19,6 +19,7 @@ const MyGroups = () => {
   // const userRef = ref(db, "users/");
   const groupRef = ref(db, "groups/");
   const groupRequestRef = ref(db, "groupRequests/");
+  const groupMemberRef = ref(db, "groupMembers/");
   // const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [show, setShow] = useState(false);
@@ -68,6 +69,18 @@ const MyGroups = () => {
     });
     remove(ref(db, "groups/" + key));
   };
+  const handleApprove = (member) => {
+    set(push(groupMemberRef), {
+      groupKey: member.groupKey,
+      adminId: member.adminId,
+      groupName: member.groupName,
+      groupTag: member.groupTag,
+      groupImg: member.groupImg,
+      requestId: member.requestId,
+    }).then(()=>{
+      remove(ref(db, "groupRequests/" + member.memberRequestKey));
+    });
+  };
   return (
     <>
       {show && (
@@ -99,7 +112,7 @@ const MyGroups = () => {
                       <div className="font-inter font-normal text-lg capitalize text-textColor cursor-pointer flex-col flex items-center w-[30%]">
                         <h4
                           className="w-full text-center text-white rounded-md bg-primary"
-                          onClick={() => handleConfirm(reqId.key, val.userId)}
+                          onClick={() => handleApprove(memberRequest)}
                         >
                           approve
                         </h4>
