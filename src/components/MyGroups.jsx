@@ -34,6 +34,16 @@ const MyGroups = () => {
     //   });
     //   setUsers(users);
     // });
+    onValue(groupRequestRef, (snapshot) => {
+      const memberRequests = [];
+      snapshot.forEach((memberRequest) => {
+        memberRequests.push({
+          ...memberRequest.val(),
+          memberRequestKey: memberRequest.key,
+        });
+      });
+      setMemberRequests(memberRequests);
+    });
     onValue(groupRef, (snapshot) => {
       const groups = [];
       snapshot.forEach((group) => {
@@ -46,25 +56,23 @@ const MyGroups = () => {
     setShow(true);
     setNotShow(false);
     setGroupRequestKey(key);
-    onValue(groupRequestRef, (snapshot) => {
-      const memberRequests = [];
-      snapshot.forEach((memberRequest) => {
-        memberRequests.push({
-          ...memberRequest.val(),
-          memberRequestKey: memberRequest.key,
-        });
-      });
-      setMemberRequests(memberRequests);
-    });
   };
   const HandleCancel = (id) => {
     remove(ref(db, "groupRequests/" + id));
+  };
+  const handleDelete = (key) => {
+    memberRequests.map((requests) => {
+      if (requests.groupKey === key) {
+        remove(ref(db, "groupRequests/" + requests.memberRequestKey));
+      }
+    });
+    remove(ref(db, "groups/" + key));
   };
   return (
     <>
       {show && (
         <div className="w-1/3 p-4 duration-75 rounded-xl hover:shadow-primary_shadow ">
-          <Flex className="items-center justify-between relative">
+          <Flex className="relative items-center justify-between">
             <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
               member request
             </h2>
@@ -134,6 +142,7 @@ const MyGroups = () => {
                         first="requests"
                         second="delete"
                         handleFirst={() => handleShow(group.key)}
+                        handleSecond={() => handleDelete(group.key)}
                       />
                     </PeopleLayout>
                   )
