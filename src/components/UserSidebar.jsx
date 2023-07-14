@@ -13,6 +13,7 @@ import {
 } from "firebase/storage";
 import { ThreeDots } from "react-loader-spinner";
 const UserSidebar = () => {
+  const date = new Date();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const groupRef = ref(db, "groups/");
@@ -53,7 +54,7 @@ const UserSidebar = () => {
     } else {
       setLoading(true);
       const storage = getStorage();
-      const storageRef = storeRef(storage, `groupProfile/${currentUser.uid}`);
+      const storageRef = storeRef(storage, `groupProfile/${date.getTime()}`);
       uploadString(storageRef, groupImg, "data_url").then((snapshot) => {
         getDownloadURL(storageRef).then((downloadURL) => {
           set(push(groupRef), {

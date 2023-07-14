@@ -8,12 +8,14 @@ import {
   set,
   push,
 } from "firebase/database";
+import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Option from "./layouts/option";
 import NoData from "./layouts/NoData";
 import { RxCross2 } from "react-icons/rx";
 import Flex from "./layouts/Flex";
 const MyGroups = () => {
+  const storage = getStorage();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
   const userRef = ref(db, "users/");
@@ -88,6 +90,19 @@ const MyGroups = () => {
     memberRequests.map((requests) => {
       if (requests.groupKey === key) {
         remove(ref(db, "groupRequests/" + requests.memberRequestKey));
+      }
+    });
+    groups.map((group) => {
+      if (group.key === key) {
+        let reference = group.groupImg.split("%2F")[1].split("?")[0];
+        const desertRef = storageRef(storage, `groupProfile/${reference}`);
+        deleteObject(desertRef)
+          .then(() => {
+            // File deleted successfully
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+          });
       }
     });
     remove(ref(db, "groups/" + key));
