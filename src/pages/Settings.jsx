@@ -33,7 +33,7 @@ import { ThreeDots } from "react-loader-spinner";
 const Settings = () => {
   const db = getDatabase();
   let auth = getAuth();
-  const dataFromLocal = JSON.parse(useSelector((state) => state.userLoginInfo.userInfo));
+  const dataFromLocal = JSON.parse(localStorage.getItem("userInfo"));
   const [userName, setUserName] = useState(dataFromLocal.displayName);
   const [password, setPassword] = useState("");
   const [image, setImage] = useState();
@@ -112,7 +112,7 @@ const Settings = () => {
               });
               dispatch(userLoginInfo(auth.currentUser));
               localStorage.setItem(
-                "userLoginInfo",
+                "userInfo",
                 JSON.stringify(auth.currentUser)
               );
               setPhotoUploadShow(false);
@@ -139,7 +139,7 @@ const Settings = () => {
           username: userName,
         });
         dispatch(userLoginInfo(auth.currentUser));
-        localStorage.setItem("userLoginInfo", JSON.stringify(auth.currentUser));
+        localStorage.setItem("userInfo", JSON.stringify(auth.currentUser));
         setUpdateUserDataShow(false);
         setLoading(false);
       });
