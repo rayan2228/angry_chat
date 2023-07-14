@@ -57,12 +57,6 @@ const MyGroups = () => {
       });
       setGroups(groups);
     });
-  }, []);
-  const handleShowInfo = (key) => {
-    setShowInfo(true);
-    setShow(false);
-    setNotShow(false);
-    setGroupMemberKey(key);
     onValue(groupMemberRef, (snapshot) => {
       const members = [];
       snapshot.forEach((member) => {
@@ -73,6 +67,12 @@ const MyGroups = () => {
       });
       setMembers(members);
     });
+  }, []);
+  const handleShowInfo = (key) => {
+    setShowInfo(true);
+    setShow(false);
+    setNotShow(false);
+    setGroupMemberKey(key);
   };
   const handleShow = (key) => {
     setShow(true);
@@ -90,6 +90,11 @@ const MyGroups = () => {
     memberRequests.map((requests) => {
       if (requests.groupKey === key) {
         remove(ref(db, "groupRequests/" + requests.memberRequestKey));
+      }
+    });
+    members.map((member) => {
+      if (member.groupKey === key) {
+        remove(ref(db, "groupMembers/" + member.memberKey));
       }
     });
     groups.map((group) => {
