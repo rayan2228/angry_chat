@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Flex from "./layouts/Flex";
 import SearchInput from "./layouts/SearchInput";
-import ChatLayout from "./layouts/ChatLayout";
 import Input from "../components/layouts/Input";
 import { ToastContainer, toast } from "react-toastify";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
@@ -12,11 +11,13 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { ThreeDots } from "react-loader-spinner";
+import NoData from "./layouts/NoData";
+import PeopleLayout from "./layouts/PeopleLayout";
 const UserSidebar = () => {
   const date = new Date();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
-  const groupRef = ref(db, "groups/");
+  const groupMemberRef = ref(db, "groupMembers/");
   const [createGroupShow, setCreateGroupShow] = useState(false);
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
@@ -25,6 +26,17 @@ const UserSidebar = () => {
   const [groupImg, setGroupImg] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [groupMembers, setGroupMembers] = useState([]);
+  useEffect(() => {
+    onValue(groupMemberRef, (snapshot) => {
+      const groupMembers = [];
+      snapshot.forEach((groupMember) => {
+        groupMembers.push(groupMember.val());
+      });
+      setGroupMembers(groupMembers);
+    });
+  }, []);
+console.log(groupMembers);
   const handleSetGroup = (e) => {
     const updateValue = {
       ...createGroup,
@@ -180,7 +192,7 @@ const UserSidebar = () => {
           </Flex>
         </div>
       )}
-      <Flex className="h-screen flex-col py-[50px]  w-[430px] pr-4  border-r-2 border-[#D3D3D3]">
+      <Flex className="h-screen flex-col py-[50px]  w-[400px] pr-4  border-r-2 border-[#D3D3D3]">
         <Flex className="items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
             Group
@@ -194,102 +206,23 @@ const UserSidebar = () => {
         </Flex>
         <SearchInput />
         <div className="h-screen overflow-y-auto">
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
-          <ChatLayout
-            src="../../../public/assets/chat.png"
-            name="Jenny Wilson"
-            message="Love You....."
-            time="10:30 PM"
-          />
+          {groupMembers.length ? (
+            groupMembers.map((group) =>
+              group.memberId === currentUser.uid ? (
+                <PeopleLayout
+                  src={group.groupImg}
+                  name={group.groupName}
+                  classNameFlex="gap-x-4 cursor-pointer"
+                  classNameHeading="w-[75%]"
+                  key={group.key}
+                ></PeopleLayout>
+              ) : (
+                <NoData text="no groups to show" />
+              )
+            )
+          ) : (
+            <NoData text="no groups to show" />
+          )}
         </div>
       </Flex>
     </>
