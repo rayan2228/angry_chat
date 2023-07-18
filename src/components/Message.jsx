@@ -2,6 +2,13 @@ import React from "react";
 import Img from "./layouts/Img";
 import Flex from "./layouts/Flex";
 import Option from "./layouts/option";
+import {
+  BsEmojiSmile,
+  BsCardImage,
+  BsCamera,
+  BsMic,
+  BsSendFill,
+} from "react-icons/bs";
 const Message = () => {
   return (
     <>
@@ -48,8 +55,20 @@ const Message = () => {
               </div>
             </div>
           </div>
-          <div>
-            <input type="text" className="bg-[#F4F4F4] w-full py-4 pl-3 rounded-md outline-none" placeholder="write a message" />
+          <div className="relative bg-[#F4F4F4]">
+            <textarea
+              name=""
+              id=""
+              className="py-4 pl-3  rounded-md outline-none w-[75%]  break-words bg-transparent h-[50px] resize-none"
+              placeholder="write a message"
+            ></textarea>
+            <Flex className="absolute top-[37%] gap-x-3 right-4 ">
+              <BsEmojiSmile className="text-xl cursor-pointer" />
+              <BsCardImage className="text-xl cursor-pointer" />
+              <BsCamera className="text-xl cursor-pointer" />
+              <BsMic className="text-xl cursor-pointer" />
+              <BsSendFill className="text-xl cursor-pointer text-[#32375C]" />
+            </Flex>
           </div>
         </Flex>
       </Flex>
