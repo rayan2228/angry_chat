@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import UserSidebar from '../components/UserSidebar';
 const Groups = () => {
   return (
-    <Flex className="h-screen gap-x-6">
+    <Flex className="h-screen ">
       <Sidebar />
       <UserSidebar/>
     </Flex>

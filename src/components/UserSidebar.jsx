@@ -13,6 +13,7 @@ import {
 import { ThreeDots } from "react-loader-spinner";
 import NoData from "./layouts/NoData";
 import PeopleLayout from "./layouts/PeopleLayout";
+import Message from "./Message";
 const UserSidebar = () => {
   const date = new Date();
   const db = getDatabase();
@@ -36,7 +37,7 @@ const UserSidebar = () => {
       setGroupMembers(groupMembers);
     });
   }, []);
-console.log(groupMembers);
+  console.log(groupMembers);
   const handleSetGroup = (e) => {
     const updateValue = {
       ...createGroup,
@@ -192,7 +193,7 @@ console.log(groupMembers);
           </Flex>
         </div>
       )}
-      <Flex className="h-screen flex-col py-[50px]  w-[400px] pr-4  border-r-2 border-[#D3D3D3]">
+      <Flex className="h-screen flex-col py-[50px]  w-[400px]   border-r-2 border-[#D3D3D3] bg-[#FCFCFC] px-4 ml-6">
         <Flex className="items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
             Group
@@ -225,6 +226,7 @@ console.log(groupMembers);
           )}
         </div>
       </Flex>
+      <Message />
     </>
   );
 };

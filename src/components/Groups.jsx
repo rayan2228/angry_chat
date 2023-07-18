@@ -9,7 +9,6 @@ import {
   push,
 } from "firebase/database";
 import PeopleLayout from "./layouts/PeopleLayout";
-import Option from "./layouts/option";
 import NoData from "./layouts/NoData";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RxCross2 } from "react-icons/rx";
