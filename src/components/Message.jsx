@@ -9,6 +9,7 @@ import {
   BsMic,
   BsSendFill,
 } from "react-icons/bs";
+import ModalImage from "react-modal-image";
 const Message = () => {
   return (
     <>
@@ -39,7 +40,15 @@ const Message = () => {
             {/* message receive image */}
             <div className="mt-4 text-left">
               <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
-                <img src="https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg" />
+                <ModalImage
+                  small={
+                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
+                  }
+                  large={
+                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
+                  }
+                  showRotate={true}
+                />
               </div>
             </div>
             {/* message send */}
@@ -51,7 +60,15 @@ const Message = () => {
             {/* message send img */}
             <div className="mt-4 text-right">
               <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
-                <img src="https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg" />
+                <ModalImage
+                  small={
+                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
+                  }
+                  large={
+                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
+                  }
+                  showRotate={true}
+                />
               </div>
             </div>
           </div>
