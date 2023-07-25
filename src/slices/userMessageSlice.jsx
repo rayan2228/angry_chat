@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const userMessageSlice = createSlice({
   name: "userMessage",
   initialState: {
-    userMessageInfo: localStorage.getItem("userMessageInfo")
-      ? localStorage.getItem("userMessageInfo")
+    userMessageInfo: JSON.parse(localStorage.getItem("userMessageInfo"))
+      ? JSON.parse(localStorage.getItem("userMessageInfo"))
       : null,
   },
   reducers: {

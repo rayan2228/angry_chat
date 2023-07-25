@@ -13,7 +13,12 @@ import { RxCross2 } from "react-icons/rx";
 import ModalImage from "react-modal-image";
 import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
-const Message = () => {
+import { useSelector } from "react-redux";
+const Message = ({ status }) => {
+  const activeMessage = useSelector((state) =>
+   state.userMessageInfo.userMessageInfo
+  );
+  console.log(activeMessage);
   const [show, setShow] = useState(false);
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
@@ -40,9 +45,9 @@ const Message = () => {
       )}
       <Flex className="flex-col grow">
         <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
-          <Img src="../../public/assets/default.png" className="w-[14%]" />
+          <Img src={activeMessage.profile_picture} className="w-[14%]" />
           <h2 className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222]">
-            rayan{" "}
+            {activeMessage.username}
           </h2>
           <div className="text-right">
             <Option />

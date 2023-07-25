@@ -13,7 +13,7 @@ import {
 import SearchInput from "./layouts/SearchInput";
 import Flex from "./layouts/Flex";
 import Option from "./layouts/option";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userMessageInfo } from "../slices/userMessageSlice";
 const UserSidebar = () => {
   const db = getDatabase();
@@ -185,7 +185,7 @@ const UserSidebar = () => {
           <NoData text="No Friends List" />
         )}
       </Flex>
-      <Message />
+      <Message status={"personal"}/>
     </>
   );
 };
