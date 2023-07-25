@@ -11,9 +11,10 @@ import {
   push,
 } from "firebase/database";
 import SearchInput from "./layouts/SearchInput";
-import Input from "./layouts/Input";
 import Flex from "./layouts/Flex";
 import Option from "./layouts/option";
+import { useDispatch, useSelector } from "react-redux";
+import { userMessageInfo } from "../slices/userMessageSlice";
 const UserSidebar = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -25,6 +26,7 @@ const UserSidebar = () => {
   const userRef = ref(db, "users/");
   const friendRef = ref(db, "friends/");
   const blockRef = ref(db, "blocks/");
+  const dispatch = useDispatch();
   useEffect(() => {
     onValue(userRef, (snapshot) => {
       const users = [];
@@ -84,6 +86,10 @@ const UserSidebar = () => {
     }
     setSearch(e.target.value);
   };
+  const handleUserMessage = (selectUser) => {
+    dispatch(userMessageInfo(selectUser));
+    localStorage.setItem("userMessageInfo", JSON.stringify(selectUser));
+  };
   return (
     <>
       <Flex className="h-screen flex-col py-[50px]  w-[400px]   border-r-2 border-[#D3D3D3] bg-[#FCFCFC] px-4 ml-6">
@@ -101,8 +107,9 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
-                  classNameFlex="gap-x-4"
+                  classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%]"
+                  handle={() => handleUserMessage(user)}
                   key={user.userId}
                 >
                   <Option
@@ -140,8 +147,9 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
-                  classNameFlex="gap-x-4"
+                  classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%]"
+                  handle={() => handleUserMessage(user)}
                   key={user.userId}
                 >
                   <Option
