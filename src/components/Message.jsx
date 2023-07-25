@@ -32,7 +32,10 @@ const Message = () => {
               isFullscreen={true}
             />
           </div>
-          <RxCross2 className="absolute text-3xl text-white bg-red-500 cursor-pointer top-2 right-4" onClick={()=>setShow(false)}/>
+          <RxCross2
+            className="absolute text-3xl text-white bg-red-500 cursor-pointer top-2 right-4"
+            onClick={() => setShow(false)}
+          />
         </div>
       )}
       <Flex className="flex-col grow">
@@ -52,12 +55,14 @@ const Message = () => {
               <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
                 hello
               </div>
+              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div>
             {/* message send */}
             <div className="mt-4 text-right">
               <div className=" inline-block text-lg capitalize font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
                 hello
               </div>
+              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div>
             {/* message receive image */}
             <div className="mt-4 text-left">
@@ -72,12 +77,14 @@ const Message = () => {
                   showRotate={true}
                 />
               </div>
+              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div>
             {/* message send */}
             <div className="mt-4 text-right">
               <div className=" inline-block text-lg capitalize font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
                 hello
               </div>
+              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div>
             {/* message send img */}
             <div className="mt-4 text-right">
@@ -92,6 +99,7 @@ const Message = () => {
                   showRotate={true}
                 />
               </div>
+              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div>
           </div>
           <div className="relative bg-[#F4F4F4]">

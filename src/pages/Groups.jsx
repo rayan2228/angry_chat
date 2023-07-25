@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 import Flex from "../components/layouts/Flex";
 import Sidebar from "../components/Sidebar";
-import UserSidebar from '../components/UserSidebar';
+import GroupSidebar from "../components/GroupSidebar";
 const Groups = () => {
   return (
     <Flex className="h-screen ">
       <Sidebar />
-      <UserSidebar/>
+      <GroupSidebar />
     </Flex>
   );
-}
+};
 
-export default Groups
+export default Groups;
