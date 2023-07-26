@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Img from "./layouts/Img";
 import Flex from "./layouts/Flex";
 import Option from "./layouts/option";
@@ -9,21 +9,67 @@ import {
   BsMic,
   BsSendFill,
 } from "react-icons/bs";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  remove,
+  push,
+} from "firebase/database";
 import { RxCross2 } from "react-icons/rx";
 import ModalImage from "react-modal-image";
 import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
 import { useSelector } from "react-redux";
 const Message = ({ status }) => {
-  const activeMessage = useSelector((state) =>
-   state.userMessageInfo.userMessageInfo
+  const db = getDatabase();
+  const currentUser = JSON.parse(localStorage.getItem("userInfo"));
+  const activeMessage = useSelector(
+    (state) => state.userMessageInfo.userMessageInfo
   );
-  console.log(activeMessage);
+  const messageRef = ref(db, "messages/");
   const [show, setShow] = useState(false);
+  const [messageBtnShow, setMessageBtnShow] = useState(false);
+  const [message, setMessage] = useState("");
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
     console.log("takePhoto");
   }
+  useEffect(() => {
+    if (message) {
+      setMessageBtnShow(true);
+    } else {
+      setMessageBtnShow(false);
+    }
+  }, [message]);
+
+  const handleMessage = (e) => {
+    setMessage(e.target.value);
+  };
+  const handleSendMessage = () => {
+    let date = new Date();
+    set(push(messageRef), {
+      whoSend: currentUser.uid,
+      whoReceived: activeMessage.userId,
+      message,
+      time:
+        date.getDate() +
+        1 +
+        "-" +
+        date.getMonth() +
+        1 +
+        "-" +
+        date.getFullYear() +
+        "," +
+        (date.getHours() % 12) +
+        ":" +
+        date.getMinutes() +
+        ":" +
+        date.getSeconds(),
+    });
+  };
+
   return (
     <>
       {show && (
@@ -113,6 +159,8 @@ const Message = ({ status }) => {
               id=""
               className="py-4 pl-3  rounded-md outline-none w-[75%]  break-words bg-transparent h-[50px] resize-none"
               placeholder="write a message"
+              onChange={handleMessage}
+              value={message}
             ></textarea>
             <Flex className="absolute top-[37%] gap-x-3 right-4 ">
               <BsEmojiSmile className="text-xl cursor-pointer" />
@@ -122,7 +170,12 @@ const Message = ({ status }) => {
                 onClick={() => setShow(true)}
               />
               <BsMic className="text-xl cursor-pointer" />
-              <BsSendFill className="text-xl cursor-pointer text-[#32375C]" />
+              {messageBtnShow && (
+                <BsSendFill
+                  className="text-xl cursor-pointer text-[#32375C]"
+                  onClick={() => handleSendMessage()}
+                />
+              )}
             </Flex>
           </div>
         </Flex>
