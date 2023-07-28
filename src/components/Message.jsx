@@ -101,48 +101,49 @@ const Message = ({ status }) => {
           />
         </div>
       )}
-      <Flex className="flex-col grow">
-        <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
-          <Img src={activeMessage.profile_picture} className="w-[14%]" />
-          <h2 className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222]">
-            {activeMessage.username}
-          </h2>
-          <div className="text-right">
-            <Option />
-          </div>
-        </Flex>
-        <Flex className="flex-col h-screen p-6 overflow-y-auto">
-          <div className="h-screen overflow-y-auto">
-            {/* message receive */}
-            {userMessage.map((message) =>
-              message.whoReceived === currentUser.uid &&
-              message.whoSend === activeMessage.userId ? (
-                <div className="mt-4 text-left">
-                  <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
-                    {message.message}
-                  </div>
-                  <h6 className="mt-2 text-xs font-inter text-slate-600">
-                    12:00
-                  </h6>
-                </div>
-              ) : (
-                message.whoReceived === activeMessage.userId &&
-                message.whoSend === currentUser.uid && (
-                  <div className="mt-4 text-right">
-                    <div className=" inline-block text-lg  font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
+      {activeMessage ? (
+        <Flex className="flex-col grow">
+          <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
+            <Img src={activeMessage.profile_picture} className="w-[14%]" />
+            <h2 className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222]">
+              {activeMessage.username}
+            </h2>
+            <div className="text-right">
+              <Option />
+            </div>
+          </Flex>
+          <Flex className="flex-col h-screen p-6 overflow-y-auto">
+            <div className="h-screen overflow-y-auto">
+              {/* message receive */}
+              {userMessage.map((message) =>
+                message.whoReceived === currentUser.uid &&
+                message.whoSend === activeMessage.userId ? (
+                  <div className="mt-4 text-left">
+                    <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
                       {message.message}
                     </div>
                     <h6 className="mt-2 text-xs font-inter text-slate-600">
                       12:00
                     </h6>
                   </div>
+                ) : (
+                  message.whoReceived === activeMessage.userId &&
+                  message.whoSend === currentUser.uid && (
+                    <div className="mt-4 text-right">
+                      <div className=" inline-block text-lg  font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
+                        {message.message}
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        12:00
+                      </h6>
+                    </div>
+                  )
                 )
-              )
-            )}
-            {/* message send */}
+              )}
+              {/* message send */}
 
-            {/* message receive image */}
-            {/* <div className="mt-4 text-left">
+              {/* message receive image */}
+              {/* <div className="mt-4 text-left">
               <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
                 <ModalImage
                   small={
@@ -156,15 +157,15 @@ const Message = ({ status }) => {
               </div>
               <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div> */}
-            {/* message send */}
-            {/* <div className="mt-4 text-right">
+              {/* message send */}
+              {/* <div className="mt-4 text-right">
               <div className=" inline-block text-lg capitalize font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
                 hello
               </div>
               <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div> */}
-            {/* message send img */}
-            {/* <div className="mt-4 text-right">
+              {/* message send img */}
+              {/* <div className="mt-4 text-right">
               <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
                 <ModalImage
                   small={
@@ -178,34 +179,41 @@ const Message = ({ status }) => {
               </div>
               <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
             </div> */}
-          </div>
-          <div className="relative bg-[#F4F4F4]">
-            <textarea
-              name=""
-              id=""
-              className="py-4 pl-3  rounded-md outline-none w-[75%]  break-words bg-transparent h-[50px] resize-none"
-              placeholder="write a message"
-              onChange={handleMessage}
-              value={message}
-            ></textarea>
-            <Flex className="absolute top-[37%] gap-x-3 right-4 ">
-              <BsEmojiSmile className="text-xl cursor-pointer" />
-              <BsCardImage className="text-xl cursor-pointer" />
-              <BsCamera
-                className="text-xl cursor-pointer"
-                onClick={() => setShow(true)}
-              />
-              <BsMic className="text-xl cursor-pointer" />
-              {messageBtnShow && (
-                <BsSendFill
-                  className="text-xl cursor-pointer text-[#32375C]"
-                  onClick={() => handleSendMessage()}
+            </div>
+            <div className="relative bg-[#F4F4F4]">
+              <textarea
+                name=""
+                id=""
+                className="py-4 pl-3  rounded-lg outline-none w-[75%]  break-words bg-transparent h-[50px] resize-none"
+                placeholder="write a message"
+                onChange={handleMessage}
+                value={message}
+              ></textarea>
+              <Flex className="absolute top-[37%] gap-x-3 right-4 ">
+                <BsEmojiSmile className="text-xl cursor-pointer" />
+                <BsCardImage className="text-xl cursor-pointer" />
+                <BsCamera
+                  className="text-xl cursor-pointer"
+                  onClick={() => setShow(true)}
                 />
-              )}
-            </Flex>
-          </div>
+                <BsMic className="text-xl cursor-pointer" />
+                {messageBtnShow && (
+                  <BsSendFill
+                    className="text-xl cursor-pointer text-[#32375C]"
+                    onClick={() => handleSendMessage()}
+                  />
+                )}
+              </Flex>
+            </div>
+          </Flex>
         </Flex>
-      </Flex>
+      ) : (
+        <div className="flex justify-center items-center grow">
+          <p className="text-lg font-semibold capitalize font-inter text-center">
+            Select a chat or start <span className="block">a new conversation</span>
+          </p>
+        </div>
+      )}
     </>
   );
 };

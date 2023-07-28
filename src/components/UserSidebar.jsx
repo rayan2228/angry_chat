@@ -13,11 +13,14 @@ import {
 import SearchInput from "./layouts/SearchInput";
 import Flex from "./layouts/Flex";
 import Option from "./layouts/option";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userMessageInfo } from "../slices/userMessageSlice";
 const UserSidebar = () => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
+  const activeMessage = useSelector(
+    (state) => state.userMessageInfo.userMessageInfo
+  );
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [friendsKey, setFriendsKey] = useState([]);
@@ -108,7 +111,7 @@ const UserSidebar = () => {
                   src={user.profile_picture}
                   name={user.username}
                   classNameFlex="gap-x-4 cursor-pointer"
-                  classNameHeading="w-[75%]"
+                  classNameHeading="w-[75%] text-white"
                   handle={() => handleUserMessage(user)}
                   key={user.userId}
                 >
@@ -147,8 +150,9 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
-                  classNameFlex="gap-x-4 cursor-pointer"
-                  classNameHeading="w-[75%]"
+                  className="bg-[#5B5F7D]"
+                  classNameFlex="gap-x-4 cursor-pointer "
+                  classNameHeading={"w-[75%]" + " " + activeMessage.userId == user.uid ? "text-white" : ""}
                   handle={() => handleUserMessage(user)}
                   key={user.userId}
                 >
@@ -185,7 +189,7 @@ const UserSidebar = () => {
           <NoData text="No Friends List" />
         )}
       </Flex>
-      <Message status={"personal"}/>
+      <Message status={"personal"} />
     </>
   );
 };
