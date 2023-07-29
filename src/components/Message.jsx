@@ -28,6 +28,7 @@ import ModalImage from "react-modal-image";
 import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
 import { useSelector } from "react-redux";
+import moment from "moment/moment";
 const Message = ({ status }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -71,21 +72,11 @@ const Message = ({ status }) => {
       whoSend: currentUser.uid,
       whoReceived: activeMessage.userId,
       message,
-      time:
-        date.getDate() +
-        1 +
-        "-" +
-        date.getMonth() +
-        1 +
-        "-" +
-        date.getFullYear() +
-        "," +
-        (date.getHours() % 12) +
-        ":" +
-        date.getMinutes() +
-        ":" +
-        date.getSeconds(),
+      time: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-${
+        date.getHours()
+      }:${date.getMinutes()}:${date.getSeconds()}`,
     });
+    setMessage("")
   };
 
   const handleImageSend = (e) => {
@@ -121,20 +112,11 @@ const Message = ({ status }) => {
             whoSend: currentUser.uid,
             whoReceived: activeMessage.userId,
             messageImg: downloadURL,
-            time:
-              date.getDate() +
-              1 +
-              "-" +
-              date.getMonth() +
-              1 +
-              "-" +
-              date.getFullYear() +
-              "," +
-              (date.getHours() % 12) +
-              ":" +
-              date.getMinutes() +
-              ":" +
-              date.getSeconds(),
+            time: `${date.getDate()}-${
+              date.getMonth() + 1
+            }-${date.getFullYear()}-${
+              date.getHours() 
+            }:${date.getMinutes()}:${date.getSeconds()}`,
           });
         });
       }
@@ -182,7 +164,7 @@ const Message = ({ status }) => {
                         {message.message}
                       </div>
                       <h6 className="mt-2 text-xs font-inter text-slate-600">
-                        12:00
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
                       </h6>
                     </div>
                   ) : message.messageImg ? (
@@ -196,7 +178,7 @@ const Message = ({ status }) => {
                         />
                       </div>
                       <h6 className="mt-2 text-xs font-inter text-slate-600">
-                        12:00
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
                       </h6>
                     </div>
                   ) : (
@@ -211,7 +193,7 @@ const Message = ({ status }) => {
                         {message.message}
                       </div>
                       <h6 className="mt-2 text-xs font-inter text-slate-600">
-                        12:00
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
                       </h6>
                     </div>
                   )
@@ -220,17 +202,13 @@ const Message = ({ status }) => {
                   <div className="mt-4 text-right">
                     <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
                       <ModalImage
-                        small={
-                         message.messageImg
-                        }
-                        large={
-                          message.messageImg
-                        }
+                        small={message.messageImg}
+                        large={message.messageImg}
                         showRotate={true}
                       />
                     </div>
                     <h6 className="mt-2 text-xs font-inter text-slate-600">
-                      12:00
+                      {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
                     </h6>
                   </div>
                 ) : (
