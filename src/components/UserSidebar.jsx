@@ -150,13 +150,14 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
-                  className="bg-[#5B5F7D]"
+                  active={activeMessage.userId === user.userId && true}
                   classNameFlex="gap-x-4 cursor-pointer "
-                  classNameHeading={"w-[75%]" + " " + activeMessage.userId == user.uid ? "text-white" : ""}
+                  classNameHeading={"w-[75%]"}
                   handle={() => handleUserMessage(user)}
                   key={user.userId}
                 >
                   <Option
+                    active={true}
                     second="unfriend"
                     third="block"
                     handleSecond={() =>
