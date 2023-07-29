@@ -17,6 +17,12 @@ import {
   remove,
   push,
 } from "firebase/database";
+import {
+  getStorage,
+  ref as imageRef,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { RxCross2 } from "react-icons/rx";
 import ModalImage from "react-modal-image";
 import Camera from "react-html5-camera-photo";
@@ -33,6 +39,7 @@ const Message = ({ status }) => {
   const [messageBtnShow, setMessageBtnShow] = useState(false);
   const [message, setMessage] = useState("");
   const [userMessage, setUserMessage] = useState([]);
+  let date = new Date();
   function handleTakePhoto(dataUri) {
     // Do stuff with the photo...
     console.log("takePhoto");
@@ -60,7 +67,6 @@ const Message = ({ status }) => {
     setMessage(e.target.value);
   };
   const handleSendMessage = () => {
-    let date = new Date();
     set(push(messageRef), {
       whoSend: currentUser.uid,
       whoReceived: activeMessage.userId,
@@ -82,6 +88,58 @@ const Message = ({ status }) => {
     });
   };
 
+  const handleImageSend = (e) => {
+    let file = e.target.files[0];
+    const storage = getStorage();
+    const storageRef = imageRef(
+      storage,
+      `singleMessageImage/${date.getTime()}_${file.name}`
+    );
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        // switch (snapshot.state) {
+        //   case "paused":
+        //     console.log("Upload is paused");
+        //     break;
+        //   case "running":
+        //     console.log("Upload is running");
+        //     break;
+        // }
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          set(push(messageRef), {
+            whoSend: currentUser.uid,
+            whoReceived: activeMessage.userId,
+            messageImg: downloadURL,
+            time:
+              date.getDate() +
+              1 +
+              "-" +
+              date.getMonth() +
+              1 +
+              "-" +
+              date.getFullYear() +
+              "," +
+              (date.getHours() % 12) +
+              ":" +
+              date.getMinutes() +
+              ":" +
+              date.getSeconds(),
+          });
+        });
+      }
+    );
+  };
   return (
     <>
       {show && (
@@ -118,15 +176,34 @@ const Message = ({ status }) => {
               {userMessage.map((message) =>
                 message.whoReceived === currentUser.uid &&
                 message.whoSend === activeMessage.userId ? (
-                  <div className="mt-4 text-left">
-                    <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
-                      {message.message}
+                  message.message ? (
+                    <div className="mt-4 text-left">
+                      <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
+                        {message.message}
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        12:00
+                      </h6>
                     </div>
-                    <h6 className="mt-2 text-xs font-inter text-slate-600">
-                      12:00
-                    </h6>
-                  </div>
-                ) : (
+                  ) : message.messageImg ? (
+                    // message receive image
+                    <div className="mt-4 text-left">
+                      <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
+                        <ModalImage
+                          small={message.messageImg}
+                          large={message.messageImg}
+                          showRotate={true}
+                        />
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        12:00
+                      </h6>
+                    </div>
+                  ) : (
+                    ""
+                  )
+                ) : // message send
+                message.message ? (
                   message.whoReceived === activeMessage.userId &&
                   message.whoSend === currentUser.uid && (
                     <div className="mt-4 text-right">
@@ -138,47 +215,28 @@ const Message = ({ status }) => {
                       </h6>
                     </div>
                   )
+                ) : message.messageImg ? (
+                  //  message send img
+                  <div className="mt-4 text-right">
+                    <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
+                      <ModalImage
+                        small={
+                         message.messageImg
+                        }
+                        large={
+                          message.messageImg
+                        }
+                        showRotate={true}
+                      />
+                    </div>
+                    <h6 className="mt-2 text-xs font-inter text-slate-600">
+                      12:00
+                    </h6>
+                  </div>
+                ) : (
+                  ""
                 )
               )}
-              {/* message send */}
-
-              {/* message receive image */}
-              {/* <div className="mt-4 text-left">
-              <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
-                <ModalImage
-                  small={
-                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
-                  }
-                  large={
-                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
-                  }
-                  showRotate={true}
-                />
-              </div>
-              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
-            </div> */}
-              {/* message send */}
-              {/* <div className="mt-4 text-right">
-              <div className=" inline-block text-lg capitalize font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
-                hello
-              </div>
-              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
-            </div> */}
-              {/* message send img */}
-              {/* <div className="mt-4 text-right">
-              <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
-                <ModalImage
-                  small={
-                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
-                  }
-                  large={
-                    "https://cdn.pixabay.com/photo/2023/05/23/18/12/hummingbird-8013214_1280.jpg"
-                  }
-                  showRotate={true}
-                />
-              </div>
-              <h6 className="mt-2 text-xs font-inter text-slate-600">12:00</h6>
-            </div> */}
             </div>
             <div className="relative bg-[#F4F4F4]">
               <textarea
@@ -191,7 +249,15 @@ const Message = ({ status }) => {
               ></textarea>
               <Flex className="absolute top-[37%] gap-x-3 right-4 ">
                 <BsEmojiSmile className="text-xl cursor-pointer" />
-                <BsCardImage className="text-xl cursor-pointer" />
+                <label htmlFor="image">
+                  <BsCardImage className="text-xl cursor-pointer" />
+                </label>
+                <input
+                  type="file"
+                  hidden
+                  id="image"
+                  onChange={handleImageSend}
+                />
                 <BsCamera
                   className="text-xl cursor-pointer"
                   onClick={() => setShow(true)}
@@ -210,7 +276,8 @@ const Message = ({ status }) => {
       ) : (
         <div className="flex justify-center items-center grow">
           <p className="text-lg font-semibold capitalize font-inter text-center">
-            Select a chat or start <span className="block">a new conversation</span>
+            Select a chat or start{" "}
+            <span className="block">a new conversation</span>
           </p>
         </div>
       )}
