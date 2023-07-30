@@ -14,6 +14,7 @@ import { ThreeDots } from "react-loader-spinner";
 import NoData from "./layouts/NoData";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Message from "./Message";
+import Option from "./layouts/option";
 const GroupSidebar = () => {
   const date = new Date();
   const db = getDatabase();
@@ -193,7 +194,7 @@ const GroupSidebar = () => {
           </Flex>
         </div>
       )}
-      <Flex className="h-screen flex-col py-[50px]  w-[400px]   border-r-2 border-[#D3D3D3] bg-[#FCFCFC] px-4 ml-6">
+      <Flex className="h-screen flex-col py-[50px]  w-[400px]   border-r-2 border-[#D3D3D3] bg-[#FCFCFC] px-4 ">
         <Flex className="items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold capitalize font-inter text-textColor">
             Group
@@ -216,7 +217,12 @@ const GroupSidebar = () => {
                   classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%]"
                   key={group.key}
-                ></PeopleLayout>
+                  active={true}
+                >
+                  <Option/>
+                  
+                </PeopleLayout>
+                
               ) : (
                 <NoData text="no groups to show" />
               )
@@ -226,6 +232,7 @@ const GroupSidebar = () => {
           )}
         </div>
       </Flex>
+
       <Message />
     </>
   );

@@ -22,6 +22,7 @@ import {
   ref as imageRef,
   uploadBytesResumable,
   getDownloadURL,
+  uploadString,
 } from "firebase/storage";
 import { RxCross2 } from "react-icons/rx";
 import ModalImage from "react-modal-image";
@@ -29,6 +30,8 @@ import Camera from "react-html5-camera-photo";
 import "react-html5-camera-photo/build/css/index.css";
 import { useSelector } from "react-redux";
 import moment from "moment/moment";
+import EmojiPicker from "emoji-picker-react";
+import ScrollToBottom from "react-scroll-to-bottom";
 const Message = ({ status }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -37,13 +40,31 @@ const Message = ({ status }) => {
   );
   const messageRef = ref(db, "messages/");
   const [show, setShow] = useState(false);
+  const [emojiShow, setEmojiShow] = useState(false);
   const [messageBtnShow, setMessageBtnShow] = useState(false);
   const [message, setMessage] = useState("");
   const [userMessage, setUserMessage] = useState([]);
   let date = new Date();
   function handleTakePhoto(dataUri) {
-    // Do stuff with the photo...
-    console.log("takePhoto");
+    const storage = getStorage();
+    const storageRef = imageRef(
+      storage,
+      `singleMessageImage/${date.getTime()}`
+    );
+    const message4 = dataUri;
+    uploadString(storageRef, message4, "data_url").then((snapshot) => {
+      getDownloadURL(storageRef).then((downloadURL) => {
+        set(push(messageRef), {
+          whoSend: currentUser.uid,
+          whoReceived: activeMessage.userId,
+          messageImg: downloadURL,
+          time: `${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+        });
+      });
+    });
+    setShow(false);
   }
   useEffect(() => {
     if (message) {
@@ -62,7 +83,6 @@ const Message = ({ status }) => {
       setUserMessage(userMessage);
     });
   }, [message]);
-  // console.log(userMessage);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -72,11 +92,12 @@ const Message = ({ status }) => {
       whoSend: currentUser.uid,
       whoReceived: activeMessage.userId,
       message,
-      time: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}-${
-        date.getHours()
-      }:${date.getMinutes()}:${date.getSeconds()}`,
+      time: `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
     });
-    setMessage("")
+    setMessage("");
+    setEmojiShow(false)
   };
 
   const handleImageSend = (e) => {
@@ -114,13 +135,14 @@ const Message = ({ status }) => {
             messageImg: downloadURL,
             time: `${date.getDate()}-${
               date.getMonth() + 1
-            }-${date.getFullYear()}-${
-              date.getHours() 
-            }:${date.getMinutes()}:${date.getSeconds()}`,
+            }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
           });
         });
       }
     );
+  };
+  const handleEmojiMessage = (e) => {
+    setMessage(message+ e.emoji);
   };
   return (
     <>
@@ -142,7 +164,7 @@ const Message = ({ status }) => {
         </div>
       )}
       {activeMessage ? (
-        <Flex className="flex-col grow">
+        <Flex className="flex-col w-[55%]">
           <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
             <Img src={activeMessage.profile_picture} className="w-[14%]" />
             <h2 className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222]">
@@ -153,7 +175,7 @@ const Message = ({ status }) => {
             </div>
           </Flex>
           <Flex className="flex-col h-screen p-6 overflow-y-auto">
-            <div className="h-screen overflow-y-auto">
+            <ScrollToBottom className="h-screen overflow-y-auto">
               {/* message receive */}
               {userMessage.map((message) =>
                 message.whoReceived === currentUser.uid &&
@@ -215,7 +237,7 @@ const Message = ({ status }) => {
                   ""
                 )
               )}
-            </div>
+            </ScrollToBottom>
             <div className="relative bg-[#F4F4F4]">
               <textarea
                 name=""
@@ -225,8 +247,24 @@ const Message = ({ status }) => {
                 onChange={handleMessage}
                 value={message}
               ></textarea>
+              {emojiShow && (
+                <div className="absolute left-0 w-full bottom-16 h-80">
+                  <EmojiPicker
+                    height="100%"
+                    width="100%"
+                    onEmojiClick={handleEmojiMessage}
+                  />
+                </div>
+              )}
               <Flex className="absolute top-[37%] gap-x-3 right-4 ">
-                <BsEmojiSmile className="text-xl cursor-pointer" />
+                <BsEmojiSmile
+                  className={
+                    emojiShow
+                      ? "text-xl cursor-pointer text-[#32375C]"
+                      : "text-xl cursor-pointer "
+                  }
+                  onClick={() => setEmojiShow(!emojiShow)}
+                />
                 <label htmlFor="image">
                   <BsCardImage className="text-xl cursor-pointer" />
                 </label>
@@ -252,8 +290,8 @@ const Message = ({ status }) => {
           </Flex>
         </Flex>
       ) : (
-        <div className="flex justify-center items-center grow">
-          <p className="text-lg font-semibold capitalize font-inter text-center">
+        <div className="flex items-center justify-center grow">
+          <p className="text-lg font-semibold text-center capitalize font-inter">
             Select a chat or start{" "}
             <span className="block">a new conversation</span>
           </p>

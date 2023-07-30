@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "emoji-picker-react": "^4.4.10",
     "firebase": "^9.21.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -22,6 +23,7 @@
     "react-modal-image": "^2.6.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.1",
+    "react-scroll-to-bottom": "^4.2.0",
     "react-toastify": "^9.1.2"
   },
   "devDependencies": {
