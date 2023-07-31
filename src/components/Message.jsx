@@ -141,8 +141,9 @@ const Message = ({ status }) => {
       }
     );
   };
-  const handleEmojiMessage = (e) => {
-    setMessage(message+ e.emoji);
+  const handleEmojiMessage = (emojiData) => {
+    setMessage(message + emojiData.emoji);
+    // console.log(emojiData);
   };
   return (
     <>
