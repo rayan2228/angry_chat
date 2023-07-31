@@ -1,7 +1,7 @@
 import React from "react";
 import Img from "./layouts/Img";
 import SidebarButton from "./layouts/SidebarButton";
-import { BiSolidHome } from "react-icons/bi";
+import { AiFillHome } from "react-icons/ai";
 import { RxChatBubble } from "react-icons/rx";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { FaUserFriends } from "react-icons/fa";
@@ -25,7 +25,7 @@ const Sidebar = () => {
             getUrl === "/home" ? "text-white bg-primary rounded-l-lg" : ""
           }
         >
-          <BiSolidHome className="text-xl" />
+          <AiFillHome className="text-xl" />
         </SidebarButton>
         <SidebarButton
           linkName="chat"
