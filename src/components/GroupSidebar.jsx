@@ -14,7 +14,6 @@ import { ThreeDots } from "react-loader-spinner";
 import NoData from "./layouts/NoData";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Message from "./Message";
-import Option from "./layouts/option";
 const GroupSidebar = () => {
   const date = new Date();
   const db = getDatabase();
@@ -219,7 +218,7 @@ const GroupSidebar = () => {
                   key={group.key}
                   active={true}
                 >
-                  <Option/>
+
                   
                 </PeopleLayout>
                 
