@@ -212,7 +212,8 @@ const GroupSidebar = () => {
         <div className="h-screen overflow-y-auto">
           {groupMembers.length ? (
             groupMembers.map((group) =>
-              group.memberId == currentUser.uid ? (
+              group.memberId == currentUser.uid ||
+              group.adminId == currentUser.uid ? (
                 <PeopleLayout
                   src={group.groupImg}
                   name={group.groupName}
@@ -220,12 +221,9 @@ const GroupSidebar = () => {
                   classNameHeading="w-[75%]"
                   key={group.key}
                   active={true}
-                >
-
-                  {group.memberId}
-                </PeopleLayout>
+                ></PeopleLayout>
               ) : (
-                <NoData text="no groups to show dfdf" />
+                <NoData text="no groups to show " />
               )
             )
           ) : (
