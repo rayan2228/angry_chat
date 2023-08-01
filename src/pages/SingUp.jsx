@@ -96,7 +96,7 @@ const SingUp = () => {
           set(ref(db, "users/" + userCredential.user.uid), {
             username: name,
             email: email,
-            profile_picture: "../../public/assets/default.png",
+            profile_picture: "assets/default.png",
           });
           // Signed in
           updateProfile(auth.currentUser, {
