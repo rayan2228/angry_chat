@@ -165,7 +165,7 @@ const Message = ({ status }) => {
         </div>
       )}
       {activeMessage ? (
-        <Flex className="flex-col w-[55%]">
+        <Flex className="flex-col w-[55%] flex-grow">
           <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
             <Img src={activeMessage.profile_picture} className="w-[14%]" />
             <h2 className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222]">
