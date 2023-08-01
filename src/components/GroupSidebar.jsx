@@ -19,7 +19,9 @@ const GroupSidebar = () => {
   const date = new Date();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(currentUser.uid);
   const groupMemberRef = ref(db, "groupMembers/");
+  const groupRef = ref(db, "groups/");
   const [createGroupShow, setCreateGroupShow] = useState(false);
   const [createGroup, setCreateGroup] = useState({
     groupName: "",
@@ -210,7 +212,7 @@ const GroupSidebar = () => {
         <div className="h-screen overflow-y-auto">
           {groupMembers.length ? (
             groupMembers.map((group) =>
-              group.memberId === currentUser.uid ? (
+              group.memberId == currentUser.uid ? (
                 <PeopleLayout
                   src={group.groupImg}
                   name={group.groupName}
@@ -220,11 +222,10 @@ const GroupSidebar = () => {
                   active={true}
                 >
 
-                  
+                  {group.memberId}
                 </PeopleLayout>
-                
               ) : (
-                <NoData text="no groups to show" />
+                <NoData text="no groups to show dfdf" />
               )
             )
           ) : (
