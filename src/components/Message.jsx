@@ -143,7 +143,6 @@ const Message = ({ status }) => {
   };
   const handleEmojiMessage = (emojiData) => {
     setMessage(message + emojiData.emoji);
-    // console.log(emojiData);
   };
   return (
     <>
@@ -164,7 +163,7 @@ const Message = ({ status }) => {
           />
         </div>
       )}
-      {activeMessage ? (
+      {status == "personal" && activeMessage ? (
         <Flex className="flex-col w-[55%] flex-grow">
           <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
             <Img src={activeMessage.profile_picture} className="w-[14%]" />
