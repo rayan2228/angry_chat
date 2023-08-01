@@ -101,7 +101,7 @@ const SingUp = () => {
           // Signed in
           updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: "../../public/assets/default.png",
+            photoURL: "assets/default.png",
           })
             .then(() => {
               toast.success("singing up successfully ", {
