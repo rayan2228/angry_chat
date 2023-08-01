@@ -4,8 +4,6 @@ import SingUp from "./pages/SingUp";
 import ForgetPassword from "./pages/ForgetPassword";
 import Home from "./pages/Home";
 import Chats from "./pages/Chats";
-import Friends from "./pages/Friends";
-import People from "./pages/People";
 import Groups from "./pages/Groups";
 import Settings from "./pages/Settings";
 import EmailVerified from "./pages/EmailVerified";
@@ -36,16 +34,8 @@ const router = createBrowserRouter([
     element: <Chats />,
   },
   {
-    path: "friends",
-    element: <Friends />,
-  },
-  {
     path: "groups",
     element: <Groups />,
-  },
-  {
-    path: "people",
-    element: <People />,
   },
   {
     path: "settings",

@@ -44,24 +44,6 @@ const Sidebar = () => {
         >
           <HiOutlineUserGroup className="text-xl" />
         </SidebarButton>
-        <SidebarButton
-          linkName="friends"
-          linkSrc="/friends"
-          className={
-            getUrl === "/friends" ? "text-white bg-primary rounded-l-lg" : ""
-          }
-        >
-          <FaUserFriends className="text-xl" />
-        </SidebarButton>
-        <SidebarButton
-          linkName="pepole"
-          linkSrc="/people"
-          className={
-            getUrl === "/people" ? "text-white bg-primary rounded-l-lg" : ""
-          }
-        >
-          <BsFilterCircle className="text-xl" />
-        </SidebarButton>
       </div>
       <SidebarButton
         linkSrc="/settings"
