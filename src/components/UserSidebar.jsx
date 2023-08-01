@@ -110,6 +110,7 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
+                  active={activeMessage !== null && activeMessage.userId === user.userId && true}
                   classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%] text-white"
                   handle={() => handleUserMessage(user)}
@@ -150,7 +151,7 @@ const UserSidebar = () => {
                 <PeopleLayout
                   src={user.profile_picture}
                   name={user.username}
-                  active={activeMessage.userId === user.userId && true}
+                  active={activeMessage !== null && activeMessage.userId === user.userId && true}
                   classNameFlex="gap-x-4 cursor-pointer "
                   classNameHeading={"w-[75%]"}
                   handle={() => handleUserMessage(user)}

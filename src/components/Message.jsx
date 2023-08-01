@@ -97,7 +97,7 @@ const Message = ({ status }) => {
       }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
     });
     setMessage("");
-    setEmojiShow(false)
+    setEmojiShow(false);
   };
 
   const handleImageSend = (e) => {
@@ -192,18 +192,21 @@ const Message = ({ status }) => {
                     </div>
                   ) : message.messageImg ? (
                     // message receive image
-                    <div className="mt-4 text-left">
-                      <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
-                        <ModalImage
-                          small={message.messageImg}
-                          large={message.messageImg}
-                          showRotate={true}
-                        />
+                    message.whoReceived === activeMessage.userId &&
+                    message.whoSend === currentUser.uid && (
+                      <div className="mt-4 text-left">
+                        <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
+                          <ModalImage
+                            small={message.messageImg}
+                            large={message.messageImg}
+                            showRotate={true}
+                          />
+                        </div>
+                        <h6 className="mt-2 text-xs font-inter text-slate-600">
+                          {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                        </h6>
                       </div>
-                      <h6 className="mt-2 text-xs font-inter text-slate-600">
-                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
-                      </h6>
-                    </div>
+                    )
                   ) : (
                     ""
                   )
@@ -222,18 +225,21 @@ const Message = ({ status }) => {
                   )
                 ) : message.messageImg ? (
                   //  message send img
-                  <div className="mt-4 text-right">
-                    <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
-                      <ModalImage
-                        small={message.messageImg}
-                        large={message.messageImg}
-                        showRotate={true}
-                      />
+                  message.whoReceived === activeMessage.userId &&
+                  message.whoSend === currentUser.uid && (
+                    <div className="mt-4 text-right">
+                      <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
+                        <ModalImage
+                          small={message.messageImg}
+                          large={message.messageImg}
+                          showRotate={true}
+                        />
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                      </h6>
                     </div>
-                    <h6 className="mt-2 text-xs font-inter text-slate-600">
-                      {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
-                    </h6>
-                  </div>
+                  )
                 ) : (
                   ""
                 )
