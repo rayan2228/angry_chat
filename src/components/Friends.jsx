@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PeopleLayout from "./layouts/PeopleLayout";
-import Option from "./layouts/option";
+import Option from "./layouts/Option";
 import {
   getDatabase,
   ref,

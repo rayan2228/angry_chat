@@ -10,7 +10,7 @@ import {
 } from "firebase/database";
 import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 import PeopleLayout from "./layouts/PeopleLayout";
-import Option from "./layouts/option";
+import Option from "./layouts/Option";
 import NoData from "./layouts/NoData";
 import { RxCross2 } from "react-icons/rx";
 import Flex from "./layouts/Flex";

@@ -12,7 +12,7 @@ import {
 } from "firebase/database";
 import SearchInput from "./layouts/SearchInput";
 import Flex from "./layouts/Flex";
-import Option from "./layouts/option";
+import Option from "./layouts/Option";
 import { useDispatch, useSelector } from "react-redux";
 import { userMessageInfo } from "../slices/userMessageSlice";
 const UserSidebar = () => {

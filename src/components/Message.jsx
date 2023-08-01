@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Img from "./layouts/Img";
 import Flex from "./layouts/Flex";
-import Option from "./layouts/option";
 import {
   BsEmojiSmile,
   BsCardImage,
@@ -32,6 +31,7 @@ import { useSelector } from "react-redux";
 import moment from "moment/moment";
 import EmojiPicker from "emoji-picker-react";
 import ScrollToBottom from "react-scroll-to-bottom";
+import Option from "./layouts/Option";
 const Message = ({ status }) => {
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
