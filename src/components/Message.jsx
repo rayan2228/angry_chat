@@ -191,8 +191,8 @@ const Message = ({ status }) => {
                     </div>
                   ) : message.messageImg ? (
                     // message receive image
-                    message.whoReceived === activeMessage.userId &&
-                    message.whoSend === currentUser.uid && (
+                    message.whoReceived === currentUser.uid &&
+                    message.whoSend === activeMessage.userId && (
                       <div className="mt-4 text-left">
                         <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
                           <ModalImage
