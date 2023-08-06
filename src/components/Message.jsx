@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Img from "./layouts/Img";
 import Flex from "./layouts/Flex";
 import {
@@ -38,6 +38,9 @@ const Message = ({ status }) => {
   const activeMessage = useSelector(
     (state) => state.userMessageInfo.userMessageInfo
   );
+  const activeGroupMessage = useSelector(
+    (state) => state.groupMessageInfo.groupMessageInfo
+  );
   const messageRef = ref(db, "messages/");
   const [show, setShow] = useState(false);
   const [emojiShow, setEmojiShow] = useState(false);
@@ -45,6 +48,9 @@ const Message = ({ status }) => {
   const [message, setMessage] = useState("");
   const [userMessage, setUserMessage] = useState([]);
   let date = new Date();
+  const [recording, setRecording] = useState(false);
+  const [audioChunks, setAudioChunks] = useState([]);
+  const mediaRecorderRef = useRef(null);
   function handleTakePhoto(dataUri) {
     const storage = getStorage();
     const storageRef = imageRef(
@@ -144,6 +150,54 @@ const Message = ({ status }) => {
   const handleEmojiMessage = (emojiData) => {
     setMessage(message + emojiData.emoji);
   };
+
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorderRef.current = mediaRecorder;
+
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+
+    analyser.fftSize = 256; // Adjust for more or fewer visual bars.
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    analyser.connect(audioContext.destination);
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) {
+        setAudioChunks((chunks) => [...chunks, e.data]);
+      }
+    };
+
+    mediaRecorder.start();
+    setRecording(true);
+
+    const visualize = () => {
+      analyser.getByteFrequencyData(dataArray);
+      // Use the dataArray to update your visual representation (e.g., a bar graph).
+      requestAnimationFrame(visualize);
+    };
+
+    visualize();
+  };
+
+  const stopRecording = () => {
+    mediaRecorderRef.current.stop();
+    setRecording(false);
+    console.log("yes");
+  };
+
+  const playRecording = () => {
+    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    // Use the AudioPlayer component to play the recorded audio.
+  };
+
   return (
     <>
       {show && (
@@ -285,6 +339,165 @@ const Message = ({ status }) => {
                   onClick={() => setShow(true)}
                 />
                 <BsMic className="text-xl cursor-pointer" />
+                <button onClick={startRecording} disabled={recording}>
+                  Start Recording
+                </button>
+                <button onClick={stopRecording} disabled={!recording}>
+                  Stop Recording
+                </button>
+                <button
+                  onClick={playRecording}
+                  disabled={audioChunks.length === 0}
+                >
+                  Play Recording
+                </button>
+                {messageBtnShow && (
+                  <BsSendFill
+                    className="text-xl cursor-pointer text-[#32375C]"
+                    onClick={() => handleSendMessage()}
+                  />
+                )}
+              </Flex>
+            </div>
+          </Flex>
+        </Flex>
+      ) : status == "group" && activeGroupMessage ? (
+        <Flex className="flex-col w-[55%] flex-grow">
+          <Flex className="px-4 pt-[50px]  gap-x-4 items-center shadow-primary_shadow pb-4">
+            <Img src={activeGroupMessage.groupImg} className="w-[14%]" />
+            <div className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222] ">
+              <h2 className="">{activeGroupMessage.groupName}</h2>
+              <h2 className="text-xs">
+                {activeGroupMessage.groupTag}
+              </h2>
+            </div>
+            <div className="text-right">
+              <Option />
+            </div>
+          </Flex>
+          <Flex className="flex-col h-screen p-6 overflow-y-auto">
+            <ScrollToBottom className="h-screen overflow-y-auto">
+              {/* message receive */}
+              {userMessage.map((message) =>
+                message.whoReceived === currentUser.uid &&
+                message.whoSend === activeMessage.userId ? (
+                  message.message ? (
+                    <div className="mt-4 text-left">
+                      <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
+                        {message.message}
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                      </h6>
+                    </div>
+                  ) : message.messageImg ? (
+                    // message receive image
+                    message.whoReceived === currentUser.uid &&
+                    message.whoSend === activeMessage.userId && (
+                      <div className="mt-4 text-left">
+                        <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
+                          <ModalImage
+                            small={message.messageImg}
+                            large={message.messageImg}
+                            showRotate={true}
+                          />
+                        </div>
+                        <h6 className="mt-2 text-xs font-inter text-slate-600">
+                          {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                        </h6>
+                      </div>
+                    )
+                  ) : (
+                    ""
+                  )
+                ) : // message send
+                message.message ? (
+                  message.whoReceived === activeMessage.userId &&
+                  message.whoSend === currentUser.uid && (
+                    <div className="mt-4 text-right">
+                      <div className=" inline-block text-lg  font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
+                        {message.message}
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                      </h6>
+                    </div>
+                  )
+                ) : message.messageImg ? (
+                  //  message send img
+                  message.whoReceived === activeMessage.userId &&
+                  message.whoSend === currentUser.uid && (
+                    <div className="mt-4 text-right">
+                      <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
+                        <ModalImage
+                          small={message.messageImg}
+                          large={message.messageImg}
+                          showRotate={true}
+                        />
+                      </div>
+                      <h6 className="mt-2 text-xs font-inter text-slate-600">
+                        {moment(message.time, "DDMMYYYY hh:mm").fromNow()}
+                      </h6>
+                    </div>
+                  )
+                ) : (
+                  ""
+                )
+              )}
+            </ScrollToBottom>
+            <div className="relative bg-[#F4F4F4]">
+              <textarea
+                name=""
+                id=""
+                className="py-4 pl-3  rounded-lg outline-none w-[75%]  break-words bg-transparent h-[50px] resize-none"
+                placeholder="write a message"
+                onChange={handleMessage}
+                value={message}
+              ></textarea>
+              {emojiShow && (
+                <div className="absolute left-0 w-full bottom-16 h-80">
+                  <EmojiPicker
+                    height="100%"
+                    width="100%"
+                    onEmojiClick={handleEmojiMessage}
+                  />
+                </div>
+              )}
+              <Flex className="absolute top-[37%] gap-x-3 right-4 ">
+                <BsEmojiSmile
+                  className={
+                    emojiShow
+                      ? "text-xl cursor-pointer text-[#32375C]"
+                      : "text-xl cursor-pointer "
+                  }
+                  onClick={() => setEmojiShow(!emojiShow)}
+                />
+                <label htmlFor="image">
+                  <BsCardImage className="text-xl cursor-pointer" />
+                </label>
+                <input
+                  type="file"
+                  hidden
+                  id="image"
+                  onChange={handleImageSend}
+                />
+                <BsCamera
+                  className="text-xl cursor-pointer"
+                  onClick={() => setShow(true)}
+                />
+                <BsMic className="text-xl cursor-pointer" />
+                <button onClick={startRecording} disabled={recording}>
+                  Start Recording
+                </button>
+                <button onClick={stopRecording} disabled={!recording}>
+                  Stop Recording
+                </button>
+                <button
+                  onClick={playRecording}
+                  disabled={audioChunks.length === 0}
+                >
+                  Play Recording
+                </button>
                 {messageBtnShow && (
                   <BsSendFill
                     className="text-xl cursor-pointer text-[#32375C]"

@@ -15,7 +15,13 @@ import NoData from "./layouts/NoData";
 import PeopleLayout from "./layouts/PeopleLayout";
 import Message from "./Message";
 import Option from "./layouts/Option";
+import { useDispatch, useSelector } from "react-redux";
+import { groupMessageInfo } from "../slices/groupMessageSlice";
 const GroupSidebar = () => {
+  const dispatch = useDispatch();
+  const activeGroup = useSelector(
+    (state) => state.groupMessageInfo.groupMessageInfo
+  );
   const date = new Date();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
@@ -89,6 +95,10 @@ const GroupSidebar = () => {
         });
       });
     }
+  };
+  const handleGroupMessage = (selectGroup) => {
+    dispatch(groupMessageInfo(selectGroup));
+    localStorage.setItem("groupMessageInfo", JSON.stringify(selectGroup));
   };
   return (
     <>
@@ -217,10 +227,15 @@ const GroupSidebar = () => {
                 <PeopleLayout
                   src={group.groupImg}
                   name={group.groupName}
+                  active={
+                    activeGroup !== null &&
+                    activeGroup.groupKey === group.groupKey &&
+                    true
+                  }
                   classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%]"
                   key={group.key}
-                  active={true}
+                  handle={() => handleGroupMessage(group)}
                 ></PeopleLayout>
               ) : (
                 <NoData text="no groups to show " />
@@ -232,7 +247,7 @@ const GroupSidebar = () => {
         </div>
       </Flex>
 
-      <Message />
+      <Message status={"group"} />
     </>
   );
 };
