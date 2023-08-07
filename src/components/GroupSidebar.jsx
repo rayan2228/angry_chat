@@ -25,7 +25,6 @@ const GroupSidebar = () => {
   const date = new Date();
   const db = getDatabase();
   const currentUser = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(currentUser.uid);
   const groupMemberRef = ref(db, "groupMembers/");
   const groupRef = ref(db, "groups/");
   const [createGroupShow, setCreateGroupShow] = useState(false);
@@ -46,7 +45,6 @@ const GroupSidebar = () => {
       setGroupMembers(groupMembers);
     });
   }, []);
-  console.log(groupMembers);
   const handleSetGroup = (e) => {
     const updateValue = {
       ...createGroup,
@@ -234,7 +232,7 @@ const GroupSidebar = () => {
                   }
                   classNameFlex="gap-x-4 cursor-pointer"
                   classNameHeading="w-[75%]"
-                  key={group.key}
+                  key={group.groupKey}
                   handle={() => handleGroupMessage(group)}
                 ></PeopleLayout>
               ) : (

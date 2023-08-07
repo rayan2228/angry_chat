@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const groupMessageSlice = createSlice({
   name: "groupMessage",
   initialState: {
-    userMessageInfo: JSON.parse(localStorage.getItem("groupMessageInfo"))
+    groupMessageInfo: JSON.parse(localStorage.getItem("groupMessageInfo"))
       ? JSON.parse(localStorage.getItem("groupMessageInfo"))
       : null,
   },

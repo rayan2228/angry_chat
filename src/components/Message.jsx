@@ -48,9 +48,6 @@ const Message = ({ status }) => {
   const [message, setMessage] = useState("");
   const [userMessage, setUserMessage] = useState([]);
   let date = new Date();
-  const [recording, setRecording] = useState(false);
-  const [audioChunks, setAudioChunks] = useState([]);
-  const mediaRecorderRef = useRef(null);
   function handleTakePhoto(dataUri) {
     const storage = getStorage();
     const storageRef = imageRef(
@@ -60,14 +57,25 @@ const Message = ({ status }) => {
     const message4 = dataUri;
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
-        set(push(messageRef), {
-          whoSend: currentUser.uid,
-          whoReceived: activeMessage.userId,
-          messageImg: downloadURL,
-          time: `${date.getDate()}-${
-            date.getMonth() + 1
-          }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-        });
+        if (status === "personal") {
+          set(push(messageRef), {
+            whoSend: currentUser.uid,
+            whoReceived: activeMessage.userId,
+            messageImg: downloadURL,
+            time: `${date.getDate()}-${
+              date.getMonth() + 1
+            }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+          });
+        }else{
+           set(push(messageRef), {
+             whoSend: currentUser.uid,
+             whoReceived: activeMessage.userId,
+             messageImg: downloadURL,
+             time: `${date.getDate()}-${
+               date.getMonth() + 1
+             }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+           });
+        }
       });
     });
     setShow(false);
@@ -149,53 +157,6 @@ const Message = ({ status }) => {
   };
   const handleEmojiMessage = (emojiData) => {
     setMessage(message + emojiData.emoji);
-  };
-
-  const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorderRef.current = mediaRecorder;
-
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    const analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaStreamSource(stream);
-    source.connect(analyser);
-
-    analyser.fftSize = 256; // Adjust for more or fewer visual bars.
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    analyser.connect(audioContext.destination);
-
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) {
-        setAudioChunks((chunks) => [...chunks, e.data]);
-      }
-    };
-
-    mediaRecorder.start();
-    setRecording(true);
-
-    const visualize = () => {
-      analyser.getByteFrequencyData(dataArray);
-      // Use the dataArray to update your visual representation (e.g., a bar graph).
-      requestAnimationFrame(visualize);
-    };
-
-    visualize();
-  };
-
-  const stopRecording = () => {
-    mediaRecorderRef.current.stop();
-    setRecording(false);
-    console.log("yes");
-  };
-
-  const playRecording = () => {
-    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-    const audioUrl = URL.createObjectURL(audioBlob);
-    // Use the AudioPlayer component to play the recorded audio.
   };
 
   return (
@@ -338,19 +299,7 @@ const Message = ({ status }) => {
                   className="text-xl cursor-pointer"
                   onClick={() => setShow(true)}
                 />
-                <BsMic className="text-xl cursor-pointer" />
-                <button onClick={startRecording} disabled={recording}>
-                  Start Recording
-                </button>
-                <button onClick={stopRecording} disabled={!recording}>
-                  Stop Recording
-                </button>
-                <button
-                  onClick={playRecording}
-                  disabled={audioChunks.length === 0}
-                >
-                  Play Recording
-                </button>
+                {/* <BsMic className="text-xl cursor-pointer" /> */}
                 {messageBtnShow && (
                   <BsSendFill
                     className="text-xl cursor-pointer text-[#32375C]"
@@ -367,9 +316,7 @@ const Message = ({ status }) => {
             <Img src={activeGroupMessage.groupImg} className="w-[14%]" />
             <div className="w-[90%] font-inter text-lg font-medium capitalize text-[#222222] ">
               <h2 className="">{activeGroupMessage.groupName}</h2>
-              <h2 className="text-xs">
-                {activeGroupMessage.groupTag}
-              </h2>
+              <h2 className="text-xs">{activeGroupMessage.groupTag}</h2>
             </div>
             <div className="text-right">
               <Option />
@@ -485,19 +432,7 @@ const Message = ({ status }) => {
                   className="text-xl cursor-pointer"
                   onClick={() => setShow(true)}
                 />
-                <BsMic className="text-xl cursor-pointer" />
-                <button onClick={startRecording} disabled={recording}>
-                  Start Recording
-                </button>
-                <button onClick={stopRecording} disabled={!recording}>
-                  Stop Recording
-                </button>
-                <button
-                  onClick={playRecording}
-                  disabled={audioChunks.length === 0}
-                >
-                  Play Recording
-                </button>
+                {/* <BsMic className="text-xl cursor-pointer" /> */}
                 {messageBtnShow && (
                   <BsSendFill
                     className="text-xl cursor-pointer text-[#32375C]"
@@ -511,7 +446,7 @@ const Message = ({ status }) => {
       ) : (
         <div className="flex items-center justify-center grow">
           <p className="text-lg font-semibold text-center capitalize font-inter">
-            Select a chat or start{" "}
+            Select a chat or start
             <span className="block">a new conversation</span>
           </p>
         </div>
