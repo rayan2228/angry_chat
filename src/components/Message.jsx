@@ -42,6 +42,7 @@ const Message = ({ status }) => {
     (state) => state.groupMessageInfo.groupMessageInfo
   );
   const messageRef = ref(db, "messages/");
+  const groupMessageRef = ref(db, "groupMessages/");
   const [show, setShow] = useState(false);
   const [emojiShow, setEmojiShow] = useState(false);
   const [messageBtnShow, setMessageBtnShow] = useState(false);
@@ -60,21 +61,22 @@ const Message = ({ status }) => {
         if (status === "personal") {
           set(push(messageRef), {
             whoSend: currentUser.uid,
-            whoReceived: activeMessage.userId,
+            whoReceived: activeGroupMessage.userId,
             messageImg: downloadURL,
             time: `${date.getDate()}-${
               date.getMonth() + 1
             }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
           });
-        }else{
-           set(push(messageRef), {
-             whoSend: currentUser.uid,
-             whoReceived: activeMessage.userId,
-             messageImg: downloadURL,
-             time: `${date.getDate()}-${
-               date.getMonth() + 1
-             }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-           });
+        } else {
+          set(push(groupMessageRef), {
+            whoSend: currentUser.uid,
+            whoReceived: activeMessage.groupKey,
+            adminId,
+            messageImg: downloadURL,
+            time: `${date.getDate()}-${
+              date.getMonth() + 1
+            }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+          });
         }
       });
     });
@@ -96,20 +98,42 @@ const Message = ({ status }) => {
       });
       setUserMessage(userMessage);
     });
+    onValue(groupMessageRef, (snapshot) => {
+      const userMessage = [];
+      snapshot.forEach((messages) => {
+        userMessage.push({
+          ...messages.val(),
+          userMessageId: messages.key,
+        });
+      });
+      setUserMessage(userMessage);
+    });
   }, [message]);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
   };
   const handleSendMessage = () => {
-    set(push(messageRef), {
-      whoSend: currentUser.uid,
-      whoReceived: activeMessage.userId,
-      message,
-      time: `${date.getDate()}-${
-        date.getMonth() + 1
-      }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-    });
+    if (status === "personal") {
+      set(push(messageRef), {
+        whoSend: currentUser.uid,
+        whoReceived: activeMessage.userId,
+        message,
+        time: `${date.getDate()}-${
+          date.getMonth() + 1
+        }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+      });
+    } else {
+      set(push(groupMessageRef), {
+        whoSend: currentUser.uid,
+        whoReceived: activeMessage.groupKey,
+        adminId,
+        message,
+        time: `${date.getDate()}-${
+          date.getMonth() + 1
+        }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+      });
+    }
     setMessage("");
     setEmojiShow(false);
   };
@@ -143,14 +167,26 @@ const Message = ({ status }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          set(push(messageRef), {
-            whoSend: currentUser.uid,
-            whoReceived: activeMessage.userId,
-            messageImg: downloadURL,
-            time: `${date.getDate()}-${
-              date.getMonth() + 1
-            }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-          });
+          if (status === "personal") {
+            set(push(messageRef), {
+              whoSend: currentUser.uid,
+              whoReceived: activeMessage.userId,
+              messageImg: downloadURL,
+              time: `${date.getDate()}-${
+                date.getMonth() + 1
+              }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+            });
+          } else {
+            set(push(groupMessageRef), {
+              whoSend: currentUser.uid,
+              whoReceived: activeMessage.groupKey,
+              adminId,
+              messageImg: downloadURL,
+              time: `${date.getDate()}-${
+                date.getMonth() + 1
+              }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+            });
+          }
         });
       }
     );
