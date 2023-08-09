@@ -48,6 +48,7 @@ const Message = ({ status }) => {
   const [messageBtnShow, setMessageBtnShow] = useState(false);
   const [message, setMessage] = useState("");
   const [userMessage, setUserMessage] = useState([]);
+  const [groupMessage, setGroupMessage] = useState([]);
   let date = new Date();
   function handleTakePhoto(dataUri) {
     const storage = getStorage();
@@ -61,7 +62,7 @@ const Message = ({ status }) => {
         if (status === "personal") {
           set(push(messageRef), {
             whoSend: currentUser.uid,
-            whoReceived: activeGroupMessage.userId,
+            whoReceived: activeMessage.userId,
             messageImg: downloadURL,
             time: `${date.getDate()}-${
               date.getMonth() + 1
@@ -70,8 +71,8 @@ const Message = ({ status }) => {
         } else {
           set(push(groupMessageRef), {
             whoSend: currentUser.uid,
-            whoReceived: activeMessage.groupKey,
-            adminId,
+            whoReceived: activeGroupMessage.groupKey,
+            adminId: activeGroupMessage.adminId,
             messageImg: downloadURL,
             time: `${date.getDate()}-${
               date.getMonth() + 1
@@ -99,16 +100,17 @@ const Message = ({ status }) => {
       setUserMessage(userMessage);
     });
     onValue(groupMessageRef, (snapshot) => {
-      const userMessage = [];
+      const groupMessage = [];
       snapshot.forEach((messages) => {
-        userMessage.push({
+        groupMessage.push({
           ...messages.val(),
-          userMessageId: messages.key,
+          groupMessageId: messages.key,
         });
       });
-      setUserMessage(userMessage);
+      setGroupMessage(groupMessage);
     });
   }, [message]);
+  // console.log(groupMessage);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -126,8 +128,8 @@ const Message = ({ status }) => {
     } else {
       set(push(groupMessageRef), {
         whoSend: currentUser.uid,
-        whoReceived: activeMessage.groupKey,
-        adminId,
+        whoReceived: activeGroupMessage.groupKey,
+        adminId: activeGroupMessage.adminId,
         message,
         time: `${date.getDate()}-${
           date.getMonth() + 1
@@ -179,8 +181,8 @@ const Message = ({ status }) => {
           } else {
             set(push(groupMessageRef), {
               whoSend: currentUser.uid,
-              whoReceived: activeMessage.groupKey,
-              adminId,
+              whoReceived: activeGroupMessage.groupKey,
+              adminId: activeGroupMessage.adminId,
               messageImg: downloadURL,
               time: `${date.getDate()}-${
                 date.getMonth() + 1
@@ -361,9 +363,9 @@ const Message = ({ status }) => {
           <Flex className="flex-col h-screen p-6 overflow-y-auto">
             <ScrollToBottom className="h-screen overflow-y-auto">
               {/* message receive */}
-              {userMessage.map((message) =>
+              {groupMessage.map((message) =>
                 message.whoReceived === currentUser.uid &&
-                message.whoSend === activeMessage.userId ? (
+                message.whoSend === activeGroupMessage.groupKey ? (
                   message.message ? (
                     <div className="mt-4 text-left">
                       <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
@@ -376,7 +378,7 @@ const Message = ({ status }) => {
                   ) : message.messageImg ? (
                     // message receive image
                     message.whoReceived === currentUser.uid &&
-                    message.whoSend === activeMessage.userId && (
+                    message.whoSend === activeGroupMessage.groupKey && (
                       <div className="mt-4 text-left">
                         <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
                           <ModalImage
@@ -395,7 +397,7 @@ const Message = ({ status }) => {
                   )
                 ) : // message send
                 message.message ? (
-                  message.whoReceived === activeMessage.userId &&
+                  message.whoReceived === activeGroupMessage.groupKey &&
                   message.whoSend === currentUser.uid && (
                     <div className="mt-4 text-right">
                       <div className=" inline-block text-lg  font-inter text-[#ffffff] bg-[#5B5F7D] rounded-md px-6 font-normal py-1 text-left">
@@ -408,7 +410,7 @@ const Message = ({ status }) => {
                   )
                 ) : message.messageImg ? (
                   //  message send img
-                  message.whoReceived === activeMessage.userId &&
+                  message.whoReceived === activeGroupMessage.groupKey &&
                   message.whoSend === currentUser.uid && (
                     <div className="mt-4 text-right">
                       <div className=" inline-block bg-[#5B5F7D] rounded-md p-2 w-[200px]">
