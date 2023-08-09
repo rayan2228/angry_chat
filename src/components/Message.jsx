@@ -110,7 +110,7 @@ const Message = ({ status }) => {
       setGroupMessage(groupMessage);
     });
   }, [message]);
-  // console.log(groupMessage);
+console.log(groupMessage);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -364,8 +364,8 @@ const Message = ({ status }) => {
             <ScrollToBottom className="h-screen overflow-y-auto">
               {/* message receive */}
               {groupMessage.map((message) =>
-                message.whoReceived === currentUser.uid &&
-                message.whoSend === activeGroupMessage.groupKey ? (
+                message.whoReceived === activeGroupMessage.groupKey &&
+                message.whoSend !== currentUser.uid ? (
                   message.message ? (
                     <div className="mt-4 text-left">
                       <div className="inline-block text-lg capitalize font-inter text-[#222222] bg-[#E9E9E9] rounded-md px-6 font-normal py-1">
@@ -377,8 +377,8 @@ const Message = ({ status }) => {
                     </div>
                   ) : message.messageImg ? (
                     // message receive image
-                    message.whoReceived === currentUser.uid &&
-                    message.whoSend === activeGroupMessage.groupKey && (
+                    message.whoReceived === activeGroupMessage.groupKey &&
+                    message.whoSend !== currentUser.uid && (
                       <div className="mt-4 text-left">
                         <div className="inline-block  bg-[#E9E9E9] rounded-md p-2 w-[200px]">
                           <ModalImage
