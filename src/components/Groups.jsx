@@ -103,28 +103,36 @@ const Groups = () => {
             {groups.length ? (
               groups.map(
                 (group) =>
-                  group.adminId != currentUser.uid &&
-                  !(
+                {
+                  console.log(
                     groupRequests.includes(group.key + currentUser.uid) ||
-                    groupRequests.includes(currentUser.uid + group.key) ||
-                    groupMembers.includes(group.key + currentUser.uid) ||
-                    groupMembers.includes(currentUser.uid + group.key)
-                  ) && (
-                    <PeopleLayout
-                      src={group.groupImg}
-                      name={group.groupName}
-                      classNameFlex="gap-x-4"
-                      classNameHeading="w-[75%]"
-                      key={group.key}
-                    >
-                      <p
-                        className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                        onClick={() => handleJoin(group)}
-                      >
-                        join
-                      </p>
-                    </PeopleLayout>
-                  )
+                      groupRequests.includes(currentUser.uid + group.key) ||
+                      groupMembers.includes(group.key + currentUser.uid) ||
+                      groupMembers.includes(currentUser.uid + group.key)
+                  );
+                }
+                  // group.adminId != currentUser.uid &&
+                  // !(
+                  //   groupRequests.includes(group.key + currentUser.uid) ||
+                  //   groupRequests.includes(currentUser.uid + group.key) ||
+                  //   groupMembers.includes(group.key + currentUser.uid) ||
+                  //   groupMembers.includes(currentUser.uid + group.key)
+                  // ) && (
+                  //   <PeopleLayout
+                  //     src={group.groupImg}
+                  //     name={group.groupName}
+                  //     classNameFlex="gap-x-4"
+                  //     classNameHeading="w-[75%]"
+                  //     key={group.key}
+                  //   >
+                  //     <p
+                  //       className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                  //       onClick={() => handleJoin(group)}
+                  //     >
+                  //       join
+                  //     </p>
+                  //   </PeopleLayout>
+                  // )
               )
             ) : (
               <NoData text="no group to show" />
