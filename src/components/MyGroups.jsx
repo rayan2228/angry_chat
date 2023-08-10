@@ -231,7 +231,7 @@ const MyGroups = () => {
             {groups.length ? (
               groups.map(
                 (group) =>
-                  group.adminId == currentUser.uid && (
+                  (group.adminId == currentUser.uid || group.memberId == currentUser.uid) && (
                     <PeopleLayout
                       src={group.groupImg}
                       name={group.groupName}

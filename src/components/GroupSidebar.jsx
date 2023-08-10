@@ -220,21 +220,21 @@ const GroupSidebar = () => {
         <div className="h-screen overflow-y-auto">
           {groupMembers.length ? (
             groupMembers.map((group) =>
-              group.memberId == currentUser.uid ||
-              group.adminId == currentUser.uid ? (
-                <PeopleLayout
-                  src={group.groupImg}
-                  name={group.groupName}
-                  active={
-                    activeGroup !== null &&
-                    activeGroup.groupKey === group.groupKey &&
-                    true
-                  }
-                  classNameFlex="gap-x-4 cursor-pointer"
-                  classNameHeading="w-[75%]"
-                  key={group.groupKey}
-                  handle={() => handleGroupMessage(group)}
-                ></PeopleLayout>
+              group.memberId == currentUser.uid ? (
+                "sadfsaas"
+                // <PeopleLayout
+                //   src={group.groupImg}
+                //   name={group.groupName}
+                //   active={
+                //     activeGroup !== null &&
+                //     activeGroup.groupKey === group.groupKey &&
+                //     true
+                //   }
+                //   classNameFlex="gap-x-4 cursor-pointer"
+                //   classNameHeading="w-[75%]"
+                //   key={group.groupKey}
+                //   handle={() => handleGroupMessage(group)}
+                // ></PeopleLayout>
               ) : (
                 <NoData text="no groups to show " />
               )
