@@ -37,7 +37,9 @@ const Groups = () => {
       const groupRequests = [];
       const groupRequestsCancel = [];
       snapshot.forEach((groupRequest) => {
-        groupRequests.push(groupRequest.val().groupKey + currentUser.uid);
+        groupRequests.push(
+          groupRequest.val().groupKey + groupRequest.val().requestId
+        );
         groupRequestsCancel.push({
           ...groupRequest.val(),
           groupRequestKey: groupRequest.key,
@@ -49,11 +51,14 @@ const Groups = () => {
     onValue(groupMemberRef, (snapshot) => {
       const groupMembers = [];
       snapshot.forEach((groupMember) => {
-        groupMembers.push(groupMember.val().groupKey + currentUser.uid);
+        groupMembers.push(
+          groupMember.val().groupKey + groupMember.val().memberId
+        );
       });
       setGroupMembers(groupMembers);
     });
   }, []);
+  console.log(groupRequests);
   const handleJoin = (group) => {
     set(push(groupRequestRef), {
       groupKey: group.key,
@@ -103,36 +108,28 @@ const Groups = () => {
             {groups.length ? (
               groups.map(
                 (group) =>
-                {
-                  console.log(
+                  group.adminId != currentUser.uid &&
+                  !(
                     groupRequests.includes(group.key + currentUser.uid) ||
-                      groupRequests.includes(currentUser.uid + group.key) ||
-                      groupMembers.includes(group.key + currentUser.uid) ||
-                      groupMembers.includes(currentUser.uid + group.key)
-                  );
-                }
-                  // group.adminId != currentUser.uid &&
-                  // !(
-                  //   groupRequests.includes(group.key + currentUser.uid) ||
-                  //   groupRequests.includes(currentUser.uid + group.key) ||
-                  //   groupMembers.includes(group.key + currentUser.uid) ||
-                  //   groupMembers.includes(currentUser.uid + group.key)
-                  // ) && (
-                  //   <PeopleLayout
-                  //     src={group.groupImg}
-                  //     name={group.groupName}
-                  //     classNameFlex="gap-x-4"
-                  //     classNameHeading="w-[75%]"
-                  //     key={group.key}
-                  //   >
-                  //     <p
-                  //       className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
-                  //       onClick={() => handleJoin(group)}
-                  //     >
-                  //       join
-                  //     </p>
-                  //   </PeopleLayout>
-                  // )
+                    groupRequests.includes(currentUser.uid + group.key) ||
+                    groupMembers.includes(group.key + currentUser.uid) ||
+                    groupMembers.includes(currentUser.uid + group.key)
+                  ) && (
+                    <PeopleLayout
+                      src={group.groupImg}
+                      name={group.groupName}
+                      classNameFlex="gap-x-4"
+                      classNameHeading="w-[75%]"
+                      key={group.key}
+                    >
+                      <p
+                        className="font-inter font-normal text-lg capitalize text-white cursor-pointer w-[24%] bg-primary text-center rounded-md"
+                        onClick={() => handleJoin(group)}
+                      >
+                        join
+                      </p>
+                    </PeopleLayout>
+                  )
               )
             ) : (
               <NoData text="no group to show" />
