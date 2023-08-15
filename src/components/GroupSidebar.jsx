@@ -249,7 +249,7 @@ const GroupSidebar = () => {
                   handle={() => handleGroupMessage(group)}
                 ></PeopleLayout>
               ))
-            : ""}
+            : <NoData text="no groups to show"/>}
         </div>
       </Flex>
 
