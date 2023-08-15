@@ -110,7 +110,7 @@ const Message = ({ status }) => {
       setGroupMessage(groupMessage);
     });
   }, [message]);
-console.log(groupMessage);
+
 
   const handleMessage = (e) => {
     setMessage(e.target.value);

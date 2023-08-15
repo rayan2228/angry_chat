@@ -36,15 +36,31 @@ const GroupSidebar = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [finalGroups, setFinalGroups] = useState([]);
+
   useEffect(() => {
+    onValue(groupRef, (snapshot) => {
+      const groups = [];
+      snapshot.forEach((group) => {
+        group.val().adminId === currentUser.uid &&
+          groups.push({ ...group.val(), groupKey: group.key });
+      });
+      setGroups(groups);
+    });
     onValue(groupMemberRef, (snapshot) => {
       const groupMembers = [];
       snapshot.forEach((groupMember) => {
-        groupMembers.push(groupMember.val());
+        groupMember.val().memberId === currentUser.uid &&
+          groupMembers.push(groupMember.val());
       });
       setGroupMembers(groupMembers);
     });
   }, []);
+  useEffect(() => {
+    setFinalGroups([...groups, ...groupMembers]);
+  }, [groups, groupMembers]);
+
   const handleSetGroup = (e) => {
     const updateValue = {
       ...createGroup,
@@ -69,7 +85,6 @@ const GroupSidebar = () => {
   };
   const handleCreateGroup = () => {
     if (!createGroup.groupName || !createGroup.groupTag || !groupImg) {
-      console.log(groupImg);
       setError("all field are required");
     } else {
       setLoading(true);
@@ -218,30 +233,23 @@ const GroupSidebar = () => {
         </Flex>
         <SearchInput />
         <div className="h-screen overflow-y-auto">
-          {groupMembers.length ? (
-            groupMembers.map((group) =>
-              group.memberId == currentUser.uid ? (
-                "sadfsaas"
-                // <PeopleLayout
-                //   src={group.groupImg}
-                //   name={group.groupName}
-                //   active={
-                //     activeGroup !== null &&
-                //     activeGroup.groupKey === group.groupKey &&
-                //     true
-                //   }
-                //   classNameFlex="gap-x-4 cursor-pointer"
-                //   classNameHeading="w-[75%]"
-                //   key={group.groupKey}
-                //   handle={() => handleGroupMessage(group)}
-                // ></PeopleLayout>
-              ) : (
-                <NoData text="no groups to show " />
-              )
-            )
-          ) : (
-            <NoData text="no groups to show" />
-          )}
+          {finalGroups.length > 0
+            ? finalGroups.map((group) => (
+                <PeopleLayout
+                  src={group.groupImg}
+                  name={group.groupName}
+                  active={
+                    activeGroup !== null &&
+                    activeGroup.groupKey === group.groupKey &&
+                    true
+                  }
+                  classNameFlex="gap-x-4 cursor-pointer"
+                  classNameHeading="w-[75%]"
+                  key={group.groupKey}
+                  handle={() => handleGroupMessage(group)}
+                ></PeopleLayout>
+              ))
+            : ""}
         </div>
       </Flex>
 
