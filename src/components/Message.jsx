@@ -111,7 +111,6 @@ const Message = ({ status }) => {
     });
   }, [message]);
 
-
   const handleMessage = (e) => {
     setMessage(e.target.value);
   };
@@ -142,61 +141,65 @@ const Message = ({ status }) => {
 
   const handleImageSend = (e) => {
     let file = e.target.files[0];
-    const storage = getStorage();
-    const storageRef = imageRef(
-      storage,
-      `singleMessageImage/${date.getTime()}_${file.name}`
-    );
-
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        // switch (snapshot.state) {
-        //   case "paused":
-        //     console.log("Upload is paused");
-        //     break;
-        //   case "running":
-        //     console.log("Upload is running");
-        //     break;
-        // }
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          if (status === "personal") {
-            set(push(messageRef), {
-              whoSend: currentUser.uid,
-              whoReceived: activeMessage.userId,
-              messageImg: downloadURL,
-              time: `${date.getDate()}-${
-                date.getMonth() + 1
-              }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-            });
-          } else {
-            set(push(groupMessageRef), {
-              whoSend: currentUser.uid,
-              whoReceived: activeGroupMessage.groupKey,
-              adminId: activeGroupMessage.adminId,
-              messageImg: downloadURL,
-              time: `${date.getDate()}-${
-                date.getMonth() + 1
-              }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-            });
-          }
-        });
-      }
-    );
+    const extensions = ["jpeg", "png", "jpg", "gif"];
+    const fileMatch = extensions.includes(file.type.split("/")[1]);
+    if (fileMatch) {
+      const storage = getStorage();
+      const storageRef = imageRef(
+        storage,
+        `singleMessageImage/${date.getTime()}_${file.name}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          // switch (snapshot.state) {
+          //   case "paused":
+          //     console.log("Upload is paused");
+          //     break;
+          //   case "running":
+          //     console.log("Upload is running");
+          //     break;
+          // }
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            if (status === "personal") {
+              set(push(messageRef), {
+                whoSend: currentUser.uid,
+                whoReceived: activeMessage.userId,
+                messageImg: downloadURL,
+                time: `${date.getDate()}-${
+                  date.getMonth() + 1
+                }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+              });
+            } else {
+              set(push(groupMessageRef), {
+                whoSend: currentUser.uid,
+                whoReceived: activeGroupMessage.groupKey,
+                adminId: activeGroupMessage.adminId,
+                messageImg: downloadURL,
+                time: `${date.getDate()}-${
+                  date.getMonth() + 1
+                }-${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+              });
+            }
+          });
+        }
+      );
+    }else{
+      
+    }
   };
   const handleEmojiMessage = (emojiData) => {
     setMessage(message + emojiData.emoji);
   };
-
   return (
     <>
       {show && (
